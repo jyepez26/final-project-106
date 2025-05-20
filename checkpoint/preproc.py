@@ -33,10 +33,11 @@ def concat_results(results: list):
     '''
     assert len(results) > 1
 
-    starting_df = results[0].rename(columns = {0: f's0'})
-    for i, df in enumerate(results[1:]):
-        df = df.rename(columns = {0: f's{i+1}'})
-        starting_df.concat(df)
-    
-    return starting_df
+    renamed_dfs = []
+    for i, df in enumerate(results):
+        df_renamed = df.rename(columns={df.columns[0]: f's{i}'})
+        renamed_dfs.append(df_renamed[[f's{i}']])  # Keep only the renamed column
+
+    combined = pd.concat(renamed_dfs, axis=1)
+    return combined
     
