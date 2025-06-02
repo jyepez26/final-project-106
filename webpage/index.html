@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final Project DSC 106</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="app.js"></script>
+</head>
+<body>
+    <div id="tooltip" style="
+        position: absolute;
+        background: rgba(0,0,0,0.7);
+        color: white;
+        padding: 6px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.2s;
+    "></div>
+    <section class="hidden">
+        <h1>Does a Relaxed Test Taker Always Do Better than a Stressed One?</h1>
+        <h2>DSC 106 Final Project</h2>
+        <p>Introduction description</p>
+    </section>
+    
+    <section class="hidden">
+        <h1>Visualization 1: 
+            Visualizating Student Heart Rate Data During Exams</h1>
+    </section>
+
+    <section class="hidden">
+        <h3>Midterm 1</h3>
+        <div id="plot">
+            <svg id="midterm1-chart" width="800" height="400"></svg>
+            <select id="student-select1">
+                <option value="S1">Student 1</option>
+                <option value="S2">Student 2</option>
+                <option value="S3">Student 3</option>
+                <option value="S4">Student 4</option>
+                <option value="S5">Student 5</option>
+                <option value="S6">Student 6</option>
+                <option value="S7">Student 7</option>
+                <option value="S8">Student 8</option>
+                <option value="S9">Student 9</option>
+                <option value="S10">Student 10</option>
+            </select>
+        </div>
+    </section>
+    
+    <section class="hidden">
+        <h3>Midterm 2</h3>
+        <div id="plot">
+            <svg id="midterm2-chart" width="800" height="400"></svg>
+            <select id="student-select2">
+                <option value="S1">Student 1</option>
+                <option value="S2">Student 2</option>
+                <option value="S3">Student 3</option>
+                <option value="S4">Student 4</option>
+                <option value="S5">Student 5</option>
+                <option value="S6">Student 6</option>
+                <option value="S7">Student 7</option>
+                <option value="S8">Student 8</option>
+                <option value="S9">Student 9</option>
+                <option value="S10">Student 10</option>
+            </select>
+        </div>
+        
+    </section>
+        
+    <section class="hidden">
+        <h3>Final</h3>
+        <div id="plot">
+            <svg id="final-chart" width="800" height="400"></svg>
+            <select id="student-select3">
+                <option value="S1">Student 1</option>
+                <option value="S2">Student 2</option>
+                <option value="S3">Student 3</option>
+                <option value="S4">Student 4</option>
+                <option value="S5">Student 5</option>
+                <option value="S6">Student 6</option>
+                <option value="S7">Student 7</option>
+                <option value="S8">Student 8</option>
+                <option value="S9">Student 9</option>
+                <option value="S10">Student 10</option>
+            </select>
+        </div>
+    </section>
+
+    <section class="hidden">
+        <!-- <img src="frog.jpg" alt="frog-pic"> -->
+        <p>We have now seen the heart rates of different students across different
+            tests! Use this knowledge that you gained moving forward to the next
+            visualizations!
+            Some points to note:
+             1. Midterm 1 and 2 both have a trend of high stress at beginning and end and lower stress in the middle.
+             2. Final Exam seems to have more of a gradual increase in stress over the time of the exam. This may be due to
+             the longer amount of time, where at the beginning you feel like you have plenty of time, but once you get
+             further in the test, you realize you don't have as much as you thought and the stress levels begin to increase!
+        </p>
+    </section>
+
+    <section class="hidden">
+        <h1>Visualization 2</h1>
+        <img src="frog.jpg" alt="frog-pic">
+        <p>description</p>
+        <p>description</p>
+        <p>description</p>
+        <p>description</p>
+        <p>description</p>
+    </section>
+
+    <section class="hidden">
+        <h1>Visualization 3</h1>
+        <img src="frog.jpg" alt="frog-pic">
+        <p>description</p>
+        <img src="among_us_static.webp" alt="among_us_static" id="au-static" width="90px" style="cursor:pointer;">
+        <img src="among_us_running.gif" alt="among_us_gif" id="au-gif" class="hidden" width="100px" style="cursor:pointer; display:none;">
+    </section>
+
+</body>
+</html>

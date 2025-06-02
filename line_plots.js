@@ -5,7 +5,7 @@ async function createLinePlot(csvUrl, studentNum) {
     // For data with form data,student,test
     let data = await loadData(csvUrl);
     // Filter out undefined values
-    data = data.filter(d => d.student === `S${studentNum}` && d.test === 'Final');
+    data = data.filter(d => d.student === `S${studentNum}` && d.test === 'Midterm 2');
 
     data = data.filter(d => d !== undefined);
     data = data.map((d, idx) => ({ ...d, time: idx }));
