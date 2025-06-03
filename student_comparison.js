@@ -17,7 +17,11 @@ async function createStudentComparison() {
     //     return result;
     // }
     function getRandomStudent() {
-        return students[Math.floor(Math.random() * students.length)];
+        let randomStudent;
+        do {
+            randomStudent = students[Math.floor(Math.random() * students.length)];
+        } while (randomStudent === 7);
+        return randomStudent;
     }
 
 
