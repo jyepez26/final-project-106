@@ -70,11 +70,13 @@
 
     <div class="section">
         <h3>The Yerkes-Dodson Curve</h3>
-        <p class="explanation">The Yerkes-Dodson Law suggests that performance increases with stress up to an optimal point, after which it decreases. This visualization shows how our students' stress levels correlate with their test scores.</p>
+        <p class="explanation">Compare the stress patterns of two randomly selected students and try to guess which one performed better on the test. This helps us understand how different stress patterns correlate with test performance.</p>
         
         <div class="visualization">
-            <h4>Stress vs. Performance</h4>
-            <svg id="yerkes-chart" width=800 height=400></svg>
+            <h4>Student Stress Comparison</h4>
+            <svg id="comparison-chart" width=800 height=400></svg>
+            <div id="guess-buttons" style="margin-top: 20px; text-align: center;"></div>
+            <div id="result" style="margin-top: 20px; text-align: center;"></div>
         </div>
     </div>
 
@@ -95,6 +97,6 @@
     </div>
 
     <script type="module" src="line_plots.js"></script>
-    <script type="module" src="yerkes_curve.js"></script>
+    <script type="module" src="student_comparison.js"></script>
 </body>
 </html>

@@ -23,7 +23,15 @@
     <section class="hidden">
         <h1>Does a Relaxed Test Taker Always Do Better than a Stressed One?</h1>
         <h2>DSC 106 Final Project</h2>
-        <p>Introduction description</p>
+        <p>Test-taking is a universal experience that often comes with varying levels of stress. While some students thrive under pressure, others may find their performance hindered by anxiety. This project explores the relationship between stress levels and test performance through the lens of the Yerkes-Dodson Law, which suggests that performance increases with stress up to an optimal point, after which it decreases.</p>
+        
+        <p>We measure stress through two key physiological indicators:</p>
+        <p><strong>Electrodermal Activity (EDA):</strong> Measures the electrical conductance of the skin, which increases with sweat production. This is a direct indicator of emotional arousal and stress levels.</p>
+        <p><strong>Heart Rate (HR):</strong> Tracks the number of heartbeats per minute, which typically increases during periods of stress or physical activity.</p>
+
+        <p>By analyzing these stress indicators during actual test-taking scenarios, we can gain insights into how stress patterns evolve throughout a test, whether there's a correlation between stress levels and test performance, if different students handle test stress differently, and what stress patterns might indicate optimal performance.</p>
+
+        <p>Explore the visualizations below to see how stress indicators vary across different students and tests, and discover what these patterns might tell us about the relationship between stress and performance.</p>
     </section>
     
     <section class="hidden">
@@ -103,13 +111,21 @@
     </section>
 
     <section class="hidden">
-        <h1>Visualization 2</h1>
-        <img src="frog.jpg" alt="frog-pic">
-        <p>description</p>
-        <p>description</p>
-        <p>description</p>
-        <p>description</p>
-        <p>description</p>
+        <h1>Visualization 2: Compare Student Stress Patterns</h1>
+        <p>In this interactive visualization, you'll compare the stress patterns of two randomly selected students during their final exam. Watch their EDA (stress) levels throughout the test and try to guess which student performed better.</p>
+        
+        <p>This comparison challenges a common assumption: that higher stress always leads to worse performance. In reality, the relationship between stress and performance is more nuanced. Some students perform better with moderate stress levels, while others might struggle even with low stress. The key is finding the optimal stress level for each individual - what psychologists call the "sweet spot" of the Yerkes-Dodson curve.</p>
+
+        <p>As you interact with this visualization, consider:</p>
+        <p>• How the pattern of stress changes throughout the test (not just the average level)</p>
+        <p>• Whether spikes in stress correlate with better or worse performance</p>
+        <p>• If there's a particular stress pattern that seems to be associated with better outcomes</p>
+
+        <div id="plot">
+            <svg id="comparison-chart" width="800" height="400"></svg>
+            <div id="guess-buttons" style="margin-top: 20px; text-align: center;"></div>
+            <div id="result" style="margin-top: 20px; text-align: center;"></div>
+        </div>
     </section>
 
     <section class="hidden">
