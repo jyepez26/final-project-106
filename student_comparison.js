@@ -9,13 +9,17 @@ async function createStudentComparison() {
     const students = [...new Set(edaData.map(d => d.student))];
     
     // Function to get random student
+    // function getRandomStudent() {
+    //     let result = 0;
+    //     while (result === 7 && result === 0){
+    //         result = students[Math.floor(Math.random() * students.length)]
+    //     };
+    //     return result;
+    // }
     function getRandomStudent() {
-        let result = 0;
-        while (result !== 7){
-            result = students[Math.floor(Math.random() * students.length)]
-        };
-        return result;
+        return students[Math.floor(Math.random() * students.length)];
     }
+
 
     // Get two random students
     let student1 = getRandomStudent();
@@ -23,6 +27,7 @@ async function createStudentComparison() {
     while (student2 === student1) {
         student2 = getRandomStudent();
     }
+    console.log(student1, student2);
 
     // Filter data for selected students
     const student1Data = edaData
