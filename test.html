@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Page - Yerkes-Dodson Visualization</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .visualization-container {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        select {
+            padding: 8px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        .tooltip {
+            position: absolute;
+            background-color: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            pointer-events: none;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        button {
+            padding: 8px 16px;
+            margin: 5px;
+            border: none;
+            border-radius: 4px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test Page for Yerkes-Dodson Visualization</h1>
+    
+    <div class="visualization-container">
+        <h2>Line Plots Test</h2>
+        <select id="switch">
+            <option value="">Select Student</option>
+            <option value="1">Student 1</option>
+            <option value="2">Student 2</option>
+            <option value="3">Student 3</option>
+            <option value="4">Student 4</option>
+            <option value="5">Student 5</option>
+        </select>
+        <svg id="chart" width=800 height=400></svg>
+    </div>
+
+    <div class="visualization-container">
+        <h2>Student Comparison Game</h2>
+        <p>Watch the EDA patterns of two random students and guess which one performed better on the test!</p>
+        <svg id="comparison-chart" width=800 height=400></svg>
+        <div id="guess-buttons"></div>
+        <div id="result"></div>
+    </div>
+
+    <div class="visualization-container">
+        <h2>Yerkes-Dodson Curve Test</h2>
+        <svg id="yerkes-chart" width=800 height=400></svg>
+    </div>
+
+    <script type="module" src="line_plots.js"></script>
+    <script type="module" src="student_comparison.js"></script>
+    <script type="module" src="yerkes_curve.js"></script>
+</body>
+</html> 
