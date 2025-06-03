@@ -9,4 +9,12 @@ export async function loadData(csvPath) {
     }));
     return data;
 }
+
+export async function loadGrades(csvPath) {
+  const data = await d3.csv(csvPath, (row, idx) => ({
+    student: row.student,
+    score: +row.score,
+  }));
+  return data
+}
 loadData();

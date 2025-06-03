@@ -1,17 +1,20 @@
 import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
-import { loadData } from './global.js';
+import { loadData, loadGrades } from './global.js';
 
 async function createStudentComparison() {
     // Load data
     const edaData = await loadData('data/EDA_df.csv');
-    const testScores = await loadData('test_scores.csv');
-
+    const testScores = await loadGrades('test_scores.csv');
     // Get unique students
     const students = [...new Set(edaData.map(d => d.student))];
     
     // Function to get random student
     function getRandomStudent() {
-        return students[Math.floor(Math.random() * students.length)];
+        let result = 0;
+        while (result !== 7){
+            result = students[Math.floor(Math.random() * students.length)]
+        };
+        return result;
     }
 
     // Get two random students
@@ -25,12 +28,27 @@ async function createStudentComparison() {
     const student1Data = edaData
         .filter(d => d.student === student1 && d.test === 'Final')
         .map((d, idx) => ({ ...d, time: idx }))
-        .filter(d => d.time >= 8500 && d.time <= 36000);
-    
+        .filter(d => d.time >= 8500 && d.time <= 36000)
+        .filter(d => d.values >= 0.03);
+
+    const group1 = d3.groups(student1Data, (d, i) => Math.floor(i / 5));
+    const averagedData1 = group1.map(([key, values]) => ({
+        category: key,
+        time: d3.min(values, d => d.time),
+        values: d3.mean(values, d => d.values)
+    }));
+
     const student2Data = edaData
         .filter(d => d.student === student2 && d.test === 'Final')
         .map((d, idx) => ({ ...d, time: idx }))
-        .filter(d => d.time >= 8500 && d.time <= 36000);
+        .filter(d => d.time >= 8500 && d.time <= 36000)
+        .filter(d => d.values >= 0.03);
+    const group2 = d3.groups(student2Data, (d, i) => Math.floor(i / 5));
+    const averagedData2 = group2.map(([key, values]) => ({
+        category: key,
+        time: d3.min(values, d => d.time),
+        values: d3.mean(values, d => d.values)
+    }));
 
     // Get test scores
     const student1Score = testScores.find(s => s.student === student1)?.score || 0;
@@ -54,7 +72,7 @@ async function createStudentComparison() {
         .range([0, width]);
 
     const yScale = d3.scaleLinear()
-        .domain([0, d3.max([...student1Data, ...student2Data], d => d.values)])
+        .domain([0, d3.max([...averagedData1, ...averagedData2], d => d.values)])
         .range([height, 0]);
 
     // Create lines
@@ -64,7 +82,7 @@ async function createStudentComparison() {
 
     // Draw lines with animation
     const path1 = g.append('path')
-        .datum(student1Data)
+        .datum(averagedData1)
         .attr('class', 'line')
         .attr('fill', 'none')
         .attr('stroke', '#1f77b4')
@@ -72,7 +90,7 @@ async function createStudentComparison() {
         .attr('d', line);
 
     const path2 = g.append('path')
-        .datum(student2Data)
+        .datum(averagedData2)
         .attr('class', 'line')
         .attr('fill', 'none')
         .attr('stroke', '#ff7f0e')
