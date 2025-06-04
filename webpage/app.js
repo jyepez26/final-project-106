@@ -38,9 +38,6 @@ function createStudentChart({
   const x = d3.scaleLinear().range([0, plotWidth]);
   const y = d3.scaleLinear().range([plotHeight, 0]);
 
-  const line = d3.line()
-    .x((d, i) => x(i))
-    .y(d => y(d.value));
 
   const color = d3.scaleOrdinal(d3.schemeCategory10);
 
@@ -56,7 +53,7 @@ function createStudentChart({
     .attr("text-anchor", "middle")
     .attr("fill", "white")
     .attr("font-size", "14px")
-    .text("Time (seconds)");
+    .text("Time (minutes)");
 
     // Y-Axis Label
     g.append("text")
@@ -74,8 +71,15 @@ function createStudentChart({
     const studentData = testData.filter(d => d.student === studentID);
     if (!studentData.length) return;
 
-    x.domain([0, studentData.length - 1]);
+    const totalMinutes = testName === 'Final' ? 180 : 90;
+    x.domain([0, totalMinutes]);
     y.domain([0, d3.max(studentData, d => d.value)]);
+
+    // Define the line generator using the correct duration
+    const line = d3.line()
+      .x((d, i) => x((i / (studentData.length - 1)) * totalMinutes))
+      .y(d => y(d.value));
+    
 
     g.select(".x-axis").call(d3.axisBottom(x));
     g.select(".y-axis").call(d3.axisLeft(y));
@@ -92,11 +96,11 @@ function createStudentChart({
       .attr("stroke-width", 2)
       .attr("d", line);
 
-    const totalLength = path.node().getTotalLength();
+    // const totalLength = path.node().getTotalLength();
 
     const maxPoint = studentData.reduce((max, d) => d.value > max.value ? d : max, studentData[0]);
     const maxIndex = studentData.indexOf(maxPoint);
-    const maxX = x(maxIndex);
+    const maxX = x((maxIndex / (studentData.length - 1)) * totalMinutes);
     const maxY = y(maxPoint.value);
 
     // Tooltip reference
@@ -113,7 +117,7 @@ function createStudentChart({
         console.log(event);
         tooltip
         .style("opacity", 1)
-        .html(`Peak: ${maxPoint.value.toFixed(1)} bpm<br>Time: ${Math.round(maxIndex / 60)} min<br>
+        .html(`Peak: ${maxPoint.value.toFixed(1)} bpm<br>Time: ${(maxIndex / (studentData.length - 1) * 90).toFixed(1)} min<br>
         Grade: ${100}%`);
         maxCircle.attr('r', 10);
     })
@@ -127,16 +131,54 @@ function createStudentChart({
         maxCircle.attr('r', 5);
     });
 
+    // Get total path length
+    const totalLength = path.node().getTotalLength();
+
+    // Get the exact distance along the path to the max point
+    const maxIndexRatio = maxIndex / (studentData.length - 1);
+    const lengthToMax = totalLength * maxIndexRatio;
+
+    // Define durations
+    const duration1 = 2000;
+    const pauseDuration = 2000;
+    const duration2 = 2000;
+
+    // Set initial dash style to hide the entire line
     path
-      .attr("stroke-dasharray", totalLength + " " + totalLength)
-      .attr("stroke-dashoffset", totalLength)
-      .transition()
-      .duration(4000)
+      .attr("stroke-dasharray", totalLength)
+      .attr("stroke-dashoffset", totalLength);
+
+    // Phase 1: Animate to max point
+    path.transition()
+      .duration(duration1)
       .ease(d3.easeLinear)
-      .attr("stroke-dashoffset", 0)
+      .attr("stroke-dashoffset", totalLength - lengthToMax)
       .on("end", () => {
-        g.select(".max-circle").transition().duration(500).attr("r", 5);
-      });
+        // Show max circle
+        maxCircle.transition().duration(2000).attr("r", 5);
+
+        // Show tooltip
+        tooltip
+          .style("opacity", 1)
+          .style("left", `${maxX + margin.left}px`)
+          .style("top", `${maxY + margin.top - 30}px`)
+          .html(`Peak: ${maxPoint.value.toFixed(1)} bpm<br>Time: ${(maxIndexRatio * totalMinutes).toFixed(1)} min<br>Grade: 100%`);
+
+        // Pause before second phase
+        setTimeout(() => {
+          // Phase 2: Continue animation from max to end
+          path.transition()
+            .duration(duration2)
+            .ease(d3.easeLinear)
+            .attr("stroke-dashoffset", 0)
+            .on("end", () => {
+              // Optionally fade tooltip after delay
+              setTimeout(() => {
+                tooltip.style("opacity", 0);
+              }, 2000);
+            });
+        }, pauseDuration);
+    });
   }
 
   // Setup select interaction

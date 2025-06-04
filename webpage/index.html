@@ -7,6 +7,8 @@
 
     <link rel="stylesheet" href="style.css">
     <script type="module" src="app.js"></script>
+    <script type="module" src="viz3.js"></script>
+    <script type="module" src="model.js"></script>
 </head>
 <body>
     <div id="tooltip" style="
@@ -114,11 +116,39 @@
 
     <section class="hidden">
         <h1>Visualization 3</h1>
-        <img src="frog.jpg" alt="frog-pic">
-        <p>description</p>
+        <button id="animate-groups-btn">Animate All Group Charts</button>
+        <button id="reset-groups-btn">Reset</button>
+        <div class="chart-row">
+            <div class="chart-container hidden">
+              <h3>Medium Stress</h3>
+              <svg id="group1-chart" width="500" height="400"></svg>
+            </div>
+            <div class="chart-container hidden">
+              <h3>High Stress</h3>
+              <svg id="group2-chart" width="500" height="400"></svg>
+            </div>
+            <div class="chart-container hidden">
+              <h3>Low Stress</h3>
+              <svg id="group3-chart" width="500" height="400"></svg>
+            </div>
+        </div>
+        <br>
+        <label>Temperature (°C) [20-50]: <input type="number" id="tempInput" min="20" max="50" step="0.5"></label><br>
+        <label>Heart Rate (bpm) [50-210]: <input type="number" id="hrInput" min="50" max="210" step="1"></label><br>
+        <label>EDA (µS) [0,10]: <input type="number" id="edaInput" min="0" max="10" step="0.25"></label><br><br>
+        <button id="predict-button">Predict Grade</button>
+        <p>Predicted Grade: <span id="gradeResult">N/A</span></p>
+        <p>Predicted Student Type: <span id="clusterResult">N/A</span></p>
+
+        <svg id="gauge" width="400" height="250"></svg>
+
+        <!-- <img src="frog.jpg" alt="frog-pic"> -->
+        <p>Grade Predictor</p>
         <img src="among_us_static.webp" alt="among_us_static" id="au-static" width="90px" style="cursor:pointer;">
         <img src="among_us_running.gif" alt="among_us_gif" id="au-gif" class="hidden" width="100px" style="cursor:pointer; display:none;">
     </section>
 
+    
+    
 </body>
 </html>

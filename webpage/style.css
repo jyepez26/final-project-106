@@ -7,7 +7,7 @@
 html, body {
     margin: 0;
     padding: 0;
-    width: 500vw;
+    width: 100vw;
     overflow-x: hidden;
 }
 
@@ -59,3 +59,24 @@ svg{
     filter: blur(0);
     transform: translateX(0);
 }
+
+.chart-row {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+.chart-container {
+    width: 500px;
+    background-color: #1e1e1e;
+    padding: 10px;
+    border-radius: 8px;
+    color: white;
+  }
+
+/* @media (max-width: 1800px) {
+    .chart-container {
+      width: 100%;
+    }
+  } */
