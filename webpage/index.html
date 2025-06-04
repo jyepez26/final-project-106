@@ -112,20 +112,26 @@
 
     <section class="hidden">
         <h1>Visualization 2: Compare Student Stress Patterns</h1>
-        <p>In this interactive visualization, you'll compare the stress patterns of two randomly selected students during their final exam. Watch their EDA (stress) levels throughout the test and try to guess which student performed better.</p>
+        <p>We often assume that lower stress leads to better test performance. But is that always true? Watch as two students' stress levels evolve throughout their final exam, and see if you can spot the relationship between stress patterns and performance.</p>
         
-        <p>This comparison challenges a common assumption: that higher stress always leads to worse performance. In reality, the relationship between stress and performance is more nuanced. Some students perform better with moderate stress levels, while others might struggle even with low stress. The key is finding the optimal stress level for each individual - what psychologists call the "sweet spot" of the Yerkes-Dodson curve.</p>
-
-        <p>As you interact with this visualization, consider:</p>
-        <p>• How the pattern of stress changes throughout the test (not just the average level)</p>
-        <p>• Whether spikes in stress correlate with better or worse performance</p>
-        <p>• If there's a particular stress pattern that seems to be associated with better outcomes</p>
-
         <div id="plot">
             <svg id="comparison-chart" width="800" height="400"></svg>
             <div id="guess-buttons" style="margin-top: 20px; text-align: center;"></div>
             <div id="result" style="margin-top: 20px; text-align: center;"></div>
         </div>
+
+        <p>Look for patterns in how stress changes during different parts of the exam. When you make your guess, consider not just the average stress level, but how it fluctuates over time.</p>
+    </section>
+
+    <section class="hidden">
+        <h1>Understanding the Results</h1>
+        <p>You might have noticed that students with higher stress levels sometimes performed better than those with lower stress. This isn't a coincidence - it's explained by the Yerkes-Dodson Law, which shows the relationship between stress and performance.</p>
+        
+        <div id="plot">
+            <svg id="yerkes-chart" width="800" height="400"></svg>
+        </div>
+
+        <p>Watch how performance changes with stress levels. Notice the "sweet spot" where moderate stress leads to optimal performance. This helps explain why some students perform better with higher stress - they might be operating closer to their optimal stress level.</p>
     </section>
 
     <section class="hidden">

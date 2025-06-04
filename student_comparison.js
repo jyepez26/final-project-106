@@ -18,13 +18,14 @@ export async function createStudentComparison() {
         return randomStudent;
     }
 
-    // Get two random students
-    let student1 = getRandomStudent();
-    let student2 = getRandomStudent();
-    while (student2 === student1) {
-        student2 = getRandomStudent();
+    // Select two random students
+    const student1 = getRandomStudent();
+    const student2 = getRandomStudent();
+    
+    // Only log if both students are defined
+    if (student1 && student2) {
+        console.log(`Selected students: ${student1} ${student2}`);
     }
-    console.log("Selected students:", student1, student2);
 
     // Filter data for selected students
     const student1Data = edaData
