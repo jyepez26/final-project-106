@@ -13,6 +13,7 @@ app.add_middleware(
         "http://127.0.0.1:5501",
         "http://localhost:5501",
         "http://127.0.0.1:5502",
+        "https://jyepez26.github.io/final-project-106/webpage/index.html",
     ],
     allow_credentials=True,
     allow_methods=["*"],
