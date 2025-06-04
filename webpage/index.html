@@ -48,71 +48,115 @@
             </div>
         </div>
         <br>
+        <br>
         <img src="greenarow.png" alt="downarrow" width="80px">
     </section>
 
     <section class="hidden">
         <h1>Visualization 1: Visualizating Student Heart Rate Data During Exams</h1>
+        <h4>First, let's look at the heart rate of students over the duration of
+            three different exams!
+        </h4>
         <br>
-        <h3>Midterm 1</h3>
-        <div id="plot">
-            <svg id="midterm1-chart" width="800" height="400"></svg>
-            <select id="student-select1">
-                <option value="S1">Student 1</option>
-                <option value="S2">Student 2</option>
-                <option value="S3">Student 3</option>
-                <option value="S4">Student 4</option>
-                <option value="S5">Student 5</option>
-                <option value="S6">Student 6</option>
-                <option value="S7">Student 7</option>
-                <option value="S8">Student 8</option>
-                <option value="S9">Student 9</option>
-                <option value="S10">Student 10</option>
-            </select>
+        <br>
+        <div id="m1-hr-row">
+            <div id="m1-hr-left-col">
+                <h3>Midterm 1</h3>
+                <div id="plot">
+                    <svg id="midterm1-chart" width="800" height="400"></svg>
+                    <select id="student-select1">
+                        <option value="S1">Student 1</option>
+                        <option value="S2">Student 2</option>
+                        <option value="S3">Student 3</option>
+                        <option value="S4">Student 4</option>
+                        <option value="S5">Student 5</option>
+                        <option value="S6">Student 6</option>
+                        <option value="S7">Student 7</option>
+                        <option value="S8">Student 8</option>
+                        <option value="S9">Student 9</option>
+                        <option value="S10">Student 10</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="m1-hr-right-col">
+                <h5>
+                    It is known that most students will experience some levels
+                    of stress during an exam.
+                </h5>
+                <p>Select a student to see their heart rate data!</p>
+                <img src="greenarow.png" alt="downarrow" width="50px">
+            </div>
         </div>
     </section>
     
     <section class="hidden">
-        <h3>Midterm 2</h3>
-        <div id="plot">
-            <svg id="midterm2-chart" width="800" height="400"></svg>
-            <select id="student-select2">
-                <option value="S1">Student 1</option>
-                <option value="S2">Student 2</option>
-                <option value="S3">Student 3</option>
-                <option value="S4">Student 4</option>
-                <option value="S5">Student 5</option>
-                <option value="S6">Student 6</option>
-                <option value="S7">Student 7</option>
-                <option value="S8">Student 8</option>
-                <option value="S9">Student 9</option>
-                <option value="S10">Student 10</option>
-            </select>
-        </div>
-        
-    </section>
-        
-    <section class="hidden">
-        <h3>Final</h3>
-        <div id="plot">
-            <svg id="final-chart" width="800" height="400"></svg>
-            <select id="student-select3">
-                <option value="S1">Student 1</option>
-                <option value="S2">Student 2</option>
-                <option value="S3">Student 3</option>
-                <option value="S4">Student 4</option>
-                <option value="S5">Student 5</option>
-                <option value="S6">Student 6</option>
-                <option value="S7">Student 7</option>
-                <option value="S8">Student 8</option>
-                <option value="S9">Student 9</option>
-                <option value="S10">Student 10</option>
-            </select>
-        </div>
-    </section>
+        <div id="m2-hr-row">
+            <div id="m2-hr-left-col">
+                <h3>Midterm 2</h3>
+                <div id="plot">
+                    <svg id="midterm2-chart" width="800" height="400"></svg>
+                    <select id="student-select2">
+                        <option value="S1">Student 1</option>
+                        <option value="S2">Student 2</option>
+                        <option value="S3">Student 3</option>
+                        <option value="S4">Student 4</option>
+                        <option value="S5">Student 5</option>
+                        <option value="S6">Student 6</option>
+                        <option value="S7">Student 7</option>
+                        <option value="S8">Student 8</option>
+                        <option value="S9">Student 9</option>
+                        <option value="S10">Student 10</option>
+                    </select>
+                </div>
+            </div>
 
+            <div id="m2-hr-right-col">
+                <h6>
+                    Commonly, people have a negative perception of stress. It is 
+                    only natural as stress is a scary feeling different from a human's
+                    normal state.
+                </h6>
+                <p>Select a student to see their heart rate data!</p>
+                <img src="greenarow.png" alt="downarrow" width="50px">
+            </div>
+        </div>
+    </section>
+        
     <section class="hidden">
-        <!-- <img src="frog.jpg" alt="frog-pic"> -->
+        <div id="fi-hr-row">
+            <div id="fi-hr-left-col">
+                <h3>Final</h3>
+                <div id="plot">
+                    <svg id="final-chart" width="800" height="400"></svg>
+                    <select id="student-select3">
+                        <option value="S1">Student 1</option>
+                        <option value="S2">Student 2</option>
+                        <option value="S3">Student 3</option>
+                        <option value="S4">Student 4</option>
+                        <option value="S5">Student 5</option>
+                        <option value="S6">Student 6</option>
+                        <option value="S7">Student 7</option>
+                        <option value="S8">Student 8</option>
+                        <option value="S9">Student 9</option>
+                        <option value="S10">Student 10</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="fi-hr-right-col">
+                <h6>
+                    Our data shows there is definitely a heightened/fluctuating
+                    heart rate during exams. This is evidence that
+                    students are stressed during exams! That's a bad thing...
+                    right?
+                </h6>
+                <p>Select a student to see their heart rate data!</p>
+                <img src="greenarow.png" alt="downarrow" width="50px">
+            </div>
+        </div>
+        <br>
+        <h3>Visualization 1 Takeaways</h3>
         <p>We have now seen the heart rates of different students across different
             tests! Use this knowledge that you gained moving forward to the next
             visualizations!
@@ -122,11 +166,16 @@
              the longer amount of time, where at the beginning you feel like you have plenty of time, but once you get
              further in the test, you realize you don't have as much as you thought and the stress levels begin to increase!
         </p>
+        <br>
+        <img src="greenarow.png" alt="downarrow" width="80px">
+        <br>
     </section>
 
     <section class="hidden">
         <h1>Visualization 2: Compare Student Stress Patterns</h1>
-        <p>We often assume that lower stress leads to better test performance. But is that always true? Watch as two students' stress levels evolve throughout their final exam, and see if you can spot the relationship between stress patterns and performance.</p>
+        <h5>We often assume that lower stress leads to better test performance.<br>But is that always true? Watch as two students' stress levels
+            evolve throughout their final exam,<br>and see if you can spot the relationship between stress patterns and performance.</h5>
+        <br>
         
         <div id="plot">
             <svg id="comparison-chart" width="800" height="400"></svg>
@@ -134,40 +183,64 @@
             <div id="result" style="margin-top: 20px; text-align: center;"></div>
         </div>
 
-        <p>Look for patterns in how stress changes during different parts of the exam. When you make your guess, consider not just the average stress level, but how it fluctuates over time.</p>
+        <h5>Look for patterns in how stress changes during different parts of the exam.<br>
+            When you make your guess, consider not just the average stress level, but how it fluctuates over time.</h5>
     </section>
 
     <section class="hidden">
         <h1>Understanding the Results</h1>
-        <p>You might have noticed that students with higher stress levels sometimes performed better than those with lower stress. This isn't a coincidence - it's explained by the Yerkes-Dodson Law, which shows the relationship between stress and performance.</p>
+        <h5>You might have noticed that students with higher stress levels sometimes performed better than those with lower stress.<br>
+            This isn't a coincidence - it's explained by the Yerkes-Dodson Law, which shows the relationship between stress and performance.</h5>
         
         <div id="plot">
             <svg id="yerkes-chart" width="800" height="400"></svg>
         </div>
 
-        <p>Watch how performance changes with stress levels. Notice the "sweet spot" where moderate stress leads to optimal performance. This helps explain why some students perform better with higher stress - they might be operating closer to their optimal stress level.</p>
+        <h5>Watch how performance changes with stress levels. Notice the "sweet spot"<br>where moderate stress leads to optimal performance.<br>
+            This helps explain why some students perform better with higher stress -<br>they might be operating closer to their optimal stress level.</h5>
+        <br>
     </section>
 
     <section class="hidden">
         <h1>Visualization 3</h1>
-        <button id="animate-groups-btn">Animate All Group Charts</button>
-        <button id="reset-groups-btn">Reset</button>
+        <h5>Now that we know about the Yerkes-Dodson model, let's visualize<br>
+            the stress levels (now measured in body temperature) among<br>
+            different student stress types!
+        </h5>
+        <p>Click below to run the animation.</p>
+        <br>
+        <div class="button-group">
+            <button id="animate-groups-btn">Run Animation</button>
+            <button id="reset-groups-btn">Reset</button>
+        </div>
+
         <div class="chart-row">
             <div class="chart-container hidden">
-              <h3>Medium Stress</h3>
+              <h3>Low Stress Student</h3>
               <svg id="group1-chart" width="500" height="400"></svg>
             </div>
             <div class="chart-container hidden">
-              <h3>High Stress</h3>
+              <h3>Medium Stress Student</h3>
               <svg id="group2-chart" width="500" height="400"></svg>
             </div>
             <div class="chart-container hidden">
-              <h3>Low Stress</h3>
+              <h3>High Stress Student</h3>
               <svg id="group3-chart" width="500" height="400"></svg>
             </div>
         </div>
         <br>
+        <h5>As we can see, the differences are small, but even little differences
+            in body temperature can impact test scores!
+        </h5>
+    </section>
+        
+    <section class="hidden">
         <h1>Predictive Model</h1>
+        <h5>We can now see how statistics for different measures of stress
+            impact test grades.<br>Play with the predictive model and discover what
+            type of student you are!
+        </h5>
+        <br>
         <div id="model-row">
             <div id="predict-left-col">
                 <h4>Input values for each stress indicator:</h4>
@@ -189,13 +262,14 @@
                 <p>You can see above how students with these stress statistics tend to perform!</p>
             </div>
         </div>
-
-        <!-- <img src="frog.jpg" alt="frog-pic"> -->
-        <img src="among_us_static.webp" alt="among_us_static" id="au-static" width="90px" style="cursor:pointer;">
-        <img src="among_us_running.gif" alt="among_us_gif" id="au-gif" class="hidden" width="100px" style="cursor:pointer; display:none;">
+        <br>
+        <h3>On your next test, if you are feeling stressed, don't worry too
+            much<br>because chances are you might just do amazing!
+        </h3>
     </section>
+    <!-- <img src="frog.jpg" alt="frog-pic"> -->
+    <img src="among_us_static.webp" alt="among_us_static" id="au-static" width="90px" style="cursor:pointer;">
+    <img src="among_us_running.gif" alt="among_us_gif" id="au-gif" class="hidden" width="100px" style="cursor:pointer; display:none;">
 
-    
-    
 </body>
 </html>

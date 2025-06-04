@@ -80,6 +80,44 @@ svg{
     transform: translateX(0);
 }
 
+#m1-hr-row, #m2-hr-row, #fi-hr-row{
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  margin-top: 20px;
+}
+
+#m1-hr-left-col, #m2-hr-left-col, #fi-hr-left-col {
+  flex: 2;
+}
+
+#m1-hr-right-col, #m2-hr-right-col, #fi-hr-right-col {
+  flex: 1;
+  max-width: 300px;
+  line-height: 1.6;
+}
+
+.button-group {
+  display: flex;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.button-group button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #2062a8;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button-group button:hover {
+  background-color: #013267;
+}
+
 .chart-row {
     display: flex;
     justify-content: space-around;
