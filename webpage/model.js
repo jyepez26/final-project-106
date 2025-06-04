@@ -91,7 +91,7 @@ import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
       return;
     }
 
-    const response = await fetch('http://127.0.0.1:8000/predict', {
+    const response = await fetch('https://final-project-106-2.onrender.com/predict', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ temp, hr, eda })
