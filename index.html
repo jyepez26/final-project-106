@@ -3,23 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>final_project</title>
+    <title>Stress & Performance: The Yerkes-Dodson Law</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .section {
+            margin-bottom: 40px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+        }
+        .visualization {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        select {
+            padding: 8px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        h1, h2, h3, h4 {
+            color: #2c3e50;
+        }
+        .explanation {
+            font-style: italic;
+            color: #666;
+            margin: 10px 0;
+        }
+    </style>
 </head>
 <body>
-    <h1> How does stress impact test scores? </h1>
-    <h2> Explaining the Yerkes Dodson Curve</h2>
-    <h4> Idea for vis 1:</h4>
+    <h1>How Does Stress Impact Test Performance?</h1>
+    <h2>Exploring the Yerkes-Dodson Law</h2>
 
-    <p><em>Caption 1:</em> Electrodermal activity is the neural activity in the brain, heart rate affects how much activity is in the body.</p>
-    <p>
-        <em>VIS 1:</em> animated line plots of EDA and HR vs time to show how it increases and decreases as test duration increases (select student, side by side plot).
-    </p>
-    <p>
-        <em>Explanation:</em> Illustrates how to identify times of stress and quantify it.
-    </p>
-
-    <h3>Vis 1 Prototype: Heart Rate over Exam Time</h3>
-    <select id="switch">Select Student
+    <div class="section">
+        <h3>Understanding Stress Indicators</h3>
+        <p class="explanation">Electrodermal activity (EDA) measures neural activity in the brain, while heart rate (HR) indicates physical activity levels. Together, they help us quantify stress levels during test-taking.</p>
+        
+        <div class="visualization">
+            <h4>Stress Indicators Over Time</h4>
+            <select id="switch">
+                <option value="">Select Student</option>
         <option value="1">Student 1</option>
         <option value="2">Student 2</option>
         <option value="3">Student 3</option>
@@ -32,33 +65,38 @@
         <option value="10">Student 10</option>
     </select>
     <svg id="chart" width=800 height=400></svg>
+        </div>
+    </div>
 
-    <p>This visualization is a prototype, but it demonstrates the heart rate of students over the duration of the test they are taking, with the ability to switch between the different students.
-        Features that we will add later include also adding electrodermal activity to the visualization, adding better colors and styling, and also options
-        to switch between the different tests.
-    </p>
+    <div class="section">
+        <h3>The Yerkes-Dodson Curve</h3>
+        <p class="explanation">Compare the stress patterns of two randomly selected students and try to guess which one performed better on the test. This helps us understand how different stress patterns correlate with test performance.</p>
+        
+        <div class="visualization">
+            <h4>Student Stress Comparison</h4>
+            <svg id="comparison-chart" width=800 height=400></svg>
+            <div id="guess-buttons" style="margin-top: 20px; text-align: center;"></div>
+            <div id="result" style="margin-top: 20px; text-align: center;"></div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Find Your Stress Profile</h3>
+        <p class="explanation">Select your stress level to see where you might fall on the Yerkes-Dodson curve and get a prediction of your potential performance.</p>
+        
+        <div class="visualization">
+            <h4>Stress Level Predictor</h4>
+            <select id="stress-level">
+                <option value="">Select Your Stress Level</option>
+                <option value="low">Low Stress</option>
+                <option value="medium">Medium Stress</option>
+                <option value="high">High Stress</option>
+            </select>
+            <div id="prediction-result"></div>
+        </div>
+    </div>
 
     <script type="module" src="line_plots.js"></script>
-
-    <h4> Idea for vis 2:</h4>
-
-    <p><em>Caption 2:</em> The Yerkes Dodson U</p>
-    <p>
-    <em>VIS 2:</em> Scatterplot of EDA vs Avg test scores, with Yerkes Dodson Inverted U, overlaid on the graph to show the connection between the concept and our data (has tooltips).
-    </p>
-
-    <h4> Idea for Vis 3</h4>
-    <p><em>VIS 3 + Predictive Model:</em> Bin stress into low medium, and high stress, and then the model predicts what the student’s test score will be on the Yerkes Dodson Curve graph, allow them to interact with the graph by animating the point moving based on the bin they pick</p>
-
-
-    <h3>Writeup:</h3>
-    <p> 
-    So far we have our data prepared by extracting the EDA, HR, IBI csvs 
-    into dataframes. These csvs contain stress indicator values over time during the test. We have one working baseline visualization depicting an interactive line plot of EDA vs time and HR vs time where you can select which trendline to show via drop-down box. We have also outlined two additional visualizations where we plan to display the Yerkes Dodson inverted U curve overlaid on a scatterplot of AVG EDA vs Avg Test Score for each student representing a dot.  We hope to implement a tooltip so the user can highlight different parts of the graph. The 3rd visualization would be similar to the 2nd but this time we have an interaction where we provide a drop-down to select low, medium, or high-stress. These options are designed to be there so the student can choose what kind of test taker they identify with and then we use a model using the dataset given to display their predicted Avg test score on the scatterplot of Avg EDA vs AVG test score based on stress indicator variables like HR, EDA, etc. We additionally want to draw a line from the Yerkes Dodson Curve to the predicted point to illustrate the concept and how accurate it is compared to our dataset.
-    </p>
-    <p>The Hardest part of designing this project would be the last visualization. Specifically training an accurate model based on the dataset given so we can give accurate predictions of test scores based on EDA, HR, and other stress indicators. Finding the optimal hyperparameters will most likely be the hardest part because we have an extremely large dataset to work with so running grid search and 5-CV will be computationally and time intensive. None of our group members has prior experience in working with stress indicators so we will have to research and use trial and error to find out which stress indicators help predict the score.
-        The styling of the webpage may also be difficult because we want to make it look really nice and be user friendly while also cohesively telling the story that we want to tell.
-    </p>
-
+    <script type="module" src="student_comparison.js"></script>
 </body>
 </html>
