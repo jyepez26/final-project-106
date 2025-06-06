@@ -7,20 +7,23 @@ export async function createStudentComparison() {
     const testScores = await loadGrades('../test_scores.csv');
     
     // Get unique students
-    const students = [...new Set(edaData.map(d => d.student))];
-    
+    const students = [...new Set(edaData.map(d => d.student))];    
     // Function to get random student
     function getRandomStudent() {
         let randomStudent;
         do {
-            randomStudent = students[Math.floor(Math.random() * students.length)];
-        } while (randomStudent === 7);
+            randomStudent = students[Math.floor(Math.random() * students.length)];    
+        } while (randomStudent === "S7" || randomStudent === "S2" || randomStudent === "S1");
         return randomStudent;
     }
 
+
     // Select two random students
     const student1 = getRandomStudent();
-    const student2 = getRandomStudent();
+    let student2 = getRandomStudent();
+    do {
+        student2 = getRandomStudent();
+        } while (student1 === student2)
     
     // Only log if both students are defined
     if (student1 && student2) {
@@ -32,26 +35,42 @@ export async function createStudentComparison() {
         .filter(d => d.student === student1 && d.test === 'Final')
         .map((d, idx) => ({ ...d, time: idx }))
         .filter(d => d.time >= 8500 && d.time <= 36000)
-        .filter(d => d.values >= 0.03);
+        .filter(d => d.values >= 0.1);
 
     const group1 = d3.groups(student1Data, (d, i) => Math.floor(i / 5));
-    const averagedData1 = group1.map(([key, values]) => ({
+    const maxData1 = group1.map(([key, values]) => ({
         category: key,
         time: d3.min(values, d => d.time),
-        values: d3.mean(values, d => d.values)
+        values: d3.max(values, d => d.values)
     }));
 
     const student2Data = edaData
         .filter(d => d.student === student2 && d.test === 'Final')
         .map((d, idx) => ({ ...d, time: idx }))
         .filter(d => d.time >= 8500 && d.time <= 36000)
-        .filter(d => d.values >= 0.03);
+        .filter(d => d.values >= 0.1);
     const group2 = d3.groups(student2Data, (d, i) => Math.floor(i / 5));
-    const averagedData2 = group2.map(([key, values]) => ({
+    const maxData2 = group2.map(([key, values]) => ({
         category: key,
         time: d3.min(values, d => d.time),
-        values: d3.mean(values, d => d.values)
+        values: d3.max(values, d => d.values)
     }));
+
+    // Apply it to your maxData1
+
+    function rollingAverageOnObjects(data, windowSize, valueKey) {
+        return data.map((d, i) => {
+            const start = Math.max(0, i - windowSize + 1);
+            const window = data.slice(start, i + 1);
+            return {
+            ...d,  // preserves category and time
+            [valueKey]: d3.mean(window, item => item[valueKey])
+            };
+        });
+    }
+
+    const smoothedMaxData1 = rollingAverageOnObjects(maxData1, 20, 'values');
+    const smoothedMaxData2 = rollingAverageOnObjects(maxData2, 20, 'values')
 
     // Get test scores
     const student1Score = testScores.find(s => s.student === student1)?.score || 0;
@@ -69,7 +88,7 @@ export async function createStudentComparison() {
         .range([0, width]);
 
     const yScale = d3.scaleLinear()
-        .domain([0, d3.max([...averagedData1, ...averagedData2], d => d.values)])
+        .domain([0, d3.max([...smoothedMaxData1, ...smoothedMaxData2], d => d.values)])
         .range([height, 0]);
 
     // Create lines
@@ -85,7 +104,7 @@ export async function createStudentComparison() {
 
     // Draw lines with animation
     const path1 = g.append('path')
-        .datum(averagedData1)
+        .datum(smoothedMaxData1)
         .attr('class', 'line student1-line')
         .attr('fill', 'none')
         .style('stroke', '#1f77b4')  // Blue
@@ -93,7 +112,7 @@ export async function createStudentComparison() {
         .attr('d', line);
 
     const path2 = g.append('path')
-        .datum(averagedData2)
+        .datum(smoothedMaxData2)
         .attr('class', 'line student2-line')
         .attr('fill', 'none')
         .style('stroke', '#ff7f0e')  // Orange
