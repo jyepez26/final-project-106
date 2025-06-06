@@ -8,7 +8,10 @@
     <link rel="stylesheet" href="style.css">
     <script type="module" src="app.js"></script>
     <script type="module" src="viz3.js"></script>
-    <script type="module" src="model.js"></script>
+    <script type="module" src="gauge.js"></script>
+    <script type="module" src="newmodel.js"></script>
+    <script type="module" src="combine.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.15.0/dist/tf.min.js"></script>
 </head>
 <body>
     <div id="tooltip" style="
@@ -257,7 +260,7 @@
     
             <div id="predict-right-col">
                 <p>Predicted Grade: <span id="gradeResult">N/A</span></p>
-                <p>Predicted Student Type: <span id="clusterResult">N/A</span></p>
+                <p>Most Similar Student: <span id="similarStudent">N/A</span></p>
     
                 <svg id="gauge" width="400" height="250"></svg>
                 <p>Grade Predictor</p>
@@ -275,6 +278,7 @@
     <!-- <img src="frog.jpg" alt="frog-pic"> -->
     <img src="among_us_static.webp" alt="among_us_static" id="au-static" width="90px" style="cursor:pointer;">
     <img src="among_us_running.gif" alt="among_us_gif" id="au-gif" class="hidden" width="100px" style="cursor:pointer; display:none;">
+
 
 </body>
 </html>

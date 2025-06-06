@@ -4,7 +4,7 @@ import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
   const height = 250;
   const radius = 150;
   const min = 0.7;
-  const max = 2;
+  const max = 1.5;
 
   const svg = d3.select("#gauge")
     .attr("width", width)
@@ -81,31 +81,33 @@ import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
       });
   }
 
-  async function predict() {
-    const temp = parseFloat(document.getElementById('tempInput').value);
-    const hr = parseFloat(document.getElementById('hrInput').value);
-    const eda = parseFloat(document.getElementById('edaInput').value);
+  export { updateGauge };
 
-    if (isNaN(temp) || isNaN(hr) || isNaN(eda)) {
-      alert("Please enter valid numbers for all fields.");
-      return;
-    }
+  // async function predict() {
+  //   const temp = parseFloat(document.getElementById('tempInput').value);
+  //   const hr = parseFloat(document.getElementById('hrInput').value);
+  //   const eda = parseFloat(document.getElementById('edaInput').value);
 
-    const response = await fetch('https://final-project-106-2.onrender.com/predict', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ temp, hr, eda })
-    });
+  //   if (isNaN(temp) || isNaN(hr) || isNaN(eda)) {
+  //     alert("Please enter valid numbers for all fields.");
+  //     return;
+  //   }
 
-    const result = await response.json();
-    const grade = parseFloat(result.grade);
+  //   const response = await fetch('https://final-project-106-2.onrender.com/predict', {
+  //     method: 'POST',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify({ temp, hr, eda })
+  //   });
 
-    document.getElementById('gradeResult').textContent = result.grade;
-    document.getElementById('clusterResult').textContent = result.cluster;
+  //   const result = await response.json();
+  //   const grade = parseFloat(result.grade);
 
-    updateGauge(grade);
-  }
+  //   document.getElementById('gradeResult').textContent = result.grade;
+  //   document.getElementById('clusterResult').textContent = result.cluster;
 
-  document.getElementById("predict-button").addEventListener("click", () => {
-    predict();
-  })
+  //   updateGauge(grade);
+  // }
+
+  // document.getElementById("predict-button").addEventListener("click", () => {
+  //   predict();
+  // })
