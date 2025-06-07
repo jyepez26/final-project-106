@@ -21,7 +21,7 @@
         <!-- <h3 id="subtitle">InvestigatingStudents Perform on Tests</h3> -->
         <h4 id="authors">Suchit Bhayani, Ryan Cao, Surya Setty, and Johnathan Yepez </h4>
         <br>
-        <h6 class="scroll-down">Scroll down to continue</h6>
+        <h6 class="scroll-down">Scroll down to begin</h6>
         <!-- <img src="greenarow.png" alt="downarrow" width="80px"> -->
     </section>
 
@@ -37,24 +37,58 @@
             </div>
 
             <div id="intro-right-col">
-                <p>We measure stress through 3 key physiological indicators:</p>
-                <ol>
+                <p> Our key physiological indicators:</p>
+                <!-- <ol>
                     <li>ElectroDermal Activity (EDA): Indicates emotional arousal and stress level through 
                         skin conductance.</li>
                     <li>Heart Rate: Heartbeats per minute, increasing during periods of stress.</li>
                     <li>Skin Surface Temperature: Tracks the body temperature in Celsius of test takers, increasing with activity levels.</li>
-                </ol>
+                </ol> -->
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            ElectroDermal Activity (EDA)
+                            <div class="flip-hint">Click to flip</div>
+                        </div>
+                        <div class="card-back">
+                            Indicates emotional arousal and stress level through skin conductance.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            Heart Rate
+                            <div class="flip-hint">Click to flip</div>
+                        </div>
+                        <div class="card-back">
+                            Heartbeats per minute, increasing during periods of stress.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            Skin Surface Temperature
+                            <div class="flip-hint">Click to flip</div>
+                        </div>
+                        <div class="card-back">
+                            Tracks the body temperature in Celsius of test takers, increasing with activity levels.
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <p class="scroll-down">Explore the visualizations below!</p>
         <br>
         <br>
-        <!-- <img src="greenarow.png" alt="downarrow" width="80px"> -->
     </section>
 
     <section class="hidden">
-        <h1>Visualization 1: Visualizating Student Heart Rate Data During Exams</h1>
-        <h4>First, let's look at the heart rate of students over the duration of
+        <h1>Student Heart Rate During Exams</h1>
+        <h4 class="caption">First, let's look at the heart rate of students over the duration of
             three different exams!
         </h4>
         <br>
@@ -88,6 +122,7 @@
                 <!-- <img src="greenarow.png" alt="downarrow" width="50px"> -->
             </div>
         </div>
+        <h6 class="scroll-down">Scroll down to play the comparison game!</h6>
     </section>
     
     <section class="hidden">
@@ -121,6 +156,8 @@
                 <!-- <img src="greenarow.png" alt="downarrow" width="50px"> -->
             </div>
         </div>
+        <h6 class="scroll-down">Scroll down to play the comparison game!</h6>
+
     </section>
         
     <section class="hidden">
@@ -160,15 +197,16 @@
             tests! Use this knowledge that you gained moving forward to the next
             visualizations!
         </p>
+        <h6 class="scroll-down">Scroll down to play the comparison game!</h6>
         <br>
         <!-- <img src="greenarow.png" alt="downarrow" width="80px"> -->
         <br>
     </section>
 
     <section class="hidden">
-        <h1>Visualization 2: Compare Student Stress Patterns</h1>
-        <h5>We often assume that lower stress leads to better test performance.<br>But is that always true? Watch as two students' stress levels
-            evolve throughout their final exam,<br>and see if you can spot the relationship between stress patterns and performance.</h5>
+        <h1>Compare Student Stress Patterns</h1>
+        <h5 class="caption" id="stress-caption"> We assume lower stress results in better test scores. Is this always true? <br>Watch as two students' stress levels (EDA)
+            change through their final exams, and see if you can spot any patterns.</h5>
         <br>
         
         <div id="plot">
@@ -177,22 +215,22 @@
             <div id="result" style="margin-top: 20px; text-align: center;"></div>
         </div>
 
-        <h5>Look for patterns in how stress changes during different parts of the exam.<br>
-            When you make your guess, consider not just the average stress level, but how it fluctuates over time.</h5>
+        <h5 class="caption">
+            When you make your guess, try to follow how brain activity changes.</h5>
         <br>
         <br>
 
     </section>
     <section class="hidden">
         <h1>Understanding the Results</h1>
-        <h5>You might have noticed that students with higher stress levels sometimes performed better than those with lower stress.<br>
+        <h5 class="caption">You might have noticed that students with higher stress levels sometimes performed better than those with lower stress.<br>
             This isn't a coincidence - it's explained by the Yerkes-Dodson Law, which shows the relationship between stress and performance.</h5>
         
         <div id="plot">
             <svg id="yerkes-chart" width="800" height="400"></svg>
         </div>
 
-        <h5>Watch how performance changes with stress levels. Notice the "sweet spot"<br>where moderate stress leads to optimal performance.<br>
+        <h5 class="caption">Watch how performance changes with stress levels. Notice the "sweet spot"<br>where moderate stress leads to optimal performance.<br>
             This helps explain why some students perform better with higher stress -<br>they might be operating closer to their optimal stress level.</h5>
         <br>
         <img src="greenarow.png" alt="downarrow" width="80px">
@@ -200,8 +238,8 @@
     </section>
 
     <section class="hidden">
-        <h1>Visualization 3</h1>
-        <h5>Now that we know about the Yerkes-Dodson model, let's visualize<br>
+        <h1>How hot are different groups of students?</h1>
+        <h5 class="caption">Now that we know about the Yerkes-Dodson model, let's visualize<br>
             the stress levels (now measured in body temperature) among<br>
             different student stress types!
         </h5>
@@ -227,19 +265,20 @@
             </div>
         </div>
         <br>
-        <h5>As we can see, the differences are small, but even little differences
+        <!-- <h5>As we can see, the differences are small, but even little differences
             in body temperature can impact test scores!
-        </h5>
+        </h5> -->
         <br>
         <img src="greenarow.png" alt="downarrow" width="80px">
         <br>
+        <h6 class="scroll-down">Scroll down to input your results!</h6>
+
     </section>
         
     <section class="hidden">
         <h1>Predictive Model</h1>
-        <h5>We can now see how statistics for different measures of stress
-            impact test grades.<br>Play with the predictive model and discover what
-            type of student you are!
+        <h5 class="caption">Play with the predictive model and discover what type of student you are! Try to find the right balance
+            to get a high score!
         </h5>
         <br>
         <div id="model-row">
@@ -252,11 +291,11 @@
             </div>
     
             <div id="predict-right-col">
+                <h4> The Gradometer </h4>
                 <p>Predicted Grade: <span id="gradeResult">N/A</span></p>
                 <p>Most Similar Student: <span id="similarStudent">N/A</span></p>
     
                 <svg id="gauge" width="400" height="250"></svg>
-                <p>Grade Predictor</p>
             </div>
 
             <div id="predict-right-extra">
@@ -264,9 +303,9 @@
             </div>
         </div>
         <br>
-        <h3>On your next test, if you are feeling stressed, don't worry too
-            much<br>because chances are it might just make you perform better!
-        </h3>
+        <h5 class="caption"> Taking a test is more about finding your footing and finding your own 
+            sweet spot. <br> Before your next test, you should discover your own optimal amount of stress. 
+        </h5>
     </section>
     <!-- <img src="frog.jpg" alt="frog-pic"> -->
     <img src="among_us_static.webp" alt="among_us_static" id="au-static" width="90px" style="cursor:pointer;">

@@ -20,3 +20,37 @@ const options = {
 document.addEventListener('DOMContentLoaded', function() {
     const typedInstance = new Typed('#title', options);
 });
+
+// Code for cards
+function flipCard(card) {
+     card.classList.toggle('flipped');
+}
+
+// Add keyboard navigation
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('click', function() {
+            flipCard(this);
+        });
+        
+        // Accessibility
+        card.setAttribute('tabindex', '0');
+        card.setAttribute('role', 'button');
+        card.setAttribute('aria-label', 'Flip card to reveal description');
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+            const focusedCard = document.activeElement.closest('.card');
+            if (focusedCard) {
+                e.preventDefault();
+                flipCard(focusedCard);
+            }
+        }
+    });
+});
+
+
+
+
