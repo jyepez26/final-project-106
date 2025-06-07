@@ -106,7 +106,7 @@ async function trainModel() {
 
   const model = tf.sequential();
   model.add(tf.layers.dense({ inputShape: [X[0].length], units: 10, activation: 'relu' }));
-  model.add(tf.layers.dense({ units: 1, activation: 'sigmoid' }));
+  model.add(tf.layers.dense({ units: 1 }));
 
   model.compile({ optimizer: 'adam', loss: 'meanSquaredError' });
 
@@ -126,36 +126,34 @@ async function trainModel() {
     gradeMax: maxGrade,
   };
 
+  console.log("done training!");
   return { model, minMax, features };
 }
 
 async function predictGrade(model, features, minMax) {
-  const { tempMeanMin, tempMeanMax, hrMeanMin, hrMeanMax, edaMeanMin, edaMeanMax, gradeMin, gradeMax } = minMax;
-
-  const normalize = (val, min, max) => (val - min) / (max - min);
-  const uShape = (x, center = 0.5) => (x - center) ** 2;
-
-  const tempNorm = normalize(features.tempMean, tempMeanMin, tempMeanMax);
-  const hrNorm = normalize(features.hrMean, hrMeanMin, hrMeanMax);
-  const edaNorm = normalize(features.edaMean, edaMeanMin, edaMeanMax);
-
   const inputFeatures = [
-    features.tempMean, features.tempStd,
-    features.hrMean, features.hrStd,
-    features.edaMean, features.edaStd,
-    uShape(tempNorm), uShape(hrNorm), uShape(edaNorm),
+    features.tempMean,
+    features.tempStd,
+    features.hrMean,
+    features.hrStd,
+    features.edaMean,
+    features.edaStd,
+    features.tempMeanU,
+    features.hrMeanU,
+    features.edaMeanU,
   ];
 
   console.log("Input to model:", inputFeatures);
 
   const inputTensor = tf.tensor2d([inputFeatures]);
-  const predictionTensor = model.predict(inputTensor);
+  // const predictionTensor = model.predict(inputTensor);
+  const rawPredictions = model.predict(inputTensor); // Tensor
+  const normalizedPredictions = rawPredictions.sigmoid(); // Apply sigmoid manually
 
-  const predictionNormalized = (await predictionTensor.data())[0];
-  const prediction = predictionNormalized * (gradeMax - gradeMin) + gradeMin;
+  const predictionNormalized = (await normalizedPredictions.data())[0];
+  const prediction = predictionNormalized * (minMax.gradeMax - minMax.gradeMin) + minMax.gradeMin;
 
   console.log("Predicted grade:", prediction);
-
   return prediction;
 }
 

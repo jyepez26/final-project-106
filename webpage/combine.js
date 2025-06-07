@@ -8,13 +8,23 @@ async function run() {
   const hr = parseFloat(document.getElementById('hrInput').value);
   const eda = parseFloat(document.getElementById('edaInput').value);
 
+  const normalize = (val, min, max) => (val - min) / (max - min);
+  const uShape = x => (x - 0.5) ** 2;
+
+  const normTemp = normalize(temp, minMax.tempMeanMin, minMax.tempMeanMax);
+  const normHr = normalize(hr, minMax.hrMeanMin, minMax.hrMeanMax);
+  const normEda = normalize(eda, minMax.edaMeanMin, minMax.edaMeanMax);
+
   const newStudent = {
     tempMean: temp,
-    tempStd: 0.2,
+    tempStd: 0.1,
     hrMean: hr,
     hrStd: 3,
     edaMean: eda,
     edaStd: 0.1,
+    tempMeanU: uShape(normTemp),
+    hrMeanU: uShape(normHr),
+    edaMeanU: uShape(normEda),
   };
 
   // Find the most similar student
