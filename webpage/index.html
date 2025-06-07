@@ -14,45 +14,43 @@
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.15.0/dist/tf.min.js"></script>
 </head>
 <body>
-    <div id="tooltip" style="
-        position: absolute;
-        background: rgba(0,0,0,0.7);
-        color: white;
-        padding: 6px 10px;
-        border-radius: 4px;
-        font-size: 12px;
-        pointer-events: none;
-        opacity: 0;
-        transition: opacity 0.2s;
-    "></div>
+    <div id="tooltip"></div>
     <section class="hidden">
-        <h1>Does a Relaxed Test Taker Always Do Better than a Stressed One?</h1>
-        <h2>DSC 106 Final Project</h2>
+        <h1 id="title">How does Stress impact test grades?</h1>
+        <!-- <h3 id="subtitle">InvestigatingStudents Perform on Tests</h3> -->
+        <h4 id="authors">Suchit Bhayani, Ryan Cao, Surya Setty, and Johnathan Yepez </h4>
         <br>
-        <h3>Scroll down to continue</h3>
-        <img src="greenarow.png" alt="downarrow" width="80px">
+        <h6 class="scroll-down">Scroll down to continue</h6>
+        <!-- <img src="greenarow.png" alt="downarrow" width="80px"> -->
     </section>
 
     <section class="hidden">
         <div id="intro-row">
             <div id="intro-left-col">
-                <p>Test-taking is a universal experience that often comes with varying levels of stress. While some students thrive under pressure, others may find their performance hindered by anxiety. This project explores the relationship between stress levels and test performance through the lens of the Yerkes-Dodson Law, which suggests that performance increases with stress up to an optimal point, after which it decreases.</p>
-        
+                <p>The term "test anxiety" focuses on the tradeoffs between stress and anxiety on their test scores.
+                Each student may find that their performance improves, or gets worse from the tradeoff between stress and anxiety. 
+                This relationship describes Yerkes-Dodson Law, where performance increases with stress up to a point, or sweet spot, after which it decreases just as suddenly.</p>
+
+                <p>By analyzing these stress indicators during actual test-taking scenarios, we look into how stress patterns change during exams,
+                find correlations between stress levels and test performance, and find the sweet spot for optimal performance.</p>
+            </div>
+            
+            <div id="intro-right-col">
                 <p>We measure stress through 3 key physiological indicators:</p>
                 <ol>
-                    <li><strong>Electrodermal Activity (EDA):</strong> Measures the electrical conductance of the skin, which increases with sweat production. This is a direct indicator of emotional arousal and stress levels.</li>
-                    <li><strong>Heart Rate (HR):</strong> Tracks the number of heartbeats per minute, which typically increases during periods of stress or physical activity.</li>
-                    <li><strong>Skin Surface Temperature (Temp):</strong> Tracks the body temperature (measured in °C) of test taker, which typically increases during stress or physical activity.</li>
+                    <li>ElectroDermal Activity (EDA): Indicates emotional arousal and stress level through 
+                        skin conductance.</li>
+                    <li>Heart Rate: Heartbeats per minute, increasing during periods of stress.</li>
+                    <li>Skin Surface Temperature: Tracks the body temperature in Celsius of test takers, increasing with activity levels.</li>
                 </ol>
             </div>
-            <div id="intro-right-col">
-                <p>By analyzing these stress indicators during actual test-taking scenarios, we can gain insights into how stress patterns evolve throughout a test, whether there's a correlation between stress levels and test performance, if different students handle test stress differently, and what stress patterns might indicate optimal performance.</p>
-                <p>Explore the visualizations below to see how stress indicators vary across different students and tests, and discover what these patterns might tell us about the relationship between stress and performance.</p>
-            </div>
         </div>
+        <p class="scroll-down">Explore the visualizations below to see how stress indicators affect student testing, and 
+            discover what these patterns might tell us about stress and performance.</p>
+        <h6 class="scroll-down">Scroll down to continue</h6>
         <br>
         <br>
-        <img src="greenarow.png" alt="downarrow" width="80px">
+        <!-- <img src="greenarow.png" alt="downarrow" width="80px"> -->
     </section>
 
     <section class="hidden">
@@ -84,11 +82,11 @@
 
             <div id="m1-hr-right-col">
                 <h5>
-                    It is known that most students will experience some levels
+                    Most students will experience some levels
                     of stress during an exam.
                 </h5>
                 <p>Select a student to see their heart rate data!</p>
-                <img src="greenarow.png" alt="downarrow" width="50px">
+                <!-- <img src="greenarow.png" alt="downarrow" width="50px"> -->
             </div>
         </div>
     </section>
@@ -121,7 +119,7 @@
                     normal state.
                 </h6>
                 <p>Select a student to see their heart rate data!</p>
-                <img src="greenarow.png" alt="downarrow" width="50px">
+                <!-- <img src="greenarow.png" alt="downarrow" width="50px"> -->
             </div>
         </div>
     </section>
@@ -155,22 +153,16 @@
                     right?
                 </h6>
                 <p>Select a student to see their heart rate data!</p>
-                <img src="greenarow.png" alt="downarrow" width="50px">
+                <!-- <img src="greenarow.png" alt="downarrow" width="50px"> -->
             </div>
         </div>
         <br>
-        <h3>Visualization 1 Takeaways</h3>
         <p>We have now seen the heart rates of different students across different
             tests! Use this knowledge that you gained moving forward to the next
             visualizations!
-            Some points to note:
-             1. Midterm 1 and 2 both have a trend of high stress at beginning and end and lower stress in the middle.
-             2. Final Exam seems to have more of a gradual increase in stress over the time of the exam. This may be due to
-             the longer amount of time, where at the beginning you feel like you have plenty of time, but once you get
-             further in the test, you realize you don't have as much as you thought and the stress levels begin to increase!
         </p>
         <br>
-        <img src="greenarow.png" alt="downarrow" width="80px">
+        <!-- <img src="greenarow.png" alt="downarrow" width="80px"> -->
         <br>
     </section>
 
