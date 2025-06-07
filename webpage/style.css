@@ -110,7 +110,8 @@ svg{
 }
 .caption {
   margin-top:1.5em;
-  font-size:65%
+  font-size:65%;
+  opacity: 0.9;
 }
 
 /* Vis 1 and 2*/
@@ -181,12 +182,16 @@ svg{
 
 #stress-caption {
   align-items:balance;
-  opacity: 0.9;
 }
 #stress-hint{
   font-size: 40%;
   opacity: 0.7;
   margin-bottom: 0em;
+}
+#yerkes-caption {
+  font-size: 60%;
+  opacity: 0.8;
+  margin-bottom: 0em;  
 }
 /* Predictive Model*/
 

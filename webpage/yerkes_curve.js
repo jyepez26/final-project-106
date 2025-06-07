@@ -40,9 +40,11 @@ export function createYerkesCurve() {
         .attr('x', innerWidth / 2)
         .attr('y', 40)
         .attr('text-anchor', 'middle')
-        .attr('fill', 'white')
+        .attr('fill', '#D3D3D3')
         .attr('font-size', '16px')
-        .text('Stress Level');
+        .text('Stress Level')
+        .attr('font-family', 'Roboto')
+        .attr('margin-top', '1em');
 
     svg.append('g')
         .call(yAxis)
@@ -51,17 +53,19 @@ export function createYerkesCurve() {
         .attr('x', -innerHeight / 2)
         .attr('y', -80)
         .attr('text-anchor', 'middle')
-        .attr('fill', 'white')
-        .attr('font-size', '16px')
+        .attr('fill', '#D3D3D3')
+        .attr('font-size', '18px')
+        .attr('font-family', 'Roboto')
         .text('Performance');
 
     // Style the axes
     svg.selectAll('.domain, .tick line')
-        .attr('stroke', 'white');
+        .attr('stroke', '#D3D3D3');
     
     svg.selectAll('.tick text')
-        .attr('fill', 'white')
-        .attr('font-size', '14px');
+        .attr('fill', '#D3D3D3')
+        .attr('font-size', '12px')
+        .attr('font-family', 'Roboto');
 
     // Create the curve
     const curve = d3.line()
@@ -90,8 +94,8 @@ export function createYerkesCurve() {
     // Animate the curve
     const path = svg.append('path')
         .datum(points)
-        .attr('fill', 'none')
-        .attr('stroke', '#1f77b4')
+        .attr('fill', '#67a9cf')
+        .attr('stroke', '#f7f7f7')
         .attr('stroke-width', 3)
         .attr('d', curve);
 
@@ -104,10 +108,18 @@ export function createYerkesCurve() {
         .ease(d3.easeLinear)
         .attr('stroke-dashoffset', 0);
 
+    // Add a static circle in the high performance area
+    svg.append('circle')
+        .attr('cx', xScale(5)) // Center horizontally around x=5 (middle of curve)
+        .attr('cy', yScale(10)) // Position in the "High" performance area
+        .attr('r', 12)
+        .attr('stroke', '#f7f7f7')
+        .attr('stroke-width', 1);
+
     // Add a moving dot
     const dot = svg.append('circle')
         .attr('r', 5)
-        .attr('fill', '#ff7f0e');
+        .attr('fill', '#ef8a62');
 
     // Animate the dot along the curve
     function animateDot() {
