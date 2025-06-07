@@ -13,7 +13,7 @@ export async function loadData(csv) {
 export async function loadTempData(csv) {
   return await d3.csv(csv, (row, idx) => ({
     date: idx,
-    value: Number(row.temp),
+    value: Number(36 + (((row.temp) - 12.51) / (36.07 - 12.51)) * 2),
     student: row.student,
     test: row.test,
   }));

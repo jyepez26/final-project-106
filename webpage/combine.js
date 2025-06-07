@@ -1,9 +1,9 @@
 import { updateGauge } from './gauge.js';
 import { trainModel, predictGrade, findMostSimilarStudent } from './newmodel.js';
 
-async function run() {
-  const { model, minMax, features } = await trainModel();
+const { model, minMax, features } = await trainModel();
 
+async function run() {
   const temp = parseFloat(document.getElementById('tempInput').value);
   const hr = parseFloat(document.getElementById('hrInput').value);
   const eda = parseFloat(document.getElementById('edaInput').value);
