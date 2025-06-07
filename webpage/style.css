@@ -14,7 +14,7 @@ html, body {
 body {
     /* background-color: rgb(59, 57, 57); */
     background-color: #0D1117; /* same color as github */
-    color: white;
+    color: #D3D3D3;
     font-family: 'Poppins', sans-serif;
     font-size: 200%;
     padding: 0 1em;
@@ -84,7 +84,8 @@ section {
 }
 
 svg{
-    font-family: sans-serif;
+    font-family: Roboto, serif;
+;
 }
 
 /* Properties */
@@ -140,7 +141,7 @@ svg{
   padding: 10px 20px;
   font-size: 16px;
   background-color: #2062a8;
-  color: white;
+  color: #D3D3D3;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -163,13 +164,13 @@ svg{
     background-color: #1e1e1e;
     padding: 10px;
     border-radius: 8px;
-    color: white;
+    color: #D3D3D3;
   }
 
 #tooltip {
   position: absolute;
   background: rgba(0,0,0,0.7);
-  color: white;
+  color: #D3D3D3;
   padding: 6px 10px;
   border-radius: 4px;
   font-size: 12px;
@@ -180,6 +181,12 @@ svg{
 
 #stress-caption {
   align-items:balance;
+  opacity: 0.9;
+}
+#stress-hint{
+  font-size: 40%;
+  opacity: 0.7;
+  margin-bottom: 0em;
 }
 /* Predictive Model*/
 

@@ -1,6 +1,7 @@
 import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
 import { createStudentComparison } from '../student_comparison.js';
 import { createYerkesCurve } from './yerkes_curve.js';
+import { mapToName } from './title.js';
 
 // load in data
 export async function loadData(csv) {
@@ -99,7 +100,8 @@ function createStudentChart({
       .attr("fill", "none")
       .attr("stroke", color(studentID))
       .attr("stroke-width", 2)
-      .attr("d", line);
+      .attr("d", line)
+      .attr("id", d => mapToName(studentID));
 
     const totalLength = path.node().getTotalLength();
 

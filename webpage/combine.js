@@ -1,5 +1,6 @@
 import { updateGauge } from './gauge.js';
 import { trainModel, predictGrade, findMostSimilarStudent } from './newmodel.js';
+import { mapToName } from './title.js';
 
 const { model, minMax, features } = await trainModel();
 
@@ -28,7 +29,7 @@ async function run() {
   };
 
   // Find the most similar student
-  const similarStudent = findMostSimilarStudent(newStudent, features, minMax);
+  const similarStudent = mapToName(findMostSimilarStudent(newStudent, features, minMax));
   console.log("Most similar student:", similarStudent);
 
   // Predict grade for new student

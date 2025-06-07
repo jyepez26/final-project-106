@@ -1,5 +1,6 @@
 import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
 import { loadData, loadGrades } from './global.js';
+import { mapToName } from './webpage/title.js';
 
 export async function createStudentComparison() {
     // Load data
@@ -49,6 +50,7 @@ export async function createStudentComparison() {
         .map((d, idx) => ({ ...d, time: idx }))
         .filter(d => d.time >= 8500 && d.time <= 36000)
         .filter(d => d.values >= 0.1);
+
     const group2 = d3.groups(student2Data, (d, i) => Math.floor(i / 5));
     const maxData2 = group2.map(([key, values]) => ({
         category: key,
@@ -107,15 +109,15 @@ export async function createStudentComparison() {
         .datum(smoothedMaxData1)
         .attr('class', 'line student1-line')
         .attr('fill', 'none')
-        .style('stroke', '#1f77b4')  // Blue
+        .style('stroke', '#998ec3')  // Purple
         .style('stroke-width', '2.5px')
         .attr('d', line);
-
+    
     const path2 = g.append('path')
         .datum(smoothedMaxData2)
         .attr('class', 'line student2-line')
         .attr('fill', 'none')
-        .style('stroke', '#ff7f0e')  // Orange
+        .style('stroke', '#f1a340')  // Orange
         .style('stroke-width', '2.5px')
         .attr('d', line);
 
@@ -140,27 +142,36 @@ export async function createStudentComparison() {
         .attr('stroke-dashoffset', 0);
 
     // Add axes
+    const tickLabels = [
+        '12 min', '24 min', '36 min', '48 min', 
+        '1 h', '72 min', '84 min', '96 min', 
+        '108 min', '120 min', '2 h', '132 min', 
+        '144 min', '156 min', '3 h'
+    ];
+
     g.append('g')
         .attr('transform', `translate(0,${height})`)
-        .call(d3.axisBottom(xScale).tickFormat(d => Math.floor(d / 60) + ' min'))
-        .attr('color', 'white')
+        .call(d3.axisBottom(xScale)
+        .ticks(12)
+        .tickFormat((d, i) => tickLabels[i])) // changed axis to make sense
+        .attr('color', '#D3D3D3')
         .append('text')
         .attr('x', width / 2)
         .attr('y', 35)
         .attr('text-anchor', 'middle')
-        .attr('fill', 'white')
-        .text('Time (minutes)');
+        .attr('fill', '#D3D3D3')
+        .text('Time');
 
     g.append('g')
         .call(d3.axisLeft(yScale))
-        .attr('color', 'white')
+        .attr('color', '#D3D3D3')
         .append('text')
         .attr('transform', 'rotate(-90)')
         .attr('y', -40)
         .attr('x', -height / 2)
         .attr('text-anchor', 'middle')
-        .attr('fill', 'white')
-        .text('EDA');
+        .attr('fill', '#D3D3D3')
+        .text('Brain Activity (EDA)');
 
     // Add legend
     const legend = g.append('g')
@@ -171,30 +182,30 @@ export async function createStudentComparison() {
         .attr('y1', 0)
         .attr('x2', 15)
         .attr('y2', 0)
-        .style('stroke', '#1f77b4')  // Blue
+        .style('stroke', '#998ec3')  // Blue
         .style('stroke-width', '2.5px');
 
     legend.append('text')
         .attr('x', 20)
         .attr('y', 4)
-        .attr('fill', 'white')
+        .attr('fill', '#D3D3D3')
         .attr('font-size', '12px')
-        .text(`S${student1.replace('S', '')}`);
+        .text(`${mapToName(student1)}`);
 
     legend.append('line')
         .attr('x1', 0)
         .attr('y1', 15)
         .attr('x2', 15)
         .attr('y2', 15)
-        .style('stroke', '#ff7f0e')  // Orange
+        .style('stroke', '#f1a340')  // Orange
         .style('stroke-width', '2.5px');
 
     legend.append('text')
         .attr('x', 20)
         .attr('y', 19)
-        .attr('fill', 'white')
+        .attr('fill', '#D3D3D3')
         .attr('font-size', '12px')
-        .text(`S${student2.replace('S', '')}`);
+        .text(`${mapToName(student2)}`);
 
     // Add guess buttons
     const buttonContainer = d3.select('#guess-buttons');
@@ -205,14 +216,14 @@ export async function createStudentComparison() {
         'margin': '5px',
         'border': 'none',
         'border-radius': '4px',
-        'background-color': '#4CAF50',
-        'color': 'white',
+        'background-color': '#238636', // green
+        'color': '#D3D3D3', // white text
         'cursor': 'pointer',
         'transition': 'background-color 0.3s'
     };
 
     const button1 = buttonContainer.append('button')
-        .text(`Guess Student ${student1} did better`)
+        .text(`Guess ${mapToName(student1)} did better`)
         .style('padding', buttonStyle.padding)
         .style('margin', buttonStyle.margin)
         .style('border', buttonStyle.border)
@@ -222,15 +233,15 @@ export async function createStudentComparison() {
         .style('cursor', buttonStyle.cursor)
         .style('transition', buttonStyle.transition)
         .on('mouseover', function() {
-            d3.select(this).style('background-color', '#45a049');
+            d3.select(this).style('background-color', '#4ca958');
         })
         .on('mouseout', function() {
-            d3.select(this).style('background-color', '#4CAF50');
+            d3.select(this).style('background-color', '#238636');
         })
         .on('click', () => showResults(student1Score, student2Score, student1));
 
     const button2 = buttonContainer.append('button')
-        .text(`Guess Student ${student2} did better`)
+        .text(`Guess ${mapToName(student2)} did better`)
         .style('padding', buttonStyle.padding)
         .style('margin', buttonStyle.margin)
         .style('border', buttonStyle.border)
@@ -240,10 +251,10 @@ export async function createStudentComparison() {
         .style('cursor', buttonStyle.cursor)
         .style('transition', buttonStyle.transition)
         .on('mouseover', function() {
-            d3.select(this).style('background-color', '#45a049');
+            d3.select(this).style('background-color', '#4ca958');
         })
         .on('mouseout', function() {
-            d3.select(this).style('background-color', '#4CAF50');
+            d3.select(this).style('background-color', '#238636');
         })
         .on('click', () => showResults(student1Score, student2Score, student2));
 
@@ -254,15 +265,15 @@ export async function createStudentComparison() {
         .style('margin', buttonStyle.margin)
         .style('border', buttonStyle.border)
         .style('border-radius', buttonStyle['border-radius'])
-        .style('background-color', '#2196F3')
+        .style('background-color', '#51748f')
         .style('color', buttonStyle.color)
         .style('cursor', buttonStyle.cursor)
         .style('transition', buttonStyle.transition)
         .on('mouseover', function() {
-            d3.select(this).style('background-color', '#1976D2');
+            d3.select(this).style('background-color', '#237fca');
         })
         .on('mouseout', function() {
-            d3.select(this).style('background-color', '#2196F3');
+            d3.select(this).style('background-color', '#51748f');
         })
         .on('click', createStudentComparison);
 
@@ -276,13 +287,13 @@ export async function createStudentComparison() {
         result.append('div')
             .style('font-size', '18px')
             .style('margin', '10px 0')
-            .style('color', 'white')
+            .style('color', '#D3D3D3')
             .style('padding', '15px')
             .style('border-radius', '4px')
             .style('background-color', isCorrect ? 'rgba(76, 175, 80, 0.2)' : 'rgba(244, 67, 54, 0.2)')
-            .html(`Student ${student1}: ${score1}%<br>
-                   Student ${student2}: ${score2}%<br>
-                   ${isCorrect ? 'Correct!' : 'Incorrect!'} Student ${winner} did better.`);
+            .html(`${mapToName(student1)}: ${score1}%<br>
+                   ${mapToName(student2)}: ${score2}%<br>
+                   ${isCorrect ? 'Correct!' : 'Incorrect!'} ${mapToName(winner)} did better.`);
     }
 }
 

@@ -51,6 +51,21 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-
-
+const nameDictionary = {
+    S1: "Suraj",
+    S2: "Sam",
+    S3: "Marina",
+    S4: "Justin",
+    S5: "Janine",
+    S6: "Rod",
+    S7: "Babak",
+    S8: "Gal",
+    S9: "Jack",
+    S10: "Lily"
+};
+export function mapToName(studentNum){
+    const name = nameDictionary[studentNum];
+    if (name) {return name;}
+    else {console.log("name not found")}
+}
 
