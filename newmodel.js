@@ -120,6 +120,8 @@ async function trainModel() {
     return (g - minGrade) / (maxGrade - minGrade);
   });
 
+  console.log(yNormalized);
+
   const X = features.map(f => [
     f.tempMean, f.tempStd,
     f.hrMean, f.hrStd,
@@ -127,7 +129,7 @@ async function trainModel() {
     f.tempMeanU, f.hrMeanU, f.edaMeanU,
   ]);
 
-  console.log(X);
+  // console.log(X);
   
   // const yNormalized = features.map(f => {
   //   const g = grades[f.originalStudent]; // Use the original student for grade
@@ -183,6 +185,8 @@ async function predictGrade(model, features, minMax) {
   const rawPredictions = model.predict(inputTensor);
   const predictionNormalized = (await rawPredictions.data())[0];
 
+  console.log("Normalized prediction", predictionNormalized);
+
   // Clamp between 0 and 1 (just in case)
   const clampedPrediction = Math.min(Math.max(predictionNormalized, 0), 1);
 
@@ -207,13 +211,14 @@ function findMostSimilarStudent(input, features, minMax) {
   // Normalize features
   const normFeatures = features.map(f => ({
     student: f.student,
+    originalStudentTest: f.originalStudentTest,
     tempMean: normalize(f.tempMean, tempMeanMin, tempMeanMax),
     hrMean: normalize(f.hrMean, hrMeanMin, hrMeanMax),
     edaMean: normalize(f.edaMean, edaMeanMin, edaMeanMax),
   }));
 
   let minDist = Infinity;
-  let closestStudent = null;
+  let closestFeature = null;
 
   normFeatures.forEach(f => {
     const dist = Math.sqrt(
@@ -223,11 +228,15 @@ function findMostSimilarStudent(input, features, minMax) {
     );
     if (dist < minDist) {
       minDist = dist;
-      closestStudent = f.student;
+      closestFeature = f;
     }
   });
 
-  return closestStudent;
+  return closestFeature;
+}
+
+export function getGradeForStudentTest(studentTestKey) {
+  return gradesByTest[studentTestKey];
 }
 
 export { trainModel, predictGrade, findMostSimilarStudent };

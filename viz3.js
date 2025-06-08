@@ -4,21 +4,21 @@ import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
 export async function loadData(csv) {
     const data = await d3.csv(csv, (row, idx) => ({
       date: idx,
-      value: Number(row.temp), // or just +row.line
+      value: Number(row.data), // or just +row.line
       student: row.student,
       test: row.test,
     }));
     return data;
 }
 // Load and preprocess data
-let rawData = await loadData('./data/TEMP_df.csv');
+let rawData = await loadData('./data/EDA_df.csv');
 rawData = rawData.filter(d => d !== undefined).map((d, idx) => ({ ...d, time: idx }));
 
 
 const studentGroups = {
-    "Low Stress": ["S7", "S10"],
-    "Medium Stress": ["S1", "S2", "S3"],
-    "High Stress": ["S4", "S5", "S6", "S8", "S9"]
+    "Low Stress": ["S1"],
+    "Medium Stress": ["S7"],
+    "High Stress": ["S9"]
   };
 
 const groupColorScale = d3.scaleOrdinal()
@@ -53,7 +53,7 @@ const groupColorScale = d3.scaleOrdinal()
   
     const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
     const x = d3.scaleLinear().range([0, width]).domain([0, 90]);
-    const y = d3.scaleLinear().range([height, 0]).domain([12, 38]);
+    const y = d3.scaleLinear().range([height, 0]).domain([0, 4.5]);
 
     // Add horizontal gridlines
     g.append("g")
@@ -111,7 +111,7 @@ const groupColorScale = d3.scaleOrdinal()
       .attr("text-anchor", "middle")
       .attr("fill", "white")
       .attr("font-size", "14px")
-      .text("Body Temperature (°C)");
+      .text("EDA (µS)");
   }
 
 //   Object.entries(studentGroups).forEach(([groupName, studentIDs], index) => {
@@ -153,7 +153,7 @@ function drawEmptyChart(groupName, groupStudents, rawData, testName, svgSelector
     
       const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
       const x = d3.scaleLinear().range([0, width]).domain([0, 90]);
-      const y = d3.scaleLinear().range([height, 0]).domain([12, 38]);
+      const y = d3.scaleLinear().range([height, 0]).domain([0, 4.5]);
 
       // Add horizontal gridlines
       g.append("g")
@@ -190,7 +190,7 @@ function drawEmptyChart(groupName, groupStudents, rawData, testName, svgSelector
         .attr("text-anchor", "middle")
         .attr("fill", "white")
         .attr("font-size", "14px")
-        .text("Body Temperature (°C)");
+        .text("EDA (µS)");
   }
 
   Object.entries(studentGroups).forEach(([groupName, groupStudents], index) => {

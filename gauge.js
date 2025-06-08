@@ -1,5 +1,5 @@
 import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
-import { trainModel, predictGrade, findMostSimilarStudent } from './newmodel.js';
+import { trainModel, predictGrade, findMostSimilarStudent , getGradeForStudentTest } from './newmodel.js';
 
 // Student name mapping
 const studentNames = {
@@ -29,28 +29,28 @@ async function initializeModel() {
         modelInitialized = true;
         console.log("Model loaded successfully!");
         
-        // Run initial prediction with default values
-        const temp = parseFloat(document.getElementById('temp-input').value);
-        const hr = parseFloat(document.getElementById('hr-input').value);
-        const eda = parseFloat(document.getElementById('eda-input').value);
+        // // Run initial prediction with default values
+        // const temp = parseFloat(document.getElementById('temp-input').value);
+        // const hr = parseFloat(document.getElementById('hr-input').value);
+        // const eda = parseFloat(document.getElementById('eda-input').value);
         
-        const inputFeatures = {
-            tempMean: temp,
-            tempStd: 0.1,
-            hrMean: hr,
-            hrStd: 0.1,
-            edaMean: eda,
-            edaStd: 0.1,
-            tempMeanU: 0,
-            hrMeanU: 0,
-            edaMeanU: 0
-        };
+        // const inputFeatures = {
+        //     tempMean: temp,
+        //     tempStd: 0.1,
+        //     hrMean: hr,
+        //     hrStd: 0.1,
+        //     edaMean: eda,
+        //     edaStd: 0.1,
+        //     tempMeanU: 0,
+        //     hrMeanU: 0,
+        //     edaMeanU: 0
+        // };
         
-        const grade = await predictGrade(model, inputFeatures, minMax);
-        const similarStudent = findMostSimilarStudent(inputFeatures, features, minMax);
-        const studentName = studentNames[similarStudent] || similarStudent;
+        // const grade = await predictGrade(model, inputFeatures, minMax);
+        // const similarStudent = findMostSimilarStudent(inputFeatures, features, minMax);
+        // const studentName = studentNames[similarStudent] || similarStudent;
         
-        updateVisualizations(grade, studentName);
+        // updateVisualizations(grade, studentName);
     } catch (error) {
         console.error("Error initializing model:", error);
     }
@@ -156,23 +156,41 @@ async function predict() {
         return;
     }
 
+    const normalize = (val, min, max) => (val - min) / (max - min);
+    const uShape = x => (x - 0.5) ** 2;
+
+    const normTemp = normalize(temp, minMax.tempMeanMin, minMax.tempMeanMax);
+    const normHr = normalize(hr, minMax.hrMeanMin, minMax.hrMeanMax);
+    const normEda = normalize(eda, minMax.edaMeanMin, minMax.edaMeanMax);
+
+    function randomUniform(min, max) {
+        return Math.random() * (max - min) + min;
+    }
+
     const inputFeatures = {
-        tempMean: temp,
-        tempStd: 0.1,
-        hrMean: hr,
-        hrStd: 0.1,
-        edaMean: eda,
-        edaStd: 0.1,
-        tempMeanU: 0,
-        hrMeanU: 0,
-        edaMeanU: 0
+        tempMean: normTemp,
+        tempStd: randomUniform(0.1, 0.7),
+        hrMean: normHr,
+        hrStd: randomUniform(15, 35),
+        edaMean: normEda,
+        edaStd: randomUniform(0.07, 1),
+        tempMeanU: uShape(normTemp),
+        hrMeanU: uShape(normHr),
+        edaMeanU: uShape(normEda),
     };
 
     try {
         const grade = await predictGrade(model, inputFeatures, minMax);
-        const similarStudent = findMostSimilarStudent(inputFeatures, features, minMax);
-        const studentName = studentNames[similarStudent] || similarStudent;
-        updateVisualizations(grade, studentName);
+        const similarStudentFeature = findMostSimilarStudent(inputFeatures, features, minMax);
+
+        const closestStudentName = studentNames[similarStudentFeature.student] || similarStudentFeature.student;
+
+        const closestStudentGrade = getGradeForStudentTest(similarStudentFeature.originalStudentTest);
+
+        console.log("Predicted grade:", grade);
+        console.log("Closest student's actual grade:", closestStudentGrade);
+
+        updateVisualizations(grade, closestStudentName);
     } catch (error) {
         console.error("Prediction error:", error);
         alert("Error making prediction. Please try again.");
