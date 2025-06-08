@@ -282,12 +282,13 @@ input[type="range"] {
 }
 
 .value-display {
-  font-weight: 200;
-  min-width: 60px;
-  text-align: left;
-  padding-left: 5px;
-  font-size: 50%
-
+    font-weight: 200;
+    min-width: 60px;
+    width: 60px;
+    text-align: left;
+    padding-left: 5px;
+    font-size: 50%;
+    display: inline-block;
 }
 
 #predict-button {

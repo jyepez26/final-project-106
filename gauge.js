@@ -17,12 +17,57 @@ const studentNames = {
 
 // Initialize the model
 let model, features, minMax;
-trainModel().then(result => {
-  model = result.model;
-  features = result.features;
-  minMax = result.minMax;
-  console.log("Model loaded successfully!");
-});
+let modelInitialized = false;
+
+// Initialize model and wait for it to be ready
+async function initializeModel() {
+    try {
+        const result = await trainModel();
+        model = result.model;
+        features = result.features;
+        minMax = result.minMax;
+        modelInitialized = true;
+        console.log("Model loaded successfully!");
+        
+        // Run initial prediction with default values
+        const temp = parseFloat(document.getElementById('temp-input').value);
+        const hr = parseFloat(document.getElementById('hr-input').value);
+        const eda = parseFloat(document.getElementById('eda-input').value);
+        
+        const inputFeatures = {
+            tempMean: temp,
+            tempStd: 0.1,
+            hrMean: hr,
+            hrStd: 0.1,
+            edaMean: eda,
+            edaStd: 0.1,
+            tempMeanU: 0,
+            hrMeanU: 0,
+            edaMeanU: 0
+        };
+        
+        const grade = await predictGrade(model, inputFeatures, minMax);
+        const similarStudent = findMostSimilarStudent(inputFeatures, features, minMax);
+        const studentName = studentNames[similarStudent] || similarStudent;
+        
+        updateVisualizations(grade, studentName);
+    } catch (error) {
+        console.error("Error initializing model:", error);
+    }
+}
+
+// Call initializeModel
+initializeModel();
+
+// Function to update all visualizations
+function updateVisualizations(grade, studentName) {
+    requestAnimationFrame(() => {
+        document.getElementById('score-display').textContent = grade.toFixed(2);
+        document.getElementById('stress-type').textContent = `Similar to ${studentName}`;
+        updateBarDisplay(grade);
+        updateGaugeDisplay(grade);
+    });
+}
 
 // Gauge configuration
 const gaugeConfig = {
@@ -78,12 +123,15 @@ function createTickMarks() {
 // Initialize tick marks
 createTickMarks();
 
-// Update value displays
+// Update value displays with immediate feedback
 function updateValueDisplay(inputId, valueId) {
     const input = document.getElementById(inputId);
     const display = document.getElementById(valueId);
+    
+    // Update display immediately for responsiveness with consistent decimal places
     input.addEventListener('input', () => {
-        display.textContent = input.value;
+        const value = parseFloat(input.value);
+        display.textContent = value.toFixed(1);  // Always show one decimal place
     });
 }
 
@@ -91,6 +139,48 @@ function updateValueDisplay(inputId, valueId) {
 updateValueDisplay('temp-input', 'temp-value');
 updateValueDisplay('hr-input', 'hr-value');
 updateValueDisplay('eda-input', 'eda-value');
+
+// Prediction function
+async function predict() {
+    if (!modelInitialized) {
+        console.log("Model not loaded yet!");
+        return;
+    }
+
+    const temp = parseFloat(document.getElementById('temp-input').value);
+    const hr = parseFloat(document.getElementById('hr-input').value);
+    const eda = parseFloat(document.getElementById('eda-input').value);
+
+    if (isNaN(temp) || isNaN(hr) || isNaN(eda)) {
+        alert("Please enter valid numbers for all fields.");
+        return;
+    }
+
+    const inputFeatures = {
+        tempMean: temp,
+        tempStd: 0.1,
+        hrMean: hr,
+        hrStd: 0.1,
+        edaMean: eda,
+        edaStd: 0.1,
+        tempMeanU: 0,
+        hrMeanU: 0,
+        edaMeanU: 0
+    };
+
+    try {
+        const grade = await predictGrade(model, inputFeatures, minMax);
+        const similarStudent = findMostSimilarStudent(inputFeatures, features, minMax);
+        const studentName = studentNames[similarStudent] || similarStudent;
+        updateVisualizations(grade, studentName);
+    } catch (error) {
+        console.error("Prediction error:", error);
+        alert("Error making prediction. Please try again.");
+    }
+}
+
+// Add event listener to predict button
+document.getElementById("predict-button").addEventListener("click", predict);
 
 function getColorForScore(score) {
     if (score < 0.6) return "#ff4d4d";  // Red
@@ -152,51 +242,5 @@ function updateBarDisplay(score) {
   indicator.style.left = `calc(${percent}% - 2px)`;
   gradeText.textContent = getGradeLetter(score);
 }
-
-// Prediction function
-async function predict() {
-    if (!model || !features || !minMax) {
-        console.log("Model not loaded yet!");
-        return;
-    }
-
-    const temp = parseFloat(document.getElementById('temp-input').value);
-    const hr = parseFloat(document.getElementById('hr-input').value);
-    const eda = parseFloat(document.getElementById('eda-input').value);
-
-    if (isNaN(temp) || isNaN(hr) || isNaN(eda)) {
-        alert("Please enter valid numbers for all fields.");
-        return;
-    }
-
-    const inputFeatures = {
-        tempMean: temp,
-        tempStd: 0.1,  // Default small variation
-        hrMean: hr,
-        hrStd: 0.1,    // Default small variation
-        edaMean: eda,
-        edaStd: 0.1,   // Default small variation
-        tempMeanU: 0,  // Will be calculated in predictGrade
-        hrMeanU: 0,    // Will be calculated in predictGrade
-        edaMeanU: 0    // Will be calculated in predictGrade
-    };
-
-    try {
-        const grade = await predictGrade(model, inputFeatures, minMax);
-        const similarStudent = findMostSimilarStudent(inputFeatures, features, minMax);
-        const studentName = studentNames[similarStudent] || similarStudent;
-        
-        // Update UI
-        document.getElementById('score-display').textContent = grade.toFixed(2);
-        document.getElementById('stress-type').textContent = `Similar to ${studentName}`;
-        updateBarDisplay(grade);
-    } catch (error) {
-        console.error("Prediction error:", error);
-        alert("Error making prediction. Please try again.");
-    }
-}
-
-// Add event listener to predict button
-document.getElementById("predict-button").addEventListener("click", predict);
 
 export { updateGaugeDisplay };
