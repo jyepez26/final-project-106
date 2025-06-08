@@ -694,7 +694,8 @@ input[type="range"]::-webkit-slider-thumb:hover {
 
 .bar-labels {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 1.5em;
   margin-bottom: 0.5em;
   color: #D3D3D3;
   font-weight: bold;
@@ -719,7 +720,8 @@ input[type="range"]::-webkit-slider-thumb:hover {
   width: 0%;
   background: linear-gradient(90deg, #ff4d4d, #ffa64d, #ffff4d, #4dff4d, #00cc00);
   border-radius: 16px 0 0 16px;
-  transition: width 1s cubic-bezier(.4,2,.6,1);
+  will-change: width;
+  transform: translateZ(0);
 }
 
 .bar-indicator {
@@ -730,7 +732,8 @@ input[type="range"]::-webkit-slider-thumb:hover {
   background: #fff;
   border-radius: 2px;
   left: 0;
-  transition: left 1s cubic-bezier(.4,2,.6,1);
+  will-change: left;
+  transform: translateZ(0);
 }
 
 .bar-grade-text {

@@ -20,7 +20,7 @@ export async function loadTempData(csv) {
 }
 
 // Load grades
-const gradesCsv = await d3.csv("../data/grades_df.csv");
+const gradesCsv = await d3.csv("./data/grades_df.csv");
 const gradesByTest = {};
 
 // e.g. gradesByTest["S1_Midterm 1"] = 0.78;
@@ -208,7 +208,7 @@ function findMostSimilarStudent(input, features, minMax) {
 
   // Normalize features
   const normFeatures = features.map(f => ({
-    student: f.student,
+    student: f.student.split('_')[0], // Extract just the student ID (e.g., 'S1' from 'S1_Midterm 1')
     originalStudentTest: f.originalStudentTest,
     tempMean: normalize(f.tempMean, tempMeanMin, tempMeanMax),
     hrMean: normalize(f.hrMean, hrMeanMin, hrMeanMax),

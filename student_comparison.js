@@ -71,8 +71,8 @@ export async function createStudentComparison() {
         });
     }
 
-    const smoothedMaxData1 = rollingAverageOnObjects(maxData1, 20, 'values');
-    const smoothedMaxData2 = rollingAverageOnObjects(maxData2, 20, 'values')
+    const smoothedMaxData1 = rollingAverageOnObjects(maxData1, 60, 'values');
+    const smoothedMaxData2 = rollingAverageOnObjects(maxData2, 60, 'values')
 
     // Get test scores
     const student1Score = testScores.find(s => s.student === student1)?.score || 0;
