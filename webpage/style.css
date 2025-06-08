@@ -193,6 +193,15 @@ svg{
   opacity: 0.8;
   margin-bottom: 0em;  
 }
+#yerkes-game-caption {
+  font-size: 40%;
+  opacity: 0.7;
+  margin-bottom: 0em;
+  margin-left: 44px; 
+}
+#yerkes-plot-container {
+  margin-right:30px;
+}
 /* Predictive Model*/
 
 #model-row {

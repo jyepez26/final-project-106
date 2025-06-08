@@ -182,7 +182,7 @@ export async function createStudentComparison() {
         .attr('y1', 0)
         .attr('x2', 15)
         .attr('y2', 0)
-        .style('stroke', '#998ec3')  // Blue
+        .style('stroke', '#998ec3')  // Purple
         .style('stroke-width', '2.5px');
 
     legend.append('text')

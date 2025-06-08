@@ -219,14 +219,19 @@
     </section>
     <section class="hidden">
         <h1>Understanding the Results</h1>
-        <h5 class="caption">You might have noticed that students with higher stress levels sometimes performed better than those with lower stress.<br>
-            This isn't a coincidence - it's explained by the Yerkes-Dodson Law, which shows the relationship between stress and performance.</h5>
-        
-        <div id="plot">
-            <svg id="yerkes-chart" width="800" height="400"></svg>
+        <h5 class="caption"> You might have noticed that students with higher stress levels sometimes performed better than those with lower stress.<br>
+            This isn't a coincidence - it's explained by the Yerkes-Dodson Law, showing the relationship between stress and performance below.</h5>
+        <h5 class="caption" id="yerkes-game-caption"> Try to fit the circle into the sweet spot! </h5>
+        <div id="yerkes-plot-container">
+            <div id="plot">
+                <svg id="yerkes-chart" width="800" height="400"></svg>
+            </div>
+            <div id="pause-container" style="margin-left: 57px; text-align: center;">
+                <button id="pause-btn">Pause</button>
+            </div>
         </div>
 
-        <h5 class="caption" id="yerkes-caption">Watch how performance changes with stress levels. Notice the "sweet spot"<br>where some stress leads to optimal performance.<br>
+        <h5 class="caption" id="yerkes-caption"> Notice the "sweet spot" where medium stress leads to a high performance.<br>
             This helps explain why some students perform better with higher stress. <br>They might be operating closer to their optimal stress level!</h5>
         <br>
         <h6 class="scroll-down">Scroll down to see the next vis!</h6>
@@ -235,7 +240,7 @@
 
     <section class="hidden">
         <h1>How hot are different groups of students?</h1>
-        <h5 class="caption" id="yerkes-caption">Now that we know about the Yerkes-Dodson model, let's visualize<br>
+        <h5 class="caption" id="yerkes-caption"> Now that we know about the Yerkes-Dodson model, let's visualize<br>
             the stress levels (now measured in body temperature) among<br>
             different student stress types!
         </h5>
