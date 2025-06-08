@@ -176,7 +176,7 @@
                         <option value="S8">Student 8</option>
                         <option value="S9">Student 9</option>
                         <option value="S10">Student 10</option>
-                    </select>
+    </select>
                 </div>
             </div>
 
@@ -309,12 +309,19 @@
             
             <div id="result-panel">
                 <div id="score-visualization">
-                    <div class="score-circle">
-                        <svg id="score-ring" width="200" height="200">
-                            <circle class="score-background" cx="100" cy="100" r="90"/>
-                            <circle class="score-progress" cx="100" cy="100" r="90"/>
-                            <text class="score-text" x="100" y="100" text-anchor="middle" dominant-baseline="middle">--</text>
-                        </svg>
+                    <div class="bar-container">
+                        <div class="bar-labels">
+                            <span>F</span>
+                            <span>D</span>
+                            <span>C</span>
+                            <span>B</span>
+                            <span>A</span>
+                        </div>
+                        <div class="bar-bg">
+                            <div class="bar-fill" id="grade-bar"></div>
+                            <div class="bar-indicator" id="bar-indicator"></div>
+                        </div>
+                        <div class="bar-grade-text" id="bar-grade-text">--</div>
                     </div>
                     <div class="score-details">
                         <h3>Your Predicted Score</h3>
