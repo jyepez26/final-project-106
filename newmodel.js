@@ -120,8 +120,6 @@ async function trainModel() {
     return (g - minGrade) / (maxGrade - minGrade);
   });
 
-  console.log(yNormalized);
-
   const X = features.map(f => [
     f.tempMean, f.tempStd,
     f.hrMean, f.hrStd,
