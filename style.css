@@ -683,8 +683,8 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 
 .bar-container {
-  width: 80%;
-  max-width: 500px;
+  width: 100%;
+  max-width: 700px;
   margin: 2em auto;
   text-align: center;
 }
