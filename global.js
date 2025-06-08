@@ -17,4 +17,3 @@ export async function loadGrades(csvPath) {
   }));
   return data
 }
-loadData();

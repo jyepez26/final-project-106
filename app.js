@@ -34,6 +34,7 @@ function rollingAverageOnObjects(data, windowSize, valueKey) {
     });
 }
 
+
 // General function to create the animated plots
 function createStudentChart({
   rawData,
@@ -146,7 +147,6 @@ function createStudentChart({
     .attr("fill", lineColor)
     .style("cursor", "pointer")
     .on("mouseover", function (event) {
-        console.log(event);
         tooltip
         .style("opacity", 1)
         .html(`Peak: ${maxPoint.value.toFixed(1)} bpm<br>Time: ${Math.round(maxIndex / 60)} min`);
@@ -183,58 +183,6 @@ function createStudentChart({
   const firstStudent = testData[0]?.student;
   if (firstStudent) drawStudentLine(firstStudent);
 }
-
-// Create all charts!
-
-const chartInitializers = {
-    "midterm1-chart": () => createStudentChart({
-      rawData,
-      testName: "Midterm 1",
-      svgSelector: "#midterm1-chart",
-      selectSelector: "#student-select1",
-      lineColor: "white"
-    }),
-    "midterm2-chart": () => createStudentChart({
-      rawData,
-      testName: "Midterm 2",
-      svgSelector: "#midterm2-chart",
-      selectSelector: "#student-select2",
-      lineColor: "white"
-    }),
-    "final-chart": () => createStudentChart({
-      rawData,
-      testName: "Final",
-      svgSelector: "#final-chart",
-      selectSelector: "#student-select3",
-      lineColor: "white"
-    }),
-    "comparison-chart": () => createStudentComparison(),
-    'yerkes-chart': createYerkesCurve,
-};
-
-
-const chartsDrawn = new Set();
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-        // console.log(entry);
-        if (entry.isIntersecting) {
-            entry.target.classList.add('show');
-            const chartId = entry.target.querySelector("svg")?.id;
-            if (chartId && !chartsDrawn.has(chartId)) {
-                chartsDrawn.add(chartId);
-                if (chartInitializers[chartId]) {
-                chartInitializers[chartId]();
-                }
-            }
-        } else {
-            entry.target.classList.remove('show');
-        }
-    });
-});
-
-const hiddenElements = document.querySelectorAll('.hidden');
-hiddenElements.forEach((el) => observer.observe(el));
 
 const auStatic = document.getElementById('au-static');
 const auGif = document.getElementById('au-gif');
@@ -339,6 +287,7 @@ function createStudentChart2({
 }
 
 
+// Creates grid of charts!
 ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10"].forEach(studentID => {
   const svgSelector = `#student-${studentID}`;
   createStudentChart2({
@@ -348,3 +297,46 @@ function createStudentChart2({
     studentID
   });
 });
+
+// Create all charts!
+
+const chartInitializers = {
+    "midterm1-chart": () => createStudentChart2({
+      rawData,
+      testName: "Midterm 2",
+      svgSelector: "#midterm1-chart",
+      studentID: "S3"
+    }),
+    "midterm2-chart": () => createStudentChart2({
+      rawData,
+      testName: "Midterm 2",
+      svgSelector: "#midterm2-chart",
+      studentID: "S10"
+    }),
+    "comparison-chart": () => createStudentComparison(),
+    'yerkes-chart': createYerkesCurve,
+};
+
+
+const chartsDrawn = new Set();
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+        // console.log(entry);
+        if (entry.isIntersecting) {
+            entry.target.classList.add('show');
+            const chartId = entry.target.querySelector("svg")?.id;
+            if (chartId && !chartsDrawn.has(chartId)) {
+                chartsDrawn.add(chartId);
+                if (chartInitializers[chartId]) {
+                chartInitializers[chartId]();
+                }
+            }
+        } else {
+            entry.target.classList.remove('show');
+        }
+    });
+});
+
+const hiddenElements = document.querySelectorAll('.hidden');
+hiddenElements.forEach((el) => observer.observe(el));

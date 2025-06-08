@@ -1,7 +1,6 @@
 // import {Typed} from 'https://unpkg.com/typed.js@2.1.0/dist/typed.es.js';
 import Typed from 'https://cdn.skypack.dev/typed.js@2.1.0';
 
-console.log("connected to title.js")
 const options = {
     strings: [
         "How does stress impact test grades?",
