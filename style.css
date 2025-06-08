@@ -422,3 +422,144 @@ input[type="range"] {
         height: 180px;
     }
 }
+
+/* Predictive Model Styles */
+#model-container {
+    display: flex;
+    gap: 3em;
+    padding: 2em;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+#input-panel {
+    flex: 1;
+    padding: 2em;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+}
+
+.input-group {
+    margin-bottom: 2em;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 0.8em;
+    font-size: 1.1em;
+    color: #D3D3D3;
+}
+
+.slider-container {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+
+input[type="range"] {
+    flex: 1;
+    height: 6px;
+    -webkit-appearance: none;
+    background: #2ea043;
+    border-radius: 3px;
+    outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #D3D3D3;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    background: #ffffff;
+}
+
+.value-display {
+    min-width: 60px;
+    text-align: right;
+    font-size: 1.1em;
+    color: #D3D3D3;
+}
+
+#predict-button {
+    width: 100%;
+    padding: 1em;
+    margin-top: 2em;
+    background: #238636;
+    color: #D3D3D3;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#predict-button:hover {
+    background: #2ea043;
+    transform: translateY(-2px);
+}
+
+#predict-button:active {
+    transform: translateY(0);
+}
+
+#result-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2em;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+}
+
+#gauge-container {
+    margin-bottom: 2em;
+}
+
+#prediction-text {
+    text-align: center;
+}
+
+#prediction-text h3 {
+    margin-bottom: 0.5em;
+    font-size: 1.5em;
+    color: #D3D3D3;
+}
+
+#score-display {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #2ea043;
+    margin: 0.2em 0;
+}
+
+#stress-type {
+    font-size: 1.2em;
+    color: #D3D3D3;
+    opacity: 0.8;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+    #model-container {
+        flex-direction: column;
+        padding: 1em;
+    }
+    
+    #input-panel, #result-panel {
+        width: 100%;
+    }
+}

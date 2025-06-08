@@ -1,5 +1,5 @@
 import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
-import { createStudentComparison } from '../student_comparison.js';
+import { createStudentComparison } from './student_comparison.js';
 import { createYerkesCurve } from './yerkes_curve.js';
 import { mapToName } from './title.js';
 
@@ -14,7 +14,7 @@ export async function loadData(csv) {
     return data;
 }
 // Load and preprocess data
-let rawData = await loadData('../data/HR_df.csv');
+let rawData = await loadData('./data/HR_df.csv');
 rawData = rawData.filter(d => d !== undefined).map((d, idx) => ({ ...d, time: idx }));
 
 // General function to create the animated plots

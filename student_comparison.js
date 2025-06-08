@@ -1,11 +1,11 @@
 import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
 import { loadData, loadGrades } from './global.js';
-import { mapToName } from './webpage/title.js';
+import { mapToName } from './title.js';
 
 export async function createStudentComparison() {
     // Load data
-    const edaData = await loadData('../data/EDA_df.csv');
-    const testScores = await loadGrades('../test_scores.csv');
+    const edaData = await loadData('./data/EDA_df.csv');
+    const testScores = await loadGrades('./test_scores.csv');
     
     // Get unique students
     const students = [...new Set(edaData.map(d => d.student))];    
