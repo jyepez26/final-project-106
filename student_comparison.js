@@ -5,7 +5,7 @@ import { mapToName } from './title.js';
 export async function createStudentComparison() {
     // Load data
     const edaData = await loadData('./data/EDA_df.csv');
-    const testScores = await loadGrades('./test_scores.csv');
+    const testScores = await loadGrades('./data/test_scores.csv');
     
     // Get unique students
     const students = [...new Set(edaData.map(d => d.student))];    
