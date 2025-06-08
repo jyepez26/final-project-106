@@ -15,13 +15,19 @@ async function run() {
   const normHr = normalize(hr, minMax.hrMeanMin, minMax.hrMeanMax);
   const normEda = normalize(eda, minMax.edaMeanMin, minMax.edaMeanMax);
 
+  function randomUniform(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  console.log(`Random predictoin ${randomUniform(0.1, 0.7)}`);
+
   const newStudent = {
     tempMean: temp,
-    tempStd: 0.1,
+    tempStd: randomUniform(0.1, 0.7),
     hrMean: hr,
-    hrStd: 3,
+    hrStd: randomUniform(15, 35),
     edaMean: eda,
-    edaStd: 0.1,
+    edaStd: randomUniform(0.07, 1),
     tempMeanU: uShape(normTemp),
     hrMeanU: uShape(normHr),
     edaMeanU: uShape(normEda),
