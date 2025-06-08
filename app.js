@@ -1,6 +1,7 @@
 import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
-import { createStudentComparison } from '../student_comparison.js';
+import { createStudentComparison } from './student_comparison.js';
 import { createYerkesCurve } from './yerkes_curve.js';
+import { mapToName } from './title.js';
 
 // load in data
 export async function loadData(csv) {
@@ -13,8 +14,25 @@ export async function loadData(csv) {
     return data;
 }
 // Load and preprocess data
-let rawData = await loadData('../data/HR_df.csv');
+let rawData = await loadData('./data/HR_df.csv');
 rawData = rawData.filter(d => d !== undefined).map((d, idx) => ({ ...d, time: idx }));
+
+// Helper function to process data
+function roundToDecimals(value, decimals) {
+    const factor = Math.pow(10, decimals);
+    return Math.round(value * factor) / factor;
+}
+
+function rollingAverageOnObjects(data, windowSize, valueKey) {
+    return data.map((d, i) => {
+        const start = Math.max(0, i - windowSize + 1);
+        const window = data.slice(start, i + 1);
+        return {
+        ...d,  // preserves category and time
+        [valueKey]: roundToDecimals(d3.mean(window, item => item[valueKey]), 2)
+        };
+    });
+}
 
 // General function to create the animated plots
 function createStudentChart({
@@ -24,7 +42,7 @@ function createStudentChart({
   selectSelector,
   lineColor = "white"
 }) {
-  const testData = rawData
+  let testData = rawData
     .filter(d => d.test === testName)
     .map(d => ({ ...d, value: +d.value }));
 
@@ -58,7 +76,7 @@ function createStudentChart({
     .attr("text-anchor", "middle")
     .attr("fill", "white")
     .attr("font-size", "14px")
-    .text("Time (seconds)");
+    .text("Time (minutes)");
 
     // Y-Axis Label
     g.append("text")
@@ -73,10 +91,18 @@ function createStudentChart({
 
   // Draw line for selected student
   function drawStudentLine(studentID) {
-    const studentData = testData.filter(d => d.student === studentID);
+    let studentData = testData.filter(d => d.student === studentID);
     if (!studentData.length) return;
 
-    
+    const group1 = d3.groups(studentData, (d, i) => Math.floor(i / 5));
+    const maxData1 = group1.map(([key, values]) => ({
+        category: key,
+        time: d3.min(values, d => d.time),
+        value: d3.max(values, d => d.value)
+    }));
+    const processedData = rollingAverageOnObjects(maxData1, 8, 'value');
+    studentData = processedData;
+
     const totalMinutes = testName === 'Final' ? 180 : 90;
     x.domain([0, totalMinutes]);
     y.domain([0, d3.max(studentData, d => d.value)]);
@@ -99,7 +125,8 @@ function createStudentChart({
       .attr("fill", "none")
       .attr("stroke", color(studentID))
       .attr("stroke-width", 2)
-      .attr("d", line);
+      .attr("d", line)
+      .attr("id", d => mapToName(studentID));
 
     const totalLength = path.node().getTotalLength();
 
@@ -190,7 +217,7 @@ const chartsDrawn = new Set();
 
 const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
-        console.log(entry);
+        // console.log(entry);
         if (entry.isIntersecting) {
             entry.target.classList.add('show');
             const chartId = entry.target.querySelector("svg")?.id;
@@ -220,4 +247,104 @@ auStatic.addEventListener('click', () => {
 auGif.addEventListener('click', () => {
     auGif.style.display = 'none';
     auStatic.style.display = 'inline';
+});
+
+// grid
+function createStudentChart2({
+  rawData,
+  testName,
+  svgSelector,
+  studentID,
+}) {
+    const studentColors = {
+    "S1": "#1f77b4",
+    "S2": "#ff7f0e",
+    "S3": "#2ca02c",
+    "S4": "#d62728",
+    "S5": "#9467bd",
+    "S6": "#8c564b",
+    "S7": "#e377c2",
+    "S8": "#7f7f7f",
+    "S9": "#bcbd22",
+    "S10": "#17becf"
+  };
+  
+  let testData = rawData
+    .filter(d => d.test === testName)
+    .map(d => ({ ...d, value: +d.value }));
+
+  const svg = d3.select(svgSelector);
+  const margin = { top: 20, right: 50, bottom: 40, left: 40 };
+  const bbox = svg.node().getBoundingClientRect();
+  const width = bbox.width - margin.left - margin.right;
+  const height = bbox.height - margin.top - margin.bottom;
+
+  const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+  // Add student title inside SVG
+  svg.append("text")
+  .attr("x", 125)
+  .attr("y", 18)
+  .attr("text-anchor", "middle")
+  .attr("fill", studentColors[studentID] || "white")
+  .attr("font-size", "16px")
+  .attr("font-weight", "300px")
+  .text(`${mapToName(studentID)}`);
+
+  const x = d3.scaleLinear().range([0, width]);
+  const y = d3.scaleLinear().range([height, 0]);
+  // Automatically draw all final charts for S1–S10
+
+  const color = studentColors[studentID] || "white";
+
+  g.append("g").attr("class", "x-axis").attr("transform", `translate(0,${height})`);
+  g.append("g").attr("class", "y-axis");
+  g.select(".y-axis").call(d3.axisLeft(y).ticks(4));
+  const studentDataRaw = testData.filter(d => d.student === studentID);
+  if (!studentDataRaw.length) return;
+
+  const group1 = d3.groups(studentDataRaw, (d, i) => Math.floor(i / 5));
+  const maxData1 = group1.map(([key, values]) => ({
+    category: key,
+    time: d3.min(values, d => d.time),
+    value: d3.max(values, d => d.value)
+  }));
+  const processedData = rollingAverageOnObjects(maxData1, 300, 'value');
+
+  const totalMinutes = testName === 'Final' ? 180 : 90;
+  x.domain([0, totalMinutes]);
+  y.domain([0, 160]);
+
+  const line = d3.line()
+    .x((d, i) => x((i / (processedData.length - 1)) * totalMinutes))
+    .y(d => y(d.value));
+
+  g.select(".x-axis").call(d3.axisBottom(x));
+  g.select(".y-axis").call(d3.axisLeft(y));
+
+  const path = g.append("path")
+    .datum(processedData)
+    .attr("fill", "none")
+    .attr("stroke", color)
+    .attr("stroke-width", 2)
+    .attr("d", line);
+
+  const totalLength = path.node().getTotalLength();
+  path
+    .attr("stroke-dasharray", totalLength + " " + totalLength)
+    .attr("stroke-dashoffset", totalLength)
+    .transition()
+    .duration(4000)
+    .ease(d3.easeLinear)
+    .attr("stroke-dashoffset", 0);
+}
+
+
+["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10"].forEach(studentID => {
+  const svgSelector = `#student-${studentID}`;
+  createStudentChart2({
+    rawData,
+    testName: "Final",
+    svgSelector,
+    studentID
+  });
 });

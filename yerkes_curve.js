@@ -40,9 +40,11 @@ export function createYerkesCurve() {
         .attr('x', innerWidth / 2)
         .attr('y', 40)
         .attr('text-anchor', 'middle')
-        .attr('fill', 'white')
+        .attr('fill', '#D3D3D3')
         .attr('font-size', '16px')
-        .text('Stress Level');
+        .text('Stress Level')
+        .attr('font-family', 'Roboto')
+        .attr('margin-top', '1em');
 
     svg.append('g')
         .call(yAxis)
@@ -51,17 +53,19 @@ export function createYerkesCurve() {
         .attr('x', -innerHeight / 2)
         .attr('y', -80)
         .attr('text-anchor', 'middle')
-        .attr('fill', 'white')
-        .attr('font-size', '16px')
+        .attr('fill', '#D3D3D3')
+        .attr('font-size', '18px')
+        .attr('font-family', 'Roboto')
         .text('Performance');
 
     // Style the axes
     svg.selectAll('.domain, .tick line')
-        .attr('stroke', 'white');
+        .attr('stroke', '#D3D3D3');
     
     svg.selectAll('.tick text')
-        .attr('fill', 'white')
-        .attr('font-size', '14px');
+        .attr('fill', '#D3D3D3')
+        .attr('font-size', '12px')
+        .attr('font-family', 'Roboto');
 
     // Create the curve
     const curve = d3.line()
@@ -90,8 +94,8 @@ export function createYerkesCurve() {
     // Animate the curve
     const path = svg.append('path')
         .datum(points)
-        .attr('fill', 'none')
-        .attr('stroke', '#1f77b4')
+        .attr('fill', '#998ec3')
+        .attr('stroke', '#f7f7f7')
         .attr('stroke-width', 3)
         .attr('d', curve);
 
@@ -104,35 +108,99 @@ export function createYerkesCurve() {
         .ease(d3.easeLinear)
         .attr('stroke-dashoffset', 0);
 
+    // Add a static circle in the high performance area
+    svg.append('circle')
+        .attr('cx', xScale(5)) // Center horizontally around x=5 (middle of curve)
+        .attr('cy', yScale(10)) // Position in the "High" performance area
+        .attr('r', 10)
+        .attr('stroke', '#f7f7f7')
+        .attr('stroke-width', 1);
+
     // Add a moving dot
     const dot = svg.append('circle')
-        .attr('r', 5)
-        .attr('fill', '#ff7f0e');
+        .attr('r', 8)
+        .attr('fill', '#f1a340');
 
-    // Animate the dot along the curve
     function animateDot() {
         const numPoints = points.length;
         let currentIndex = 0;
+        let direction = 1; // 1 for forward, -1 for backward
+        let interval;
+        let isPaused = false;
 
         function updateDot() {
-            if (currentIndex >= numPoints) {
-                currentIndex = 0;
-            }
-            
             const point = points[currentIndex];
             dot.attr('transform', `translate(${xScale(point.x)},${yScale(point.y)})`);
-            currentIndex++;
+            
+            currentIndex += direction;
+            
+            // Change direction when reaching the ends
+            if (currentIndex >= numPoints - 1) {
+                direction = -1;
+            } else if (currentIndex <= 0) {
+                direction = 1;
+            }
+        }
+
+        function startAnimation() {
+            if (!isPaused) {
+                interval = d3.interval(() => {
+                    updateDot();
+                }, 50);
+            }
+        }
+
+        function stopAnimation() {
+            if (interval) {
+                interval.stop();
+            }
         }
 
         // Initial position
         updateDot();
+        startAnimation();
 
-        // Animate
-        d3.interval(() => {
-            updateDot();
-        }, 50);  // Update every 50ms
+        // Event listener for pause button
+        document.getElementById('pause-btn').addEventListener('click', function() {
+            if (isPaused) {
+                isPaused = false;
+                this.textContent = 'Pause';
+                startAnimation();
+            } else {
+                isPaused = true;
+                this.textContent = 'Play';
+                stopAnimation();
+            }
+        });
     }
 
     // Start animation after curve is drawn
     setTimeout(animateDot, 2000);
-} 
+}
+// pause button styling
+const buttonStyle = {
+    'padding': '8px 16px',
+    'margin': '5px',
+    'border': 'none',
+    'border-radius': '4px',
+    'background-color': '#238636', // green
+    'color': '#D3D3D3', // white text
+    'cursor': 'pointer',
+    'transition': 'background-color 0.3s'
+};
+let pauseButton = d3.select('#pause-btn')
+    .style('padding', buttonStyle.padding)
+    .style('border', buttonStyle.border)
+    .style('border-radius', buttonStyle['border-radius'])
+    .style('background-color', buttonStyle['background-color'])
+    .style('color', buttonStyle.color)
+    .style('cursor', buttonStyle.cursor)
+    .style('transition', buttonStyle.transition);
+
+pauseButton
+    .on('mouseover', function() {
+        d3.select(this).style('background-color', '#4ca958');
+    })
+    .on('mouseout', function() {
+        d3.select(this).style('background-color', '#238636');
+    });

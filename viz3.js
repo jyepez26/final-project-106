@@ -11,7 +11,7 @@ export async function loadData(csv) {
     return data;
 }
 // Load and preprocess data
-let rawData = await loadData('../data/TEMP_df.csv');
+let rawData = await loadData('./data/TEMP_df.csv');
 rawData = rawData.filter(d => d !== undefined).map((d, idx) => ({ ...d, time: idx }));
 
 

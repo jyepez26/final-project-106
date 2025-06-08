@@ -32,9 +32,9 @@ gradesCsv.forEach(row => {
 });
 
 async function trainModel() {
-  const hrData = (await loadData('../data/HR_df.csv')).filter(Boolean);
-  const edaData = (await loadData('../data/EDA_df.csv')).filter(Boolean);
-  const tempData = (await loadTempData('../data/TEMP_df.csv')).filter(Boolean);
+  const hrData = (await loadData('./data/HR_df.csv')).filter(Boolean);
+  const edaData = (await loadData('./data/EDA_df.csv')).filter(Boolean);
+  const tempData = (await loadTempData('./data/TEMP_df.csv')).filter(Boolean);
 
   function groupByStudentAndTest(data) {
     const grouped = {};

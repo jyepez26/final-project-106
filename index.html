@@ -3,100 +3,336 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stress & Performance: The Yerkes-Dodson Law</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            line-height: 1.6;
-        }
-        .section {
-            margin-bottom: 40px;
-            padding: 20px;
-            border-radius: 8px;
-            background-color: #f8f9fa;
-        }
-        .visualization {
-            margin: 20px 0;
-            padding: 20px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        select {
-            padding: 8px;
-            margin: 10px 0;
-            border-radius: 4px;
-            border: 1px solid #ddd;
-        }
-        h1, h2, h3, h4 {
-            color: #2c3e50;
-        }
-        .explanation {
-            font-style: italic;
-            color: #666;
-            margin: 10px 0;
-        }
-    </style>
+    <title>Final Project DSC 106</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="title.js"></script>
+    <script type="module" src="app.js"></script>
+    <script type="module" src="viz3.js"></script>
+    <script type="module" src="gauge.js"></script>
+    <script type="module" src="newmodel.js"></script>
+    <script type="module" src="combine.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.15.0/dist/tf.min.js"></script>
 </head>
 <body>
-    <h1>How Does Stress Impact Test Performance?</h1>
-    <h2>Exploring the Yerkes-Dodson Law</h2>
+    <div id="tooltip"></div>
+    <section class="hidden">
+        <h1 id="title"></h1>
+        <!-- <h3 id="subtitle">InvestigatingStudents Perform on Tests</h3> -->
+        <h4 id="authors">Suchit Bhayani, Ryan Cao, Surya Setty, and Johnathan Yepez </h4>
+        <br>
+        <h6 class="scroll-down">Scroll down to begin</h6>
+        <!-- <img src="greenarow.png" alt="downarrow" width="80px"> -->
+    </section>
 
-    <div class="section">
-        <h3>Understanding Stress Indicators</h3>
-        <p class="explanation">Electrodermal activity (EDA) measures neural activity in the brain, while heart rate (HR) indicates physical activity levels. Together, they help us quantify stress levels during test-taking.</p>
-        
-        <div class="visualization">
-            <h4>Stress Indicators Over Time</h4>
-            <select id="switch">
-                <option value="">Select Student</option>
-        <option value="1">Student 1</option>
-        <option value="2">Student 2</option>
-        <option value="3">Student 3</option>
-        <option value="4">Student 4</option>
-        <option value="5">Student 5</option>
-        <option value="6">Student 6</option>
-        <option value="7">Student 7</option>
-        <option value="8">Student 8</option>
-        <option value="9">Student 9</option>
-        <option value="10">Student 10</option>
-    </select>
-    <svg id="chart" width=800 height=400></svg>
+    <section class="hidden">
+        <div id="intro-row">
+            <div id="intro-left-col">
+                <p>The term "test anxiety" focuses on the tradeoffs between stress and anxiety on their test scores.
+                Each student may find that their performance improves, or gets worse from the tradeoff between stress and anxiety. 
+                This relationship describes Yerkes-Dodson Law, where performance increases with stress up to a point, or sweet spot, after which it decreases just as suddenly.</p>
+
+                <p>By analyzing these stress indicators during actual test-taking scenarios, we look into how stress patterns change during exams,
+                find correlations between stress levels and test performance, and find the sweet spot for optimal performance.</p>
+            </div>
+
+            <div id="intro-right-col">
+                <p> Our key physiological indicators:</p>
+                <!-- <ol>
+                    <li>ElectroDermal Activity (EDA): Indicates emotional arousal and stress level through 
+                        skin conductance.</li>
+                    <li>Heart Rate: Heartbeats per minute, increasing during periods of stress.</li>
+                    <li>Skin Surface Temperature: Tracks the body temperature in Celsius of test takers, increasing with activity levels.</li>
+                </ol> -->
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            ElectroDermal Activity (EDA)
+                            <div class="flip-hint">Click to flip</div>
+                        </div>
+                        <div class="card-back">
+                            Indicates emotional arousal and stress level through skin conductance.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            Heart Rate
+                            <div class="flip-hint">Click to flip</div>
+                        </div>
+                        <div class="card-back">
+                            Heartbeats per minute, increasing during periods of stress.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            Skin Surface Temperature
+                            <div class="flip-hint">Click to flip</div>
+                        </div>
+                        <div class="card-back">
+                            Tracks the body temperature in Celsius of test takers, increasing with activity levels.
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
+        <p class="scroll-down">Explore the visualizations below!</p>
+        <br>
+        <br>
+    </section>
 
-    <div class="section">
-        <h3>The Yerkes-Dodson Curve</h3>
-        <p class="explanation">Compare the stress patterns of two randomly selected students and try to guess which one performed better on the test. This helps us understand how different stress patterns correlate with test performance.</p>
+    <section class="hidden">
+        <h1>Student Heart Rate During Exams</h1>
+        <h4 class="caption">First, let's look at the heart rate of students over the duration of
+            three different exams!
+        </h4>
+        <br>
+        <br>
+        <div id="m1-hr-row">
+            <div id="m1-hr-left-col">
+                <h3>Midterm 1</h3>
+                <div id="plot">
+                    <svg id="midterm1-chart" width="800" height="400"></svg>
+                    <select id="student-select1">
+                        <option value="S1">Student 1</option>
+                        <option value="S2">Student 2</option>
+                        <option value="S3">Student 3</option>
+                        <option value="S4">Student 4</option>
+                        <option value="S5">Student 5</option>
+                        <option value="S6">Student 6</option>
+                        <option value="S7">Student 7</option>
+                        <option value="S8">Student 8</option>
+                        <option value="S9">Student 9</option>
+                        <option value="S10">Student 10</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="m1-hr-right-col">
+                <h5>
+                    Most students will experience some levels
+                    of stress during an exam.
+                </h5>
+                <p>Select a student to see their heart rate data!</p>
+                <!-- <img src="greenarow.png" alt="downarrow" width="50px"> -->
+            </div>
+        </div>
+    </section>
+    
+    <section class="hidden">
+        <div id="m2-hr-row">
+            <div id="m2-hr-left-col">
+                <h3>Midterm 2</h3>
+                <div id="plot">
+                    <svg id="midterm2-chart" width="800" height="400"></svg>
+                    <select id="student-select2">
+                        <option value="S1">Student 1</option>
+                        <option value="S2">Student 2</option>
+                        <option value="S3">Student 3</option>
+                        <option value="S4">Student 4</option>
+                        <option value="S5">Student 5</option>
+                        <option value="S6">Student 6</option>
+                        <option value="S7">Student 7</option>
+                        <option value="S8">Student 8</option>
+                        <option value="S9">Student 9</option>
+                        <option value="S10">Student 10</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="m2-hr-right-col">
+                <h6>
+                    Commonly, people have a negative perception of stress. It is 
+                    only natural as stress is a scary feeling different from a human's
+                    normal state.
+                </h6>
+                <p>Select a student to see their heart rate data!</p>
+                <!-- <img src="greenarow.png" alt="downarrow" width="50px"> -->
+            </div>
+        </div>
+        <h6 class="scroll-down">Scroll down to play the comparison game!</h6>
+
+    </section>
         
-        <div class="visualization">
-            <h4>Student Stress Comparison</h4>
-            <svg id="comparison-chart" width=800 height=400></svg>
+    <section class="hidden">
+        <h3> Midterm 2: Heart Rate Visualizations</h3>
+            <div id="student-grid" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 2em; margin-bottom: 2em;">
+            <!-- Student Charts -->
+                <div class="student-chart"><svg id="student-S1" width="100%" height="100%"></svg></div>
+                <div class="student-chart"><svg id="student-S2" width="100%" height="100%" ></svg></div>
+                <div class="student-chart"><svg id="student-S3" width="100%" height="100%" ></svg></div>
+                <div class="student-chart"><svg id="student-S4" width="100%" height="100%" ></svg></div>
+                <div class="student-chart"><svg id="student-S5" width="100%" height="100%" ></svg></div>
+                <div class="student-chart"><svg id="student-S6" width="100%" height="100%" ></svg></div>
+                <div class="student-chart"><svg id="student-S7" width="100%" height="100%" ></svg></div>
+                <div class="student-chart"><svg id="student-S8" width="100%" height="100%" ></svg></div>
+                <div class="student-chart"><svg id="student-S9" width="100%" height="100%" ></svg></div>
+                <div class="student-chart"><svg id="student-S10" width="100%" height="100%" ></svg></div>
+            </div>
+        <p style="margin-top: 20px;">Observe how each student's heart rate fluctuates during the final exam. This grid provides a comparative view of stress levels across individuals.</p>
+        <h6 class="scroll-down">Scroll down to play the comparison game!</h6>
+    </section>
+
+    <section class="hidden">
+        <h1>Compare Student Stress Patterns</h1>
+        <h5 class="caption" id="stress-caption"> We assume lower stress results in better test scores. Is this always true? <br>Pick the highest
+        scoring student based on their EDA. </h5>
+        <h5 class="caption" id="stress-hint"> Hint: When you make your guess, try to find patterns in how brain activity changes.</h5>
+        <br>
+        <br>
+        
+        <div id="plot">
+            <svg id="comparison-chart" width="800" height="400"></svg>
             <div id="guess-buttons" style="margin-top: 20px; text-align: center;"></div>
             <div id="result" style="margin-top: 20px; text-align: center;"></div>
         </div>
-    </div>
+        <br>
+        <h5 class="scroll-down"> Scroll down to interpret the results!</h5>
 
-    <div class="section">
-        <h3>Find Your Stress Profile</h3>
-        <p class="explanation">Select your stress level to see where you might fall on the Yerkes-Dodson curve and get a prediction of your potential performance.</p>
-        
-        <div class="visualization">
-            <h4>Stress Level Predictor</h4>
-            <select id="stress-level">
-                <option value="">Select Your Stress Level</option>
-                <option value="low">Low Stress</option>
-                <option value="medium">Medium Stress</option>
-                <option value="high">High Stress</option>
-            </select>
-            <div id="prediction-result"></div>
+    </section>
+    <section class="hidden">
+        <h1>Understanding the Results</h1>
+        <h5 class="caption"> You might have noticed that students with higher stress levels sometimes performed better than those with lower stress.<br>
+            This isn't a coincidence - it's explained by the Yerkes-Dodson Law, showing the relationship between stress and performance below.</h5>
+        <h5 class="caption" id="yerkes-game-caption"> Try to fit the circle into the sweet spot! </h5>
+        <div id="yerkes-plot-container">
+            <div id="plot">
+                <svg id="yerkes-chart" width="800" height="400"></svg>
+            </div>
+            <div id="pause-container" style="margin-left: 57px; text-align: center;">
+                <button id="pause-btn">Pause</button>
+            </div>
         </div>
-    </div>
 
-    <script type="module" src="line_plots.js"></script>
-    <script type="module" src="student_comparison.js"></script>
+        <h5 class="caption" id="yerkes-caption"> Notice the "sweet spot" where medium stress leads to a high performance.<br>
+            This helps explain why some students perform better with higher stress. <br>They might be operating closer to their optimal stress level!</h5>
+        <br>
+        <h6 class="scroll-down">Scroll down to see the next vis!</h6>
+        <br>
+    </section>
+
+    <section class="hidden">
+        <h1>How hot are different groups of students?</h1>
+        <h5 class="caption" id="yerkes-caption"> Now that we know about the Yerkes-Dodson model, let's visualize<br>
+            the stress levels (now measured in body temperature) among<br>
+            different student stress types!
+        </h5>
+        <p>Click below to run the animation.</p>
+        <br>
+        <div class="button-group">
+            <button id="animate-groups-btn">Run Animation</button>
+            <button id="reset-groups-btn">Reset</button>
+        </div>
+
+        <div class="chart-row">
+            <div class="chart-container hidden">
+              <h3>Low Stress Student</h3>
+              <svg id="group1-chart" width="500" height="400"></svg>
+            </div>
+            <div class="chart-container hidden">
+              <h3>Medium Stress Student</h3>
+              <svg id="group2-chart" width="500" height="400"></svg>
+            </div>
+            <div class="chart-container hidden">
+              <h3>High Stress Student</h3>
+              <svg id="group3-chart" width="500" height="400"></svg>
+            </div>
+        </div>
+        <br>
+        <!-- <h5>As we can see, the differences are small, but even little differences
+            in body temperature can impact test scores!
+        </h5> -->
+        <br>
+        <h6 class="scroll-down">Scroll down to input your results!</h6>
+
+    </section>
+        
+    <section class="hidden">
+        <h1>Predict Your Performance</h1>
+        <h5 class="caption">Input your stress indicators to see how they might affect your test performance</h5>
+        
+        <div id="model-container">
+            <div id="input-panel">
+                <div class="input-group">
+                    <label for="temp-input">Body Temperature (°C)</label>
+                    <div class="slider-container">
+                        <input type="range" id="temp-input" min="35" max="38" step="0.1" value="36.5">
+                        <span class="value-display" id="temp-value">36.5</span>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="hr-input">Heart Rate (bpm)</label>
+                    <div class="slider-container">
+                        <input type="range" id="hr-input" min="60" max="120" step="1" value="80">
+                        <span class="value-display" id="hr-value">80</span>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="eda-input">EDA (µS)</label>
+                    <div class="slider-container">
+                        <input type="range" id="eda-input" min="0" max="20" step="0.1" value="5">
+                        <span class="value-display" id="eda-value">5.0</span>
+                    </div>
+                </div>
+                
+                <button id="predict-button">Predict Performance</button>
+            </div>
+            
+            <div id="result-panel">
+                <div class="bar-container">
+                    <div class="bar-labels-wrap">
+                        <div class="bar-labels">
+                            <span>F</span>
+                            <span>D</span>
+                            <span>C</span>
+                            <span>B</span>
+                            <span>A</span>
+                        </div>
+                    </div>
+                    <div class="bar-bg-wrap">
+                        <div class="bar-bg">
+                            <div class="bar-thresholds">
+                                <div class="bar-threshold" style="left: 20%;"></div>
+                                <div class="bar-threshold" style="left: 40%;"></div>
+                                <div class="bar-threshold" style="left: 60%;"></div>
+                                <div class="bar-threshold" style="left: 80%;"></div>
+                            </div>
+                            <div class="bar-fill" id="grade-bar"></div>
+                            <div class="bar-indicator" id="bar-indicator"></div>
+                        </div>
+                    </div>
+                    <div class="bar-grade-text" id="bar-grade-text">--</div>
+                </div>
+                <div class="score-details">
+                    <h3>Your Predicted Score</h3>
+                    <div class="score-breakdown">
+                        <div class="score-item">
+                            <span class="score-label">Overall Score</span>
+                            <span id="score-display" class="score-value">--</span>
+                        </div>
+                        <div class="score-item">
+                            <span class="score-label">Stress Type</span>
+                            <span id="stress-type" class="score-value">--</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <img src="among_us_static.webp" alt="among_us_static" id="au-static" width="90px" style="cursor:pointer;">
+    <img src="among_us_running.gif" alt="among_us_gif" id="au-gif" class="hidden" width="100px" style="cursor:pointer; display:none;">
+
+
 </body>
 </html>
+<!-- Legacy content: -->
+    <!-- <label>Temperature (°C) [36-38]: <input type="number" id="tempInput" min="36" max="38" step="0.5"></label><br>
+    <label>Heart Rate (bpm) [50-200]: <input type="number" id="hrInput" min="50" max="200" step="1"></label><br>
+    <label>EDA (µS) [0,10]: <input type="number" id="edaInput" min="0" max="10" step="0.25"></label><br><br> -->
