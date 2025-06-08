@@ -76,7 +76,7 @@ function createStudentChart({
     .attr("text-anchor", "middle")
     .attr("fill", "white")
     .attr("font-size", "14px")
-    .text("Time (seconds)");
+    .text("Time (minutes)");
 
     // Y-Axis Label
     g.append("text")
@@ -298,7 +298,7 @@ function createStudentChart2({
 
   g.append("g").attr("class", "x-axis").attr("transform", `translate(0,${height})`);
   g.append("g").attr("class", "y-axis");
-
+  g.select(".y-axis").call(d3.axisLeft(y).ticks(4));
   const studentDataRaw = testData.filter(d => d.student === studentID);
   if (!studentDataRaw.length) return;
 
