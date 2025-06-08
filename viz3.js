@@ -46,29 +46,54 @@ const groupColorScale = d3.scaleOrdinal()
       };
     });
   
+    // Rolling average smoothing function
+    function rollingAverage(data, windowSize, valueKey = 'value') {
+      return data.map((d, i) => {
+        const start = Math.max(0, i - windowSize + 1);
+        const window = data.slice(start, i + 1);
+        return {
+          ...d,
+          [valueKey]: d3.mean(window, item => item[valueKey])
+        };
+      });
+    }
+  
+    const windowSize = 5; // Change this to control smoothing
+    const smoothedData = rollingAverage(averagedData, windowSize);
+  
+    // Setup SVG dimensions and margins
     const svg = d3.select(svgSelector);
     const margin = { top: 20, right: 30, bottom: 50, left: 50 };
     const width = +svg.attr("width") - margin.left - margin.right;
     const height = +svg.attr("height") - margin.top - margin.bottom;
   
     const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+  
+    // Fixed x-axis domain 0 to 90 (minutes)
     const x = d3.scaleLinear().range([0, width]).domain([0, 90]);
     const y = d3.scaleLinear().range([height, 0]).domain([0, 4.5]);
-
+  
+    // Define the segment to show (data from 20 to 60) mapped onto full x-axis (0 to 90)
+    const startX = 20;
+    const endX = 60;
+    const originalMaxX = 90;
+  
+    // Compute slice indices for smoothedData
+    const startIndex = Math.floor((startX / originalMaxX) * (smoothedData.length - 1));
+    const endIndex = Math.floor((endX / originalMaxX) * (smoothedData.length - 1));
+    const filteredData = smoothedData.slice(startIndex, endIndex + 1);
+  
     // Add horizontal gridlines
     g.append("g")
-    .attr("class", "grid")
-    .call(
-      d3.axisLeft(y)
-        .tickSize(-width)  // Full width of chart
-        .tickFormat("")    // Hide tick labels
-    )
-    .attr("stroke-opacity", 0.1);  // Make gridlines faint
+      .attr("class", "grid")
+      .call(
+        d3.axisLeft(y)
+          .tickSize(-width)
+          .tickFormat("")
+      )
+      .attr("stroke-opacity", 0.1);
   
-    const line = d3.line()
-      .x((d, i) => x((i / (averagedData.length - 1)) * 90))
-      .y(d => y(d.value));
-  
+    // Add x and y axes
     g.append("g")
       .attr("transform", `translate(0,${height})`)
       .call(d3.axisBottom(x));
@@ -76,15 +101,28 @@ const groupColorScale = d3.scaleOrdinal()
     g.append("g")
       .call(d3.axisLeft(y));
   
+    // Define line generator with remapped x values
+    const line = d3.line()
+      .x((d, i) => {
+        // Original x value between startX and endX
+        const originalX = startX + (i / (filteredData.length - 1)) * (endX - startX);
+        // Remap [20,60] to [0,90]
+        const remappedX = ((originalX - startX) / (endX - startX)) * 90;
+        return x(remappedX);
+      })
+      .y(d => y(d.value));
+  
+    // Draw the smoothed line
     const path = g.append("path")
-      .datum(averagedData)
+      .datum(filteredData)
       .attr("fill", "none")
       .attr("stroke", groupColorScale(groupName))
       .attr("stroke-width", 2)
       .attr("d", line);
-    
+  
     const totalLength = path.node().getTotalLength();
-    
+  
+    // Animate path drawing
     path
       .attr("stroke-dasharray", `${totalLength} ${totalLength}`)
       .attr("stroke-dashoffset", totalLength)
@@ -93,7 +131,7 @@ const groupColorScale = d3.scaleOrdinal()
       .ease(d3.easeLinear)
       .attr("stroke-dashoffset", 0);
   
-    // Labels
+    // X-axis label
     g.append("text")
       .attr("class", "x-label")
       .attr("x", width / 2)
@@ -103,6 +141,7 @@ const groupColorScale = d3.scaleOrdinal()
       .attr("font-size", "14px")
       .text("Time (minutes)");
   
+    // Y-axis label
     g.append("text")
       .attr("class", "y-label")
       .attr("x", -height / 2)
