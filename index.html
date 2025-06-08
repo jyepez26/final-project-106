@@ -308,8 +308,8 @@
             </div>
             
             <div id="result-panel">
-                <div id="score-visualization">
-                    <div class="bar-container">
+                <div class="bar-container">
+                    <div class="bar-labels-wrap">
                         <div class="bar-labels">
                             <span>F</span>
                             <span>D</span>
@@ -317,23 +317,31 @@
                             <span>B</span>
                             <span>A</span>
                         </div>
+                    </div>
+                    <div class="bar-bg-wrap">
                         <div class="bar-bg">
+                            <div class="bar-thresholds">
+                                <div class="bar-threshold" style="left: 20%;"></div>
+                                <div class="bar-threshold" style="left: 40%;"></div>
+                                <div class="bar-threshold" style="left: 60%;"></div>
+                                <div class="bar-threshold" style="left: 80%;"></div>
+                            </div>
                             <div class="bar-fill" id="grade-bar"></div>
                             <div class="bar-indicator" id="bar-indicator"></div>
                         </div>
-                        <div class="bar-grade-text" id="bar-grade-text">--</div>
                     </div>
-                    <div class="score-details">
-                        <h3>Your Predicted Score</h3>
-                        <div class="score-breakdown">
-                            <div class="score-item">
-                                <span class="score-label">Overall Score</span>
-                                <span id="score-display" class="score-value">--</span>
-                            </div>
-                            <div class="score-item">
-                                <span class="score-label">Stress Type</span>
-                                <span id="stress-type" class="score-value">--</span>
-                            </div>
+                    <div class="bar-grade-text" id="bar-grade-text">--</div>
+                </div>
+                <div class="score-details">
+                    <h3>Your Predicted Score</h3>
+                    <div class="score-breakdown">
+                        <div class="score-item">
+                            <span class="score-label">Overall Score</span>
+                            <span id="score-display" class="score-value">--</span>
+                        </div>
+                        <div class="score-item">
+                            <span class="score-label">Stress Type</span>
+                            <span id="stress-type" class="score-value">--</span>
                         </div>
                     </div>
                 </div>

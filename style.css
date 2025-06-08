@@ -539,11 +539,11 @@ input[type="range"]::-webkit-slider-thumb:hover {
     color: #D3D3D3;
 }
 
-#score-display {
-    font-size: 2.5em;
-    font-weight: bold;
-    color: #2ea043;
-    margin: 0.2em 0;
+#score-display, .score-value {
+  font-size: 1.5em !important;
+  font-weight: bold;
+  color: #2ea043;
+  margin: 0.2em 0;
 }
 
 #stress-type {
@@ -731,7 +731,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 
 .bar-grade-text {
-  font-size: 2em;
+  font-size: 1.2em;
   color: #2ea043;
   font-weight: bold;
   margin-top: 0.5em;
