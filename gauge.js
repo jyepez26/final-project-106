@@ -1,19 +1,6 @@
 import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
 import { trainModel, predictGrade, findMostSimilarStudent , getGradeForStudentTest } from './newmodel.js';
-
-// Student name mapping
-const studentNames = {
-    'S1': 'Alex',
-    'S2': 'Jordan',
-    'S3': 'Taylor',
-    'S4': 'Casey',
-    'S5': 'Riley',
-    'S6': 'Morgan',
-    'S7': 'Jamie',
-    'S8': 'Quinn',
-    'S9': 'Drew',
-    'S10': 'Blake'
-};
+import { mapToName } from './title.js';
 
 // Initialize the model
 let model, features, minMax;
@@ -60,10 +47,10 @@ async function initializeModel() {
 initializeModel();
 
 // Function to update all visualizations
-function updateVisualizations(grade, studentName) {
+function updateVisualizations(grade, studentId) {
     requestAnimationFrame(() => {
         document.getElementById('score-display').textContent = grade.toFixed(2);
-        document.getElementById('stress-type').textContent = `Similar to ${studentName}`;
+        document.getElementById('stress-type').textContent = `Similar to ${mapToName(studentId)}`;
         updateBarDisplay(grade);
         updateGaugeDisplay(grade);
     });
@@ -182,15 +169,15 @@ async function predict() {
     try {
         const grade = await predictGrade(model, inputFeatures, minMax);
         const similarStudentFeature = findMostSimilarStudent(inputFeatures, features, minMax);
-
-        const closestStudentName = studentNames[similarStudentFeature.student] || similarStudentFeature.student;
-
+        const similarStudent = similarStudentFeature.student;
         const closestStudentGrade = getGradeForStudentTest(similarStudentFeature.originalStudentTest);
+
+        const closestStudentName = mapToName(similarStudent);
 
         console.log("Predicted grade:", grade);
         console.log("Closest student's actual grade:", closestStudentGrade);
 
-        updateVisualizations(grade, closestStudentName);
+        updateVisualizations(grade, similarStudent);
     } catch (error) {
         console.error("Prediction error:", error);
         alert("Error making prediction. Please try again.");
@@ -250,15 +237,56 @@ function getGradeLetter(score) {
 }
 
 function updateBarDisplay(score) {
-  // Map score (0.5-1.0) to percent (0-100)
-  const percent = Math.max(0, Math.min(1, (score - 0.5) / 0.5)) * 100;
-  const bar = document.getElementById('grade-bar');
-  const indicator = document.getElementById('bar-indicator');
-  const gradeText = document.getElementById('bar-grade-text');
+    // Map score (0.5-1.0) to percent (0-100)
+    const percent = Math.max(0, Math.min(1, (score - 0.5) / 0.5)) * 100;
+    
+    // Select the elements using D3
+    const bar = d3.select('#grade-bar');
+    const indicator = d3.select('#bar-indicator');
+    const gradeText = d3.select('#bar-grade-text');
 
-  bar.style.width = percent + '%';
-  indicator.style.left = `calc(${percent}% - 2px)`;
-  gradeText.textContent = getGradeLetter(score);
+    if (bar.empty() || indicator.empty() || gradeText.empty()) {
+        console.error('Required elements not found');
+        return;
+    }
+
+    // Reset and animate using D3
+    bar
+        .style('width', '0%')
+        .transition()
+        .duration(1000)
+        .ease(d3.easeCubicInOut)
+        .style('width', `${percent}%`);
+
+    indicator
+        .style('left', '0px')
+        .transition()
+        .duration(1000)
+        .ease(d3.easeCubicInOut)
+        .style('left', `calc(${percent}% - 2px)`);
+
+    gradeText.text(getGradeLetter(score));
 }
+
+// Initialize the bar display
+function initializeBarDisplay() {
+    const bar = d3.select('#grade-bar');
+    const indicator = d3.select('#bar-indicator');
+    const gradeText = d3.select('#bar-grade-text');
+    
+    if (!bar.empty() && !indicator.empty() && !gradeText.empty()) {
+        // Set initial state
+        bar.style('width', '0%');
+        indicator.style('left', '0px');
+        gradeText.text('--');
+    }
+}
+
+// Call initialization when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+    initializeBarDisplay();
+    // Add a small delay to ensure DOM is fully ready
+    setTimeout(initializeBarDisplay, 100);
+});
 
 export { updateGaugeDisplay };
