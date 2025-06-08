@@ -46,6 +46,12 @@ p, li{
     line-height: 1.6;
     color: #D3D3D3;
 }
+figcaption {
+  font-size: 8px;
+  font-weight: 100;
+  align-items: center;
+
+}
 
 #title{
   font-size: 250%
@@ -72,10 +78,6 @@ p, li{
   min-width: 0;
 }
 
-ol {
-  font-size: 20px;
-}
-
 section {
     display: grid;
     place-items: center;
@@ -85,13 +87,11 @@ section {
 
 svg{
     font-family: Roboto, serif;
-;
 }
 
 /* Properties */
 .line{
     fill: none;
-    stroke: steelblue;
     stroke-width: 2px;
 }
 
@@ -108,12 +108,14 @@ svg{
     filter: blur(0);
     transform: translateX(0);
 }
-.caption {
+.caption, .student-chart {
   margin-top:1.5em;
   font-size:65%;
   opacity: 0.9;
 }
-
+.student-chart {
+  overflow: visible; /* allows anything that might overflow margins */
+}
 /* Vis 1 and 2*/
 #m1-hr-row, #m2-hr-row, #fi-hr-row{
   display: flex;
