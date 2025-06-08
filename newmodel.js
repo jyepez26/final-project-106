@@ -20,7 +20,7 @@ export async function loadTempData(csv) {
 }
 
 // Load grades
-const gradesCsv = await d3.csv("../data/grades_df.csv");
+const gradesCsv = await d3.csv("./data/grades_df.csv");
 const gradesByTest = {};
 
 // e.g. gradesByTest["S1_Midterm 1"] = 0.78;
