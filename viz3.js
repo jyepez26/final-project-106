@@ -21,6 +21,21 @@ const studentGroups = {
     "High Stress": ["S9"]
   };
 
+const groupAnnotations = {
+  "Low Stress": {
+    message: "Stable EDA response at a low level.",
+    pointIndex: 5  // index in filteredData to place annotation
+  },
+  "Medium Stress": {
+    message: "Not very high EDA response levels, but fluctuates more than low stress group.",
+    pointIndex: 10
+  },
+  "High Stress": {
+    message: "Migh higher EDA response level, with sharp spikes that reach high levels.",
+    pointIndex: 15
+  }
+};
+
 const groupColorScale = d3.scaleOrdinal()
   .domain(Object.keys(studentGroups))
   .range(d3.schemeCategory10);
@@ -124,12 +139,65 @@ const groupColorScale = d3.scaleOrdinal()
   
     // Animate path drawing
     path
-      .attr("stroke-dasharray", `${totalLength} ${totalLength}`)
-      .attr("stroke-dashoffset", totalLength)
-      .transition()
-      .duration(5000)
-      .ease(d3.easeLinear)
-      .attr("stroke-dashoffset", 0);
+    .attr("stroke-dasharray", `${totalLength} ${totalLength}`)
+    .attr("stroke-dashoffset", totalLength)
+    .transition()
+    .duration(5000)
+    .ease(d3.easeLinear)
+    .attr("stroke-dashoffset", 0);
+
+    // === Annotation setup: centered with line break ===
+    const { message } = groupAnnotations[groupName] || {};
+    const maxY = d3.max(filteredData, d => d.value);
+
+    // Centered X and slightly above max Y
+    const centerX = ((startX + endX) / 2 - startX) / (endX - startX) * 90;
+    const cx = x(centerX);
+    const cy = y(maxY) - 30;  // Adjust vertical position as needed
+
+    // Split message into lines (manually or using simple logic)
+    const lines = message.length > 50
+      ? [message.slice(0, message.lastIndexOf(" ", 50)), message.slice(message.lastIndexOf(" ", 50) + 1)]
+      : [message];
+
+    // Annotation group
+    const annotationGroup = g.append("g").attr("opacity", 0);
+
+    // Add multi-line text
+    const text = annotationGroup.append("text")
+      .attr("x", cx)
+      .attr("y", cy)
+      .attr("fill", "white")
+      .attr("font-size", "16px")
+      .attr("text-anchor", "middle");
+
+    lines.forEach((line, i) => {
+      text.append("tspan")
+        .text(line)
+        .attr("x", cx)
+        .attr("dy", i === 0 ? 0 : "1.2em");  // first line stays, next lines shift down
+    });
+
+    // Wait for BBox after text renders
+    requestAnimationFrame(() => {
+      const bbox = text.node().getBBox();
+      annotationGroup.insert("rect", "text")
+        .attr("x", bbox.x - 6)
+        .attr("y", bbox.y - 4)
+        .attr("width", bbox.width + 12)
+        .attr("height", bbox.height + 8)
+        .attr("fill", "black")
+        .attr("opacity", 0.6)
+        .attr("rx", 4)
+        .attr("ry", 4);
+
+      // Fade in annotation
+      annotationGroup
+        .transition()
+        .duration(1000)
+        .delay(100)
+        .attr("opacity", 1);
+    });
   
     // X-axis label
     g.append("text")
