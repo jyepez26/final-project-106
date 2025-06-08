@@ -19,23 +19,36 @@ export async function loadTempData(csv) {
   }));
 }
 
+// Load grades
+const gradesCsv = await d3.csv("../data/grades_df.csv");
+const gradesByTest = {};
+
+// e.g. gradesByTest["S1_Midterm 1"] = 0.78;
+gradesCsv.forEach(row => {
+  const student = row.Student;
+  gradesByTest[`${student}_Midterm 1`] = parseFloat(row["Midterm 1"]);
+  gradesByTest[`${student}_Midterm 2`] = parseFloat(row["Midterm 2"]);
+  gradesByTest[`${student}_Final`] = parseFloat(row["Final"]);
+});
+
 async function trainModel() {
   const hrData = (await loadData('./data/HR_df.csv')).filter(Boolean);
   const edaData = (await loadData('./data/EDA_df.csv')).filter(Boolean);
   const tempData = (await loadTempData('./data/TEMP_df.csv')).filter(Boolean);
 
-  function groupByStudent(data) {
+  function groupByStudentAndTest(data) {
     const grouped = {};
-    data.forEach(({ student, value }) => {
-      if (!grouped[student]) grouped[student] = [];
-      grouped[student].push(value);
+    data.forEach(({ student, test, value }) => {
+      const key = `${student}_${test}`;
+      if (!grouped[key]) grouped[key] = [];
+      grouped[key].push(value);
     });
     return grouped;
   }
 
-  const groupedTemp = groupByStudent(tempData);
-  const groupedHr = groupByStudent(hrData);
-  const groupedEda = groupByStudent(edaData);
+  const groupedTemp = groupByStudentAndTest(tempData);
+  const groupedHr = groupByStudentAndTest(hrData);
+  const groupedEda = groupByStudentAndTest(edaData);
 
   const mean = arr => arr.reduce((sum, v) => sum + v, 0) / arr.length;
   const std = arr => {
@@ -43,21 +56,39 @@ async function trainModel() {
     return Math.sqrt(arr.reduce((acc, val) => acc + (val - m) ** 2, 0) / arr.length);
   };
 
-  const students = Object.keys(groupedTemp);
-  const features = students.map(student => {
-    const tempVals = groupedTemp[student] || [];
-    const hrVals = groupedHr[student] || [];
-    const edaVals = groupedEda[student] || [];
+  const bootstrapStudentStats = (studentTestKey, nSamples = 5, sampleRatio = 0.7) => {
+    const tempVals = groupedTemp[studentTestKey] || [];
+    const hrVals = groupedHr[studentTestKey] || [];
+    const edaVals = groupedEda[studentTestKey] || [];
+  
+    const samples = [];
+  
+    for (let i = 0; i < nSamples; i++) {
+      const tempSample = d3.shuffle(tempVals).slice(0, Math.floor(tempVals.length * sampleRatio));
+      const hrSample = d3.shuffle(hrVals).slice(0, Math.floor(hrVals.length * sampleRatio));
+      const edaSample = d3.shuffle(edaVals).slice(0, Math.floor(edaVals.length * sampleRatio));
+  
+      samples.push({
+        student: studentTestKey + `_sample${i}`,
+        originalStudentTest: studentTestKey,
+        tempMean: mean(tempSample),
+        tempStd: std(tempSample),
+        hrMean: mean(hrSample),
+        hrStd: std(hrSample),
+        edaMean: mean(edaSample),
+        edaStd: std(edaSample),
+      });
+    }
+  
+    return samples;
+  };
 
-    return {
-      student,
-      tempMean: mean(tempVals),
-      tempStd: std(tempVals),
-      hrMean: mean(hrVals),
-      hrStd: std(hrVals),
-      edaMean: mean(edaVals),
-      edaStd: std(edaVals),
-    };
+  const sampleKeys = Object.keys(groupedTemp); // keys like "S1_Midterm 1"
+  let features = [];
+
+  sampleKeys.forEach(key => {
+    const studentSamples = bootstrapStudentStats(key, 10); // 5 bootstraps per test
+    features.push(...studentSamples);
   });
 
   const normalize = (val, min, max) => (val - min) / (max - min);
@@ -80,10 +111,14 @@ async function trainModel() {
     f.edaMeanU = uShape(edaNorm);
   });
 
-  const grades = {
-    'S1': 0.84, 'S2': 0.86, 'S3': 0.87, 'S4': 0.75, 'S5': 0.74,
-    'S6': 0.74, 'S7': 0.51, 'S8': 0.91, 'S9': 0.61, 'S10': 0.70,
-  };
+  const gradeValues = Object.values(gradesByTest);
+  const minGrade = Math.min(...gradeValues);
+  const maxGrade = Math.max(...gradeValues);
+
+  const yNormalized = features.map(f => {
+    const g = gradesByTest[f.originalStudentTest];
+    return (g - minGrade) / (maxGrade - minGrade);
+  });
 
   const X = features.map(f => [
     f.tempMean, f.tempStd,
@@ -92,21 +127,19 @@ async function trainModel() {
     f.tempMeanU, f.hrMeanU, f.edaMeanU,
   ]);
 
-  const gradeValues = Object.values(grades);
-  const minGrade = Math.min(...gradeValues);
-  const maxGrade = Math.max(...gradeValues);
-
-  const yNormalized = features.map(f => {
-    const g = grades[f.student];
-    return (g - minGrade) / (maxGrade - minGrade);
-  });
+  console.log(X);
+  
+  // const yNormalized = features.map(f => {
+  //   const g = grades[f.originalStudent]; // Use the original student for grade
+  //   return (g - minGrade) / (maxGrade - minGrade);
+  // });
 
   const xTensor = tf.tensor2d(X);
   const yTensor = tf.tensor2d(yNormalized, [yNormalized.length, 1]);
 
   const model = tf.sequential();
   model.add(tf.layers.dense({ inputShape: [X[0].length], units: 10, activation: 'relu' }));
-  model.add(tf.layers.dense({ units: 1 }));
+  model.add(tf.layers.dense({ units: 1, activation: 'sigmoid' }));
 
   model.compile({ optimizer: 'adam', loss: 'meanSquaredError' });
 
@@ -126,7 +159,7 @@ async function trainModel() {
     gradeMax: maxGrade,
   };
 
-  console.log("done training!");
+  console.log("done training with bootstrapped data!");
   return { model, minMax, features };
 }
 
@@ -147,11 +180,13 @@ async function predictGrade(model, features, minMax) {
 
   const inputTensor = tf.tensor2d([inputFeatures]);
   // const predictionTensor = model.predict(inputTensor);
-  const rawPredictions = model.predict(inputTensor); // Tensor
-  const normalizedPredictions = rawPredictions.sigmoid(); // Apply sigmoid manually
+  const rawPredictions = model.predict(inputTensor);
+  const predictionNormalized = (await rawPredictions.data())[0];
 
-  const predictionNormalized = (await normalizedPredictions.data())[0];
-  const prediction = predictionNormalized * (minMax.gradeMax - minMax.gradeMin) + minMax.gradeMin;
+  // Clamp between 0 and 1 (just in case)
+  const clampedPrediction = Math.min(Math.max(predictionNormalized, 0), 1);
+
+  const prediction = clampedPrediction * (minMax.gradeMax - minMax.gradeMin) + minMax.gradeMin;
 
   console.log("Predicted grade:", prediction);
   return prediction;

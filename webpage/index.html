@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final Project DSC 106</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="app.js"></script>
+    <script type="module" src="viz3.js"></script>
+    <script type="module" src="gauge.js"></script>
+    <script type="module" src="newmodel.js"></script>
+    <script type="module" src="combine.js"></script>
+    <script type="module" src="model.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.15.0/dist/tf.min.js"></script>
+</head>
+<body>
+    <div id="tooltip" style="
+        position: absolute;
+        background: rgba(0,0,0,0.7);
+        color: white;
+        padding: 6px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.2s;
+    "></div>
+    <section class="hidden">
+        <h1>Does a Relaxed Test Taker Always Do Better than a Stressed One?</h1>
+        <h2>DSC 106 Final Project</h2>
+        <br>
+        <h3>Scroll down to continue</h3>
+        <img src="greenarow.png" alt="downarrow" width="80px">
+    </section>
+
+    <section class="hidden">
+        <div id="intro-row">
+            <div id="intro-left-col">
+                <p>Test-taking is a universal experience that often comes with varying levels of stress. While some students thrive under pressure, others may find their performance hindered by anxiety. This project explores the relationship between stress levels and test performance through the lens of the Yerkes-Dodson Law, which suggests that performance increases with stress up to an optimal point, after which it decreases.</p>
+        
+                <p>We measure stress through 3 key physiological indicators:</p>
+                <ol>
+                    <li><strong>Electrodermal Activity (EDA):</strong> Measures the electrical conductance of the skin, which increases with sweat production. This is a direct indicator of emotional arousal and stress levels.</li>
+                    <li><strong>Heart Rate (HR):</strong> Tracks the number of heartbeats per minute, which typically increases during periods of stress or physical activity.</li>
+                    <li><strong>Skin Surface Temperature (Temp):</strong> Tracks the body temperature (measured in °C) of test taker, which typically increases during stress or physical activity.</li>
+                </ol>
+            </div>
+            <div id="intro-right-col">
+                <p>By analyzing these stress indicators during actual test-taking scenarios, we can gain insights into how stress patterns evolve throughout a test, whether there's a correlation between stress levels and test performance, if different students handle test stress differently, and what stress patterns might indicate optimal performance.</p>
+                <p>Explore the visualizations below to see how stress indicators vary across different students and tests, and discover what these patterns might tell us about the relationship between stress and performance.</p>
+            </div>
+        </div>
+        <br>
+        <br>
+        <img src="greenarow.png" alt="downarrow" width="80px">
+    </section>
+
+    <section class="hidden">
+        <h1>Visualization 1: Visualizating Student Heart Rate Data During Exams</h1>
+        <h4>First, let's look at the heart rate of students over the duration of
+            three different exams!
+        </h4>
+        <br>
+        <br>
+        <div id="m1-hr-row">
+            <div id="m1-hr-left-col">
+                <h3>Midterm 1</h3>
+                <div id="plot">
+                    <svg id="midterm1-chart" width="800" height="400"></svg>
+                    <select id="student-select1">
+                        <option value="S1">Student 1</option>
+                        <option value="S2">Student 2</option>
+                        <option value="S3">Student 3</option>
+                        <option value="S4">Student 4</option>
+                        <option value="S5">Student 5</option>
+                        <option value="S6">Student 6</option>
+                        <option value="S7">Student 7</option>
+                        <option value="S8">Student 8</option>
+                        <option value="S9">Student 9</option>
+                        <option value="S10">Student 10</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="m1-hr-right-col">
+                <h5>
+                    It is known that most students will experience some levels
+                    of stress during an exam.
+                </h5>
+                <p>Select a student to see their heart rate data!</p>
+                <img src="greenarow.png" alt="downarrow" width="50px">
+            </div>
+        </div>
+    </section>
+    
+    <section class="hidden">
+        <div id="m2-hr-row">
+            <div id="m2-hr-left-col">
+                <h3>Midterm 2</h3>
+                <div id="plot">
+                    <svg id="midterm2-chart" width="800" height="400"></svg>
+                    <select id="student-select2">
+                        <option value="S1">Student 1</option>
+                        <option value="S2">Student 2</option>
+                        <option value="S3">Student 3</option>
+                        <option value="S4">Student 4</option>
+                        <option value="S5">Student 5</option>
+                        <option value="S6">Student 6</option>
+                        <option value="S7">Student 7</option>
+                        <option value="S8">Student 8</option>
+                        <option value="S9">Student 9</option>
+                        <option value="S10">Student 10</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="m2-hr-right-col">
+                <h6>
+                    Commonly, people have a negative perception of stress. It is 
+                    only natural as stress is a scary feeling different from a human's
+                    normal state.
+                </h6>
+                <p>Select a student to see their heart rate data!</p>
+                <img src="greenarow.png" alt="downarrow" width="50px">
+            </div>
+        </div>
+    </section>
+        
+    <section class="hidden">
+        <div id="fi-hr-row">
+            <div id="fi-hr-left-col">
+                <h3>Final</h3>
+                <div id="plot">
+                    <svg id="final-chart" width="800" height="400"></svg>
+                    <select id="student-select3">
+                        <option value="S1">Student 1</option>
+                        <option value="S2">Student 2</option>
+                        <option value="S3">Student 3</option>
+                        <option value="S4">Student 4</option>
+                        <option value="S5">Student 5</option>
+                        <option value="S6">Student 6</option>
+                        <option value="S7">Student 7</option>
+                        <option value="S8">Student 8</option>
+                        <option value="S9">Student 9</option>
+                        <option value="S10">Student 10</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="fi-hr-right-col">
+                <h6>
+                    Our data shows there is definitely a heightened/fluctuating
+                    heart rate during exams. This is evidence that
+                    students are stressed during exams! That's a bad thing...
+                    right?
+                </h6>
+                <p>Select a student to see their heart rate data!</p>
+                <img src="greenarow.png" alt="downarrow" width="50px">
+            </div>
+        </div>
+        <br>
+        <h3>Visualization 1 Takeaways</h3>
+        <p>We have now seen the heart rates of different students across different
+            tests! Use this knowledge that you gained moving forward to the next
+            visualizations!
+            Some points to note:
+             1. Midterm 1 and 2 both have a trend of high stress at beginning and end and lower stress in the middle.
+             2. Final Exam seems to have more of a gradual increase in stress over the time of the exam. This may be due to
+             the longer amount of time, where at the beginning you feel like you have plenty of time, but once you get
+             further in the test, you realize you don't have as much as you thought and the stress levels begin to increase!
+        </p>
+        <br>
+        <img src="greenarow.png" alt="downarrow" width="80px">
+        <br>
+    </section>
+
+    <section class="hidden">
+        <h1>Visualization 2: Compare Student Stress Patterns</h1>
+        <h5>We often assume that lower stress leads to better test performance.<br>But is that always true? Watch as two students' stress levels
+            evolve throughout their final exam,<br>and see if you can spot the relationship between stress patterns and performance.</h5>
+        <br>
+        
+        <div id="plot">
+            <svg id="comparison-chart" width="800" height="400"></svg>
+            <div id="guess-buttons" style="margin-top: 20px; text-align: center;"></div>
+            <div id="result" style="margin-top: 20px; text-align: center;"></div>
+        </div>
+
+        <h5>Look for patterns in how stress changes during different parts of the exam.<br>
+            When you make your guess, consider not just the average stress level, but how it fluctuates over time.</h5>
+    </section>
+
+    <section class="hidden">
+        <h1>Understanding the Results</h1>
+        <h5>You might have noticed that students with higher stress levels sometimes performed better than those with lower stress.<br>
+            This isn't a coincidence - it's explained by the Yerkes-Dodson Law, which shows the relationship between stress and performance.</h5>
+        
+        <div id="plot">
+            <svg id="yerkes-chart" width="800" height="400"></svg>
+        </div>
+
+        <h5>Watch how performance changes with stress levels. Notice the "sweet spot"<br>where moderate stress leads to optimal performance.<br>
+            This helps explain why some students perform better with higher stress -<br>they might be operating closer to their optimal stress level.</h5>
+        <br>
+        <img src="greenarow.png" alt="downarrow" width="80px">
+        <br>
+    </section>
+
+    <section class="hidden">
+        <h1>Visualization 3</h1>
+        <h5>Now that we know about the Yerkes-Dodson model, let's visualize<br>
+            the stress levels (now measured in body temperature) among<br>
+            different student stress types!
+        </h5>
+        <p>Click below to run the animation.</p>
+        <br>
+        <div class="button-group">
+            <button id="animate-groups-btn">Run Animation</button>
+            <button id="reset-groups-btn">Reset</button>
+        </div>
+
+        <div class="chart-row">
+            <div class="chart-container hidden">
+              <h3>Low Stress Student</h3>
+              <svg id="group1-chart" width="500" height="400"></svg>
+            </div>
+            <div class="chart-container hidden">
+              <h3>Medium Stress Student</h3>
+              <svg id="group2-chart" width="500" height="400"></svg>
+            </div>
+            <div class="chart-container hidden">
+              <h3>High Stress Student</h3>
+              <svg id="group3-chart" width="500" height="400"></svg>
+            </div>
+        </div>
+        <br>
+        <h5>As we can see, the differences are small, but even little differences
+            in body temperature can impact test scores!
+        </h5>
+        <br>
+        <img src="greenarow.png" alt="downarrow" width="80px">
+        <br>
+    </section>
+        
+    <section class="hidden">
+        <h1>Predictive Model</h1>
+        <h5>We can now see how statistics for different measures of stress
+            impact test grades.<br>Play with the predictive model and discover what
+            type of student you are!
+        </h5>
+        <br>
+        <div id="model-row">
+            <div id="predict-left-col">
+                <h4>Input values for each stress indicator:</h4>
+                <label>Temperature (°C) [36-38]: <input type="number" id="tempInput" min="36" max="38" step="0.5"></label><br>
+                <label>Heart Rate (bpm) [50-200]: <input type="number" id="hrInput" min="50" max="200" step="1"></label><br>
+                <label>EDA (µS) [0,10]: <input type="number" id="edaInput" min="0" max="10" step="0.25"></label><br><br>
+                <button id="predict-button">Predict Grade</button>
+            </div>
+    
+            <div id="predict-right-col">
+                <p>Predicted Grade: <span id="gradeResult">N/A</span></p>
+                <p>Most Similar Student: <span id="similarStudent">N/A</span></p>
+    
+                <svg id="gauge" width="400" height="250"></svg>
+                <p>Grade Predictor</p>
+            </div>
+
+            <div id="predict-right-extra">
+                <p></p>
+            </div>
+        </div>
+        <br>
+        <h3>On your next test, if you are feeling stressed, don't worry too
+            much<br>because chances are it might just make you perform better!
+        </h3>
+    </section>
+    <!-- <img src="frog.jpg" alt="frog-pic"> -->
+    <img src="among_us_static.webp" alt="among_us_static" id="au-static" width="90px" style="cursor:pointer;">
+    <img src="among_us_running.gif" alt="among_us_gif" id="au-gif" class="hidden" width="100px" style="cursor:pointer; display:none;">
+
+</body>
+</html>
