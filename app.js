@@ -286,6 +286,126 @@ function createStudentChart2({
     .attr("stroke-dashoffset", 0);
 }
 
+// for test
+function createStudentChart3({
+  rawData,
+  testName,
+  svgSelector,
+  studentID,
+}) {
+    const studentColors = {
+    "S1": "#1f77b4",
+    "S2": "#ff7f0e",
+    "S3": "#2ca02c",
+    "S4": "#d62728",
+    "S5": "#9467bd",
+    "S6": "#8c564b",
+    "S7": "#e377c2",
+    "S8": "#7f7f7f",
+    "S9": "#bcbd22",
+    "S10": "#17becf"
+  };
+  
+  let testData = rawData
+    .filter(d => d.test === testName)
+    .map(d => ({ ...d, value: +d.value }));
+  console.log(testData);
+
+  const svg = d3.select(svgSelector);
+  const margin = { top: 20, right: 50, bottom: 40, left: 40 };
+  const bbox = svg.node().getBoundingClientRect();
+  const width = bbox.width - margin.left - margin.right;
+  const height = bbox.height - margin.top - margin.bottom;
+
+  const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+  const x = d3.scaleLinear().range([0, width]);
+  const y = d3.scaleLinear().range([height, 0]);
+  // Automatically draw all final charts for S1–S10
+  // Set the domains for your scales
+  x.domain(d3.extent(testData, d => d.time)); // Replace with your actual x property
+  y.domain(d3.extent(testData, d => d.value));
+
+  const color = studentColors[studentID] || "white";
+
+  // Create axis generators
+  const xAxis = d3.axisBottom(x);
+  const yAxis = d3.axisLeft(y);
+
+  // Add and call the axes
+  g.append("g")
+    .attr("class", "x-axis")
+    .attr("transform", `translate(50, ${height})`)
+    .call(xAxis);
+
+  g.append("g")
+    .attr("class", "y-axis")
+    .attr("transform", `translate(50, 0)`)
+    .call(yAxis);
+  
+  svg.append("text")
+    .attr("text-anchor", "middle")
+    .attr("x", 450)
+    .attr("y", height + margin.bottom + 10)
+    .text("Minutes")
+    .style("fill", "#F3F3F3")
+    .style("font-size", "14px");
+
+  svg.append("text")
+    .attr("text-anchor", "middle")
+    .attr("transform", `rotate(-90)`)
+    .attr("x", -height / 2 - margin.bottom + 50)
+    .attr("y", 50)
+    .text("Heart Beats per Minute")
+    .style("fill", "#F3F3F3")
+    .style("font-size", "14px");
+
+  g.select(".y-axis").call(d3.axisLeft(y).ticks(4));
+  const studentDataRaw = testData.filter(d => d.student === studentID);
+  if (!studentDataRaw.length) return;
+
+  const group1 = d3.groups(studentDataRaw, (d, i) => Math.floor(i / 5));
+  const maxData1 = group1.map(([key, values]) => ({
+    category: key,
+    time: d3.min(values, d => d.time),
+    value: d3.max(values, d => d.value)
+  }));
+  const processedData = rollingAverageOnObjects(maxData1, 30, 'value');
+
+  const totalMinutes = testName === 'Final' ? 180 : 90;
+  x.domain([0, totalMinutes]);
+  y.domain([0, 160]);
+
+  const line = d3.line()
+    .x((d, i) => x((i / (processedData.length - 1)) * totalMinutes))
+    .y(d => y(d.value));
+
+  g.select(".x-axis").call(d3.axisBottom(x)); 
+  g.select(".y-axis").call(d3.axisLeft(y));
+
+
+  const path = g.append("path")
+    .datum(processedData)
+    .attr("fill", "none")
+    .attr("stroke", color)  
+    .attr("stroke-width", 2)
+    .attr("d", line);
+
+  const totalLength = path.node().getTotalLength();
+  path
+    .attr("stroke-dasharray", totalLength + " " + totalLength)
+    .attr("stroke-dashoffset", totalLength)
+    .attr("transform", `translate(50, 0)`)
+    .transition()
+    .duration(4000)
+    .ease(d3.easeLinear)
+    .attr("stroke-dashoffset", 0);
+  
+  const avg = d3.mean(processedData, (d) => d.value);
+  console.log(avg);
+  console.log('xDomain', x.domain()[1]);
+  console.log('yDomain', y.domain()[1]);
+  // const avg_point1 = {time: x.domain}
+}
 
 // Creates grid of charts!
 ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10"].forEach(studentID => {
@@ -301,13 +421,13 @@ function createStudentChart2({
 // Create all charts!
 
 const chartInitializers = {
-    "midterm1-chart": () => createStudentChart2({
+    "midterm1-chart": () => createStudentChart3({
       rawData,
       testName: "Midterm 2",
       svgSelector: "#midterm1-chart",
       studentID: "S3"
     }),
-    "midterm2-chart": () => createStudentChart2({
+    "midterm2-chart": () => createStudentChart3({
       rawData,
       testName: "Midterm 2",
       svgSelector: "#midterm2-chart",
