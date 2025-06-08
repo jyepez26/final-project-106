@@ -26,10 +26,10 @@ export async function createStudentComparison() {
         student2 = getRandomStudent();
         } while (student1 === student2)
     
-    // Only log if both students are defined
-    if (student1 && student2) {
-        console.log(`Selected students: ${student1} ${student2}`);
-    }
+    // // Only log if both students are defined
+    // if (student1 && student2) {
+    //     console.log(`Selected students: ${student1} ${student2}`);
+    // }
 
     // Filter data for selected students
     const student1Data = edaData

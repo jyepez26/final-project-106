@@ -197,7 +197,7 @@ svg{
   font-size: 40%;
   opacity: 0.7;
   margin-bottom: 0em;
-  margin-left: 44px; 
+  margin-left: 35px; 
 }
 #yerkes-plot-container {
   margin-right:30px;
@@ -216,18 +216,20 @@ svg{
     grid-column: 1;
     grid-row: 1 / span 2;
     min-width: 300px;
-    background-color: #238636;
-    padding: 10px;
+    background-color: none;
+    padding: 50px;
     border-radius: 8px;
-} #predict-right-col {
+} 
+#predict-right-col {
     grid-column: 2;
     grid-row: 1;
     flex: 1;
     min-width: 300px;
     width: 15em;
-    background-color: #7c9dc1;
-    padding: 10px;
+    background-color: none;
+    padding: 50px;
     border-radius: 8px;
+    align-items: center;
   }
 
   #predict-right-extra {
@@ -246,6 +248,64 @@ svg{
     margin-top: 2em;  
   }
 
+/* predict-left css */
+
+
+#predict-caption {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.slider-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr auto;
+    gap: 10px 15px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.slider-label {
+    text-align: right;
+    padding-right: 5px;
+    font-weight: 200;
+    font-size: 70%
+}
+
+.slider-container {
+    display: flex;
+    align-items: center;
+}
+
+input[type="range"] {
+    width: 100%;
+    margin: 0;
+}
+
+.value-display {
+  font-weight: 200;
+  min-width: 60px;
+  text-align: left;
+  padding-left: 5px;
+  font-size: 50%
+
+}
+
+#predict-button {
+    grid-column: 1 / -1;
+    justify-self: center;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+#predict-button:hover {
+    background-color: #0056b3;
+}
 
 /* Cards */
 .flex-container {

@@ -283,28 +283,29 @@
         <div id="model-row">
             <div id="predict-left-col">
                 <h4 id="predict-caption"> Play with the Slider!</h4>
-                <!-- <label>Temperature (°C) [36-38]: <input type="number" id="tempInput" min="36" max="38" step="0.5"></label><br>
-                <label>Heart Rate (bpm) [50-200]: <input type="number" id="hrInput" min="50" max="200" step="1"></label><br>
-                <label>EDA (µS) [0,10]: <input type="number" id="edaInput" min="0" max="10" step="0.25"></label><br><br> -->
-                <label>
-                Temperature (°C) [36–38]:
-                <input type="range" id="tempInput" min="36" max="38" step="0.5" oninput="tempValue.textContent = this.value">
-                <span id="tempValue">36</span>
-                </label><br>
+                
+                <div class="slider-grid">
+                    <div class="slider-label">Temperature:</div>
+                    <div class="slider-container">
+                        <input type="range" id="tempInput" min="36" max="38" step="0.5" oninput="tempValue.textContent = `${this.value} °C`">
+                    </div>
+                    <span id="tempValue" class="value-display">36 °C</span>
 
-                <label>
-                Heart Rate (bpm) [50–200]:
-                <input type="range" id="hrInput" min="50" max="200" step="1" oninput="hrValue.textContent = this.value">
-                <span id="hrValue">50</span>
-                </label><br>
+                    <div class="slider-label">Heart Rate:</div>
+                    <div class="slider-container">
+                        <input type="range" id="hrInput" min="50" max="200" step="1" oninput="hrValue.textContent = `${this.value} bpm`">
+                    </div>
+                    <span id="hrValue" class="value-display">50 bpm</span>
 
-                <label>
-                EDA (µS) [0–10]:
-                <input type="range" id="edaInput" min="0" max="10" step="0.25" oninput="edaValue.textContent = this.value">
-                <span id="edaValue">0</span>
-                </label><br><br>
+                    <div class="slider-label">EDA:</div>
+                    <div class="slider-container">
+                        <input type="range" id="edaInput" min="0" max="10" step="0.25" oninput="edaValue.textContent = `${this.value} µS`">
+                    </div>
+                    <span id="edaValue" class="value-display">5 µS</span>
+
                     <button id="predict-button">Predict Grade</button>
                 </div>
+            </div>
     
             <div id="predict-right-col">
                 <h4> The Gradometer </h4>
@@ -320,8 +321,8 @@
         </div>
         <br>
         <h5 class="caption"> Taking a test is more about finding your footing and finding your own 
-            sweet spot. <br> Before your next test, you should discover your own optimal amount of stress. Thanks
-            you for viewing. 
+            sweet spot. <br> Before your next test, you should discover your own optimal amount of stress. <br> Thank
+            you for watching. 
         </h5>
     </section>
     <img src="among_us_static.webp" alt="among_us_static" id="au-static" width="90px" style="cursor:pointer;">
@@ -330,3 +331,7 @@
 
 </body>
 </html>
+<!-- Legacy content: -->
+    <!-- <label>Temperature (°C) [36-38]: <input type="number" id="tempInput" min="36" max="38" step="0.5"></label><br>
+    <label>Heart Rate (bpm) [50-200]: <input type="number" id="hrInput" min="50" max="200" step="1"></label><br>
+    <label>EDA (µS) [0,10]: <input type="number" id="edaInput" min="0" max="10" step="0.25"></label><br><br> -->
