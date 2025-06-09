@@ -582,6 +582,8 @@ svg.append("text")
   .attr("fill", "white")
   .attr("opacity", 0.8)
   .text("Heart Rate (bpm)");
+
+  
 // annotation(
 //   "#midterm1-chart", 150, 220, "Beginning");
 addRectangle(
