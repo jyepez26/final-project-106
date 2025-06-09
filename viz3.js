@@ -167,7 +167,7 @@ const groupColorScale = d3.scaleOrdinal()
     const text = annotationGroup.append("text")
       .attr("x", cx)
       .attr("y", cy)
-      .attr("fill", "white")
+      .attr("fill", "black")
       .attr("font-size", "16px")
       .attr("text-anchor", "middle");
 
@@ -186,8 +186,8 @@ const groupColorScale = d3.scaleOrdinal()
         .attr("y", bbox.y - 4)
         .attr("width", bbox.width + 12)
         .attr("height", bbox.height + 8)
-        .attr("fill", "black")
-        .attr("opacity", 0.6)
+        .attr("fill", "white")
+        .attr("opacity", 0.8)
         .attr("rx", 4)
         .attr("ry", 4);
 
