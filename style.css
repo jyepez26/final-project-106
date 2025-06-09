@@ -393,11 +393,11 @@ input[type="range"] {
 }
 
 .card:nth-child(3) .card-front {
-    background: linear-gradient(135deg, #ffd89b, #19547b);
+    background: linear-gradient(135deg, #ff4d4d, #cc0000);
 }
 
 .card:nth-child(3) .card-back {
-    background: linear-gradient(135deg, #19547b, #ffd89b);
+    background: linear-gradient(135deg, #cc0000, #ff4d4d);
 }
 
 .flip-hint {
