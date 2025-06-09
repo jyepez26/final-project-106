@@ -585,7 +585,7 @@ const svg = d3.select("#common-axes")
 // X axis label
 svg.append("text")
   .attr("text-anchor", "middle")
-  .attr("x", axisPadding + gridWidth / 2)
+  .attr("x", (axisPadding + gridWidth / 2 - 100))
   .attr("y", gridHeight + axisPadding + 20) // move further down
   .attr("fill", "white")
   .attr("opacity", 0.8)
