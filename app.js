@@ -490,26 +490,13 @@ function addRectangle(
   label
 ) {
   const svg = d3.select(chartId);
-  const rect = svg.append("rect")
+  svg.append("rect")
     .attr("x", xStart)
-    .attr("y", yStart) // top left corner
+    .attr("y", yStart)
     .attr("width", width)
     .attr("height", height)
-    .style("fill", color)
-    .style("cursor", "pointer")
-    .on("mouseover", function() { d3.select(this).style("fill", color.replace(/0\.12\)/, '0.32)')); })
-    .on("mouseout", function() { d3.select(this).style("fill", color); });
-  if (label) {
-    svg.append("text")
-      .attr("x", xStart + width / 2)
-      .attr("y", yStart + 24)
-      .attr("text-anchor", "middle")
-      .attr("fill", "#F3F3F3")
-      .attr("font-size", "18px")
-      .attr("font-weight", "bold")
-      .style("opacity", 0.7)
-      .text(label);
-  }
+    .style("fill", "none")
+    .style("cursor", "pointer");
 }
 
 // Helper to add rectangles within axis area for 800x400 SVG with margins
@@ -522,10 +509,10 @@ function addRectanglesWithinAxis(chartId) {
   // Use the same x scale as the chart
   const x = d3.scaleLinear().domain([0, 90]).range([0, plotWidth]);
   // Beginning: 0-30
-  addRectangle(chartId, 90, 20, 235, 340, 'rgba(255, 221, 87, 0.12)', 'Beginning');
+  addRectangle(chartId, 90, -10, 235, 360, 'rgba(255, 241, 87, 0.56)', 'Beginning');
   // Middle: 30-60
-  addRectangle(chartId, 325, 20, 235, 340, 'rgba(100, 200, 255, 0.12)', 'Middle');  // End: 60-90
-  addRectangle(chartId, 560, 20, 235, 340, 'rgba(255, 120, 120, 0.12)', 'End');}
+  addRectangle(chartId, 325, -10, 235, 360, 'rgba(100, 201, 255, 0.19)', 'Middle');  // End: 60-90
+  addRectangle(chartId, 560, -10, 235, 360, 'rgba(255, 120, 120, 0.23)', 'End');}
 
 // Creates grid of charts!
 ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10"].forEach(studentID => {
@@ -618,22 +605,22 @@ svg.append("text")
 // annotation(
 //   "#midterm1-chart", 150, 220, "Beginning");
 addRectangle(
-  "#midterm1-chart", 90, 20, 235, 340, "navy"
+  "#midterm1-chart", 90, 20, 235, 340, "#c6bbf2", "Beginning"
 );
 addRectangle(
-  "#midterm1-chart", 325, 20, 235, 340, "white"
+  "#midterm1-chart", 325, 20, 235, 340, "#bababa", "Middle"
 );
 addRectangle(
-  "#midterm1-chart", 560, 20, 235, 340, "red"
+  "#midterm1-chart", 560, 20, 235, 340, "#f1c08a", "End"
 );
 addRectangle(
-  "#midterm2-chart", 90, 20, 235, 340, "navy"
+  "#midterm2-chart", 90, 20, 235, 340, "#c6bbf2", "Beginning"
 );
 addRectangle(
-  "#midterm2-chart", 325, 20, 235, 340, "white"
+  "#midterm2-chart", 325, 20, 235, 340, "#bababa", "Middle"
 );
 addRectangle(
-  "#midterm2-chart", 560, 20, 235, 340, "red"
+  "#midterm2-chart", 560, 20, 235, 340, "#f1c08a", "End"
 );
 // annotation(middle);
 // annotation(end);
@@ -664,3 +651,34 @@ const observer = new IntersectionObserver((entries) => {
 
 const hiddenElements = document.querySelectorAll('.hidden');
 hiddenElements.forEach((el) => observer.observe(el));
+
+function fadeInAnnotation(svgSelector, text) {
+  const svg = d3.select(svgSelector);
+  // Position: upper middle of plot area
+  const x = 400; // SVG width / 2
+  const y = 50;  // 50px from top
+  const annotation = svg.append("text")
+    .attr("x", x)
+    .attr("y", y)
+    .attr("text-anchor", "middle")
+    .attr("fill", "#bababa")
+    .attr("font-size", "20px")
+    .attr("font-weight", "bold")
+    .attr("opacity", 0)
+    .text(text);
+  annotation.transition().duration(1200).attr("opacity", 0.92);
+}
+
+// Patch createStudentChart3 to fade in annotation after line animation
+const originalCreateStudentChart3 = createStudentChart3;
+createStudentChart3 = function(opts) {
+  originalCreateStudentChart3({
+    ...opts,
+    onLineDrawn: function() {
+      fadeInAnnotation(
+        opts.svgSelector,
+        "Heart rate is highest at the start and end of the exam, with a calmer period in the middle. This pattern suggests students experience anticipatory stress before starting, settle in as they work, and then feel pressure again as time runs out."
+      );
+    }
+  });
+};
