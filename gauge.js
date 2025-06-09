@@ -80,7 +80,7 @@ function createTickMarks() {
         const value = gaugeConfig.min + (i / gaugeConfig.tickCount) * (gaugeConfig.max - gaugeConfig.min);
         const angle = angleScale(value);
         const radians = (angle - 90) * (Math.PI / 180);
-        
+
         // Calculate tick position
         const x1 = gaugeConfig.centerX + (gaugeConfig.radius - 20) * Math.cos(radians);
         const y1 = gaugeConfig.centerY + (gaugeConfig.radius - 20) * Math.sin(radians);
@@ -193,7 +193,7 @@ function getColorForScore(score) {
     if (score < 0.8) return "#ffff4d";  // Yellow
     if (score < 0.9) return "#4dff4d";  // Light Green
     return "#00cc00";  // Green
-}
+  }
 
 // Update gauge visualization
 function updateGaugeDisplay(score) {
@@ -210,22 +210,22 @@ function updateGaugeDisplay(score) {
     
     // Update needle
     d3.select('.gauge-needle')
-        .transition()
-        .duration(1000)
+    .transition()
+    .duration(1000)
         .attr('transform', `rotate(${angle}, ${gaugeConfig.centerX}, ${gaugeConfig.centerY})`);
-    
+
     // Update score text
     d3.select('.gauge-text')
         .transition()
-        .duration(1000)
+      .duration(1000)
         .tween('text', function() {
-            const that = d3.select(this);
+        const that = d3.select(this);
             const i = d3.interpolateNumber(+that.text() || 0, score);
             return function(t) {
                 that.text(i(t).toFixed(2));
-            };
-        });
-}
+        };
+      });
+  }
 
 function getGradeLetter(score) {
   const rounded = Math.round(score * 100) / 100; // round to 2 decimals
