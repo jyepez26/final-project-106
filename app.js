@@ -526,7 +526,6 @@ const chartInitializers = {
     'yerkes-chart': createYerkesCurve,
 };
 
-<<<<<<< HEAD
 // Example dimensions
 const chartWidth = 300;
 const chartHeight = 180;
@@ -583,7 +582,6 @@ svg.append("text")
   .attr("fill", "white")
   .attr("opacity", 0.8)
   .text("Heart Rate (bpm)");
-=======
 // annotation(
 //   "#midterm1-chart", 150, 220, "Beginning");
 addRectangle(
@@ -606,7 +604,6 @@ addRectangle(
 );
 // annotation(middle);
 // annotation(end);
->>>>>>> 116d15fa682a5853267b4bf23f29361fd51389fc
 
 
 const chartsDrawn = new Set();
