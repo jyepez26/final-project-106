@@ -400,22 +400,25 @@ function createStudentChart3({
     .ease(d3.easeLinear)
     .attr("stroke-dashoffset", 0);
   
-  // const avg = d3.mean(processedData, (d) => d.value);
-  // console.log(avg);
-  // console.log('xDomain', x.domain()[1]);
-  // console.log('yDomain', y.domain()[1]);
-  // const avg_point1 = {time: 0, value: avg};
-  // const avg_point2 = {time: x.domain()[1], value: avg};
-  // const avg_line = d3.line()
-  //   .x(d => d.time)
-  //   .y(d => d.value)
-  // // Draw the line using the two points
-  // g.append("path")
-  //     .datum([avg_point1, avg_point2]) // Bind data to the line
-  //     .attr("class", "line")
-  //     .attr("d", avg_line) // Generate the path data
-  //     .attr("fill", "none") // No fill for the line
-  //     .attr("stroke", "white");
+  const avg = d3.mean(processedData, (d) => d.value);
+  console.log('xDomain', x.domain()[1]);
+  console.log('yDomain', y.domain()[1]);
+  const maxX = d3.max(processedData, (d) => d.time);
+  const avg_point1 = {time: 0, value: avg};
+  const avg_point2 = {time: 705, value: avg};
+  const avg_line = d3.line()
+    .x(d => d.time)
+    .y(d => d.value)
+  // Draw the line using the two points
+  g.append("path")
+      .datum([avg_point1, avg_point2]) // Bind data to the line
+      .attr("class", "line")
+      .attr("d", avg_line) // Generate the path data
+      .attr("fill", "none") // No fill for the line
+      .attr("stroke", "white")
+      .attr("transform", `translate(50, 0)`)
+      .attr("stroke-width", "2")
+      .attr("stroke-dasharray", "5, 5");
 }
 
 // Creates grid of charts!
