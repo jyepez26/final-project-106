@@ -451,6 +451,63 @@ const chartInitializers = {
     'yerkes-chart': createYerkesCurve,
 };
 
+// Example dimensions
+const chartWidth = 300;
+const chartHeight = 180;
+const cols = 5;
+const rows = 2; // update based on your number of charts
+const gap = 20;
+const axisPadding = 30;
+
+// Compute total width and height of the grid
+const gridWidth = cols * chartWidth + (cols - 1) * gap;
+const gridHeight = rows * chartHeight + (rows - 1) * gap;
+
+const svg = d3.select("#common-axes")
+  .attr("width", gridWidth + axisPadding + 50)
+  .attr("height", gridHeight + axisPadding + 50);
+
+// // X axis
+// const xScale = d3.scaleLinear()
+//   .domain([0, 90])
+//   .range([axisPadding, gridWidth + axisPadding]);
+
+// const xAxis = d3.axisBottom(xScale);
+
+// svg.append("g")
+//   .attr("transform", `translate(0, ${gridHeight + axisPadding})`)
+//   .call(xAxis);
+
+// // Y axis
+// const yScale = d3.scaleLinear()
+//   .domain([0, 160])
+//   .range([gridHeight + axisPadding, axisPadding]);
+
+// const yAxis = d3.axisLeft(yScale);
+
+// svg.append("g")
+//   .attr("transform", `translate(${axisPadding}, 0)`)
+//   .call(yAxis);
+
+// X axis label
+svg.append("text")
+  .attr("text-anchor", "middle")
+  .attr("x", axisPadding + gridWidth / 2)
+  .attr("y", gridHeight + axisPadding + 20) // move further down
+  .attr("fill", "white")
+  .attr("opacity", 0.8)
+  .text("Time (Minutes)");
+
+// Y axis label
+svg.append("text")
+  .attr("text-anchor", "middle")
+  .attr("transform", `rotate(-90)`)
+  .attr("x", -(axisPadding + gridHeight / 2))
+  .attr("y", 25)  // move right so it's not offscreen
+  .attr("fill", "white")
+  .attr("opacity", 0.8)
+  .text("Heart Rate (bpm)");
+
 
 const chartsDrawn = new Set();
 

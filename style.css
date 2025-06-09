@@ -113,6 +113,33 @@ svg{
   font-size:65%;
   opacity: 0.9;
 }
+
+#student-grid-container {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 0.1em;
+  padding-left: 80px; /* makes space for Y-axis label */
+  overflow: visible;
+}
+
+#y-axis-label {
+  position: absolute;
+  left: -60px;
+  top: 50%;
+  transform: rotate(-90deg) translateY(-50%);
+  transform-origin: center;
+  font-weight: bold;
+}
+
+#x-axis-label {
+  text-align: center;
+  font-weight: bold;
+}
+
+#common-axes {
+  font-family: 'Poppins', sans-serif;
+}
+
 .student-chart {
   overflow: visible; /* allows anything that might overflow margins */
 }
