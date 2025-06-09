@@ -123,19 +123,28 @@
         
     <section class="hidden">
         <h3> Midterm 2: Heart Rate Visualizations</h3>
-            <div id="student-grid" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 2em; margin-bottom: 2em;">
-            <!-- Student Charts -->
+        <br>
+        <div id="grid-container" style="position: relative; width: fit-content;">
+            <!-- Common axis SVG -->
+            <svg id="common-axes" style="position: absolute; top: 0; left: 0; z-index: 0;" width="100%" height="100%"></svg>
+          
+            <!-- Chart grid -->
+            <div id="student-grid" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; z-index: 1; position: relative; padding-left: 40px; padding-bottom: 40px;">
                 <div class="student-chart"><svg id="student-S1" width="100%" height="100%"></svg></div>
-                <div class="student-chart"><svg id="student-S2" width="100%" height="100%" ></svg></div>
-                <div class="student-chart"><svg id="student-S3" width="100%" height="100%" ></svg></div>
-                <div class="student-chart"><svg id="student-S4" width="100%" height="100%" ></svg></div>
-                <div class="student-chart"><svg id="student-S5" width="100%" height="100%" ></svg></div>
-                <div class="student-chart"><svg id="student-S6" width="100%" height="100%" ></svg></div>
-                <div class="student-chart"><svg id="student-S7" width="100%" height="100%" ></svg></div>
-                <div class="student-chart"><svg id="student-S8" width="100%" height="100%" ></svg></div>
-                <div class="student-chart"><svg id="student-S9" width="100%" height="100%" ></svg></div>
-                <div class="student-chart"><svg id="student-S10" width="100%" height="100%" ></svg></div>
+                <div class="student-chart"><svg id="student-S2" width="100%" height="100%"></svg></div>
+                <div class="student-chart"><svg id="student-S3" width="100%" height="100%"></svg></div>
+                <div class="student-chart"><svg id="student-S4" width="100%" height="100%"></svg></div>
+                <div class="student-chart"><svg id="student-S5" width="100%" height="100%"></svg></div>
+                <div class="student-chart"><svg id="student-S6" width="100%" height="100%"></svg></div>
+                <div class="student-chart"><svg id="student-S7" width="100%" height="100%"></svg></div>
+                <div class="student-chart"><svg id="student-S8" width="100%" height="100%"></svg></div>
+                <div class="student-chart"><svg id="student-S9" width="100%" height="100%"></svg></div>
+                <div class="student-chart"><svg id="student-S10" width="100%" height="100%"></svg></div>
             </div>
+        </div>
+
+        <br>
+          
         <p style="margin-top: 20px;">Observe how each student's heart rate fluctuates during the final exam.</p>
         <h6 class="scroll-down">Scroll down to play the comparison game!</h6>
     </section>
