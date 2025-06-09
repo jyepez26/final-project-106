@@ -462,6 +462,7 @@ function createStudentChart3({
         .text("Average Heart Rate");
     });
 }
+
 function annotation(
   chartId,
   xLoc,
@@ -470,31 +471,61 @@ function annotation(
 ) {
   const svg = d3.select(chartId);
   svg.append("text")
-  .attr("x", xLoc)
-  .attr("y", yLoc)
-  .text(message)
-  .style("fill", "#F3F3F3")
-  .style("opacity", "0.7")
-  .style("font-weight", "100")
-  .style("font-size", "14px");
+    .attr("x", xLoc)
+    .attr("y", yLoc)
+    .text(message)
+    .style("fill", "#F3F3F3")
+    .style("opacity", "0.7")
+    .style("font-weight", "100")
+    .style("font-size", "14px");
 }
+
 function addRectangle(
   chartId,
   xStart,
-  yEnd,
+  yStart,
   width,
   height,
-  color
+  color,
+  label
 ) {
   const svg = d3.select(chartId);
-  svg.append("rect")
+  const rect = svg.append("rect")
     .attr("x", xStart)
-    .attr("y", yEnd) // top left corner
+    .attr("y", yStart) // top left corner
     .attr("width", width)
     .attr("height", height)
     .style("fill", color)
+    .style("cursor", "pointer")
+    .on("mouseover", function() { d3.select(this).style("fill", color.replace(/0\.12\)/, '0.32)')); })
+    .on("mouseout", function() { d3.select(this).style("fill", color); });
+  if (label) {
+    svg.append("text")
+      .attr("x", xStart + width / 2)
+      .attr("y", yStart + 24)
+      .attr("text-anchor", "middle")
+      .attr("fill", "#F3F3F3")
+      .attr("font-size", "18px")
+      .attr("font-weight", "bold")
+      .style("opacity", 0.7)
+      .text(label);
+  }
 }
 
+// Helper to add rectangles within axis area for 800x400 SVG with margins
+function addRectanglesWithinAxis(chartId) {
+  const margin = { top: 20, right: 30, bottom: 50, left: 50 };
+  const svgWidth = 800;
+  const svgHeight = 400;
+  const plotWidth = svgWidth - margin.left - margin.right;
+  const plotHeight = svgHeight - margin.top - margin.bottom;
+  // Use the same x scale as the chart
+  const x = d3.scaleLinear().domain([0, 90]).range([0, plotWidth]);
+  // Beginning: 0-30
+  addRectangle(chartId, 90, 20, 235, 340, 'rgba(255, 221, 87, 0.12)', 'Beginning');
+  // Middle: 30-60
+  addRectangle(chartId, 325, 20, 235, 340, 'rgba(100, 200, 255, 0.12)', 'Middle');  // End: 60-90
+  addRectangle(chartId, 560, 20, 235, 340, 'rgba(255, 120, 120, 0.12)', 'End');}
 
 // Creates grid of charts!
 ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10"].forEach(studentID => {
@@ -526,29 +557,9 @@ const chartInitializers = {
     'yerkes-chart': createYerkesCurve,
 };
 
-// annotation(
-//   "#midterm1-chart", 150, 220, "Beginning");
-addRectangle(
-  "#midterm1-chart", 90, 20, 235, 340, "navy"
-);
-addRectangle(
-  "#midterm1-chart", 325, 20, 235, 340, "white"
-);
-addRectangle(
-  "#midterm1-chart", 560, 20, 235, 340, "red"
-);
-addRectangle(
-  "#midterm2-chart", 90, 20, 235, 340, "navy"
-);
-addRectangle(
-  "#midterm2-chart", 325, 20, 235, 340, "white"
-);
-addRectangle(
-  "#midterm2-chart", 560, 20, 235, 340, "red"
-);
-// annotation(middle);
-// annotation(end);
-
+// Remove old rectangle calls and use the new helper for the first two charts
+addRectanglesWithinAxis('#midterm1-chart');
+addRectanglesWithinAxis('#midterm2-chart');
 
 const chartsDrawn = new Set();
 
