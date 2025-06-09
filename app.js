@@ -41,7 +41,8 @@ function createStudentChart({
   testName,
   svgSelector,
   selectSelector,
-  lineColor = "white"
+  lineColor = "white",
+  showLegend = false
 }) {
   let testData = rawData
     .filter(d => d.test === testName)
@@ -172,6 +173,29 @@ function createStudentChart({
       .on("end", () => {
         g.select(".max-circle").transition().duration(500).attr("r", 5);
       });
+
+    // Add legend for average line only if showLegend is true
+    if (showLegend) {
+      g.append("g")
+        .attr("class", "legend-group")
+        .attr("transform", `translate(${plotWidth - 180}, 10)`)
+        .call(g => {
+          g.append("line")
+            .attr("x1", 0)
+            .attr("y1", 0)
+            .attr("x2", 40)
+            .attr("y2", 0)
+            .attr("stroke", "white")
+            .attr("stroke-width", 2)
+            .attr("stroke-dasharray", "5,5");
+          g.append("text")
+            .attr("x", 50)
+            .attr("y", 5)
+            .attr("fill", "white")
+            .attr("font-size", "14px")
+            .text("Average Heart Rate");
+        });
+    }
   }
 
   // Setup select interaction
@@ -202,7 +226,7 @@ function createStudentChart2({
   rawData,
   testName,
   svgSelector,
-  studentID,
+  studentID
 }) {
     const studentColors = {
     "S1": "#1f77b4",
@@ -401,9 +425,6 @@ function createStudentChart3({
     .attr("stroke-dashoffset", 0);
   
   const avg = d3.mean(processedData, (d) => d.value);
-  console.log('xDomain', x.domain()[1]);
-  console.log('yDomain', y.domain()[1]);
-  const maxX = d3.max(processedData, (d) => d.time);
   const avg_point1 = {time: 0, value: avg};
   const avg_point2 = {time: 705, value: avg};
   const avg_line = d3.line()
@@ -419,7 +440,61 @@ function createStudentChart3({
       .attr("transform", `translate(50, 0)`)
       .attr("stroke-width", "2")
       .attr("stroke-dasharray", "5, 5");
+
+  // After drawing the average line, add the legend
+  svg.append("g")
+    .attr("class", "legend-group")
+    .attr("transform", `translate(${width - 180}, 10)`)
+    .call(g => {
+      g.append("line")
+        .attr("x1", 0)
+        .attr("y1", 0)
+        .attr("x2", 40)
+        .attr("y2", 0)
+        .attr("stroke", "white")
+        .attr("stroke-width", 2)
+        .attr("stroke-dasharray", "5,5");
+      g.append("text")
+        .attr("x", 50)
+        .attr("y", 5)
+        .attr("fill", "white")
+        .attr("font-size", "14px")
+        .text("Average Heart Rate");
+    });
 }
+function annotation(
+  chartId,
+  xLoc,
+  yLoc,
+  message
+) {
+  const svg = d3.select(chartId);
+  svg.append("text")
+  .attr("x", xLoc)
+  .attr("y", yLoc)
+  .text(message)
+  .style("fill", "#F3F3F3")
+  .style("opacity", "0.7")
+  .style("font-weight", "100")
+  .style("font-size", "14px");
+}
+function addRectangle(
+  chartId,
+  xStart,
+  yEnd,
+  width,
+  height,
+  color
+) {
+  const svg = d3.select(chartId);
+  svg.append("rect")
+    .attr("x", xStart)
+    .attr("y", yEnd) // top left corner
+    .attr("width", width)
+    .attr("height", height)
+    .style("fill", color)
+}
+
 
 // Creates grid of charts!
 ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10"].forEach(studentID => {
@@ -451,6 +526,7 @@ const chartInitializers = {
     'yerkes-chart': createYerkesCurve,
 };
 
+<<<<<<< HEAD
 // Example dimensions
 const chartWidth = 300;
 const chartHeight = 180;
@@ -507,6 +583,30 @@ svg.append("text")
   .attr("fill", "white")
   .attr("opacity", 0.8)
   .text("Heart Rate (bpm)");
+=======
+// annotation(
+//   "#midterm1-chart", 150, 220, "Beginning");
+addRectangle(
+  "#midterm1-chart", 90, 20, 235, 340, "navy"
+);
+addRectangle(
+  "#midterm1-chart", 325, 20, 235, 340, "white"
+);
+addRectangle(
+  "#midterm1-chart", 560, 20, 235, 340, "red"
+);
+addRectangle(
+  "#midterm2-chart", 90, 20, 235, 340, "navy"
+);
+addRectangle(
+  "#midterm2-chart", 325, 20, 235, 340, "white"
+);
+addRectangle(
+  "#midterm2-chart", 560, 20, 235, 340, "red"
+);
+// annotation(middle);
+// annotation(end);
+>>>>>>> 116d15fa682a5853267b4bf23f29361fd51389fc
 
 
 const chartsDrawn = new Set();
