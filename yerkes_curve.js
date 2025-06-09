@@ -131,9 +131,17 @@ export function createYerkesCurve() {
         function updateDot() {
             const point = points[currentIndex];
             dot.attr('transform', `translate(${xScale(point.x)},${yScale(point.y)})`);
-            
+
+            // Only turn green if the dot perfectly aligns with the static circle at the top
+            const exactThreshold = 0.01; // Require a very close match
+            if (Math.abs(point.x - 5) < exactThreshold && Math.abs(point.y - 10) < exactThreshold) {
+                dot.attr('fill', '#2ea043'); // Green
+            } else {
+                dot.attr('fill', '#f1a340'); // Original color
+            }
+
             currentIndex += direction;
-            
+
             // Change direction when reaching the ends
             if (currentIndex >= numPoints - 1) {
                 direction = -1;

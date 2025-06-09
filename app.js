@@ -41,7 +41,8 @@ function createStudentChart({
   testName,
   svgSelector,
   selectSelector,
-  lineColor = "white"
+  lineColor = "white",
+  showLegend = false
 }) {
   let testData = rawData
     .filter(d => d.test === testName)
@@ -172,6 +173,29 @@ function createStudentChart({
       .on("end", () => {
         g.select(".max-circle").transition().duration(500).attr("r", 5);
       });
+
+    // Add legend for average line only if showLegend is true
+    if (showLegend) {
+      g.append("g")
+        .attr("class", "legend-group")
+        .attr("transform", `translate(${plotWidth - 180}, 10)`)
+        .call(g => {
+          g.append("line")
+            .attr("x1", 0)
+            .attr("y1", 0)
+            .attr("x2", 40)
+            .attr("y2", 0)
+            .attr("stroke", "white")
+            .attr("stroke-width", 2)
+            .attr("stroke-dasharray", "5,5");
+          g.append("text")
+            .attr("x", 50)
+            .attr("y", 5)
+            .attr("fill", "white")
+            .attr("font-size", "14px")
+            .text("Average Heart Rate");
+        });
+    }
   }
 
   // Setup select interaction
@@ -202,7 +226,7 @@ function createStudentChart2({
   rawData,
   testName,
   svgSelector,
-  studentID,
+  studentID
 }) {
     const studentColors = {
     "S1": "#1f77b4",
@@ -416,6 +440,27 @@ function createStudentChart3({
       .attr("transform", `translate(50, 0)`)
       .attr("stroke-width", "2")
       .attr("stroke-dasharray", "5, 5");
+
+  // After drawing the average line, add the legend
+  svg.append("g")
+    .attr("class", "legend-group")
+    .attr("transform", `translate(${width - 180}, 10)`)
+    .call(g => {
+      g.append("line")
+        .attr("x1", 0)
+        .attr("y1", 0)
+        .attr("x2", 40)
+        .attr("y2", 0)
+        .attr("stroke", "white")
+        .attr("stroke-width", 2)
+        .attr("stroke-dasharray", "5,5");
+      g.append("text")
+        .attr("x", 50)
+        .attr("y", 5)
+        .attr("fill", "white")
+        .attr("font-size", "14px")
+        .text("Average Heart Rate");
+    });
 }
 function annotation(
   chartId,
