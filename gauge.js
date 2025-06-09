@@ -50,7 +50,8 @@ initializeModel();
 function updateVisualizations(grade, studentId) {
     requestAnimationFrame(() => {
         document.getElementById('score-display').textContent = grade.toFixed(2);
-        document.getElementById('stress-type').textContent = `Similar to ${mapToName(studentId)}`;
+        const studentName = mapToName(studentId);
+        document.getElementById('stress-type').textContent = `Similar to ${studentName}`;
         updateBarDisplay(grade);
         updateGaugeDisplay(grade);
     });
@@ -168,16 +169,26 @@ async function predict() {
 
     try {
         const grade = await predictGrade(model, inputFeatures, minMax);
-        const similarStudentFeature = findMostSimilarStudent(inputFeatures, features, minMax);
-        const similarStudent = similarStudentFeature.student;
-        const closestStudentGrade = getGradeForStudentTest(similarStudentFeature.originalStudentTest);
-
-        const closestStudentName = mapToName(similarStudent);
+        
+        // Find student with closest score to predicted grade (across all student-test pairs)
+        let closestStudent = null;
+        let minScoreDiff = Infinity;
+        
+        features.forEach(feature => {
+            const studentId = feature.student.split('_')[0];
+            const score = getGradeForStudentTest(feature.originalStudentTest);
+            if (score === undefined) return; // skip if missing
+            const scoreDiff = Math.abs(score - grade);
+            if (scoreDiff < minScoreDiff) {
+                minScoreDiff = scoreDiff;
+                closestStudent = studentId;
+            }
+        });
 
         console.log("Predicted grade:", grade);
-        console.log("Closest student's actual grade:", closestStudentGrade);
+        console.log("Closest student ID:", closestStudent);
 
-        updateVisualizations(grade, similarStudent);
+        updateVisualizations(grade, closestStudent);
     } catch (error) {
         console.error("Prediction error:", error);
         alert("Error making prediction. Please try again.");
