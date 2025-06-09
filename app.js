@@ -401,9 +401,6 @@ function createStudentChart3({
     .attr("stroke-dashoffset", 0);
   
   const avg = d3.mean(processedData, (d) => d.value);
-  console.log('xDomain', x.domain()[1]);
-  console.log('yDomain', y.domain()[1]);
-  const maxX = d3.max(processedData, (d) => d.time);
   const avg_point1 = {time: 0, value: avg};
   const avg_point2 = {time: 705, value: avg};
   const avg_line = d3.line()
@@ -420,6 +417,39 @@ function createStudentChart3({
       .attr("stroke-width", "2")
       .attr("stroke-dasharray", "5, 5");
 }
+function annotation(
+  chartId,
+  xLoc,
+  yLoc,
+  message
+) {
+  const svg = d3.select(chartId);
+  svg.append("text")
+  .attr("x", xLoc)
+  .attr("y", yLoc)
+  .text(message)
+  .style("fill", "#F3F3F3")
+  .style("opacity", "0.7")
+  .style("font-weight", "100")
+  .style("font-size", "14px");
+}
+function addRectangle(
+  chartId,
+  xStart,
+  yEnd,
+  width,
+  height,
+  color
+) {
+  const svg = d3.select(chartId);
+  svg.append("rect")
+    .attr("x", xStart)
+    .attr("y", yEnd) // top left corner
+    .attr("width", width)
+    .attr("height", height)
+    .style("fill", color)
+}
+
 
 // Creates grid of charts!
 ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10"].forEach(studentID => {
@@ -450,6 +480,29 @@ const chartInitializers = {
     "comparison-chart": () => createStudentComparison(),
     'yerkes-chart': createYerkesCurve,
 };
+
+// annotation(
+//   "#midterm1-chart", 150, 220, "Beginning");
+addRectangle(
+  "#midterm1-chart", 90, 20, 235, 340, "navy"
+);
+addRectangle(
+  "#midterm1-chart", 325, 20, 235, 340, "white"
+);
+addRectangle(
+  "#midterm1-chart", 560, 20, 235, 340, "red"
+);
+addRectangle(
+  "#midterm2-chart", 90, 20, 235, 340, "navy"
+);
+addRectangle(
+  "#midterm2-chart", 325, 20, 235, 340, "white"
+);
+addRectangle(
+  "#midterm2-chart", 560, 20, 235, 340, "red"
+);
+// annotation(middle);
+// annotation(end);
 
 
 const chartsDrawn = new Set();
